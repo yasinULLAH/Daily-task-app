@@ -6,14 +6,15 @@
 
 const CACHE_NAME = 'daftar-munazzam-cache-v1';
 const urlsToCache = [
-    './',
-    './index.html',
+    '/',
+    '.
+    /index.html',
     'https://raw.githubusercontent.com/urduhack/Jameel-Noori-Nastaleeq-Font/master/Jameel%20Noori%20Nastaleeq.ttf',
     'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
     'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js',
     // Add other assets like icons, manifest.json if you create them
-    '/manifest.json',
-    '/icon-192x192.png' // Replace with your actual icon path
+    '/manifest.json'
+    //'/icon-192x192.png' // Replace with your actual icon path
 ];
 
 self.addEventListener('install', (event) => {
