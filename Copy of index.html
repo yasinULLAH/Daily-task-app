@@ -1,0 +1,3225 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ur">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="دفتر منظم - آپ کا مکمل دفتری معاون" name="title"/>
+<meta content="دفتر منظم ایک جامع ویب ایپلیکیشن ہے جو روزمرہ کے دفتری امور جیسے کام، یاددہانی، ملاقاتیں، پیغامات، اور رابطوں کا انتظام کرتی ہے۔ پاکستان میں دفتری استعمال کے لیے ڈیزائن کیا گیا ہے۔" name="description"/>
+<meta content="دفتر منظم, دفتری انتظام, ٹاسک مینیجر, ریمائنڈر ایپ, ملاقاتیں, اطلاعات, رابطے, کارکردگی, شیڈول, پیغامات, خطوط, مطالبات, پاکستان, یسین اللہ" name="keywords"/>
+<meta content="Yasin Ullah, Pakistan" name="author"/>
+<title>دفتر منظم</title>
+<link href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text y=%22.9em%22 font-size=%2290%22&gt;🏢&lt;/text&gt;&lt;/svg&gt;" rel="icon"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400..700&display=swap');
+
+        :root {
+            --bg-color: #f8f9fa;
+            --text-color: #212529;
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --accent-color: #28a745;
+            --delete-color: #dc3545;
+            --edit-color: #ffc107;
+            --card-bg: #ffffff;
+            --border-color: #e9ecef;
+            --input-bg: #ffffff;
+            --table-even-bg: #f8f9fa;
+            --table-header-bg: var(--primary-color);
+            --table-header-text: white;
+            --box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            --notification-success-bg: #28a745;
+            --notification-info-bg: #17a2b8;
+            --notification-error-bg: #dc3545;
+            --notification-text: white;
+            --button-hover-darken: 10%;
+            --border-radius: 0.375rem;
+            --font-size-base: 0.9rem;
+            --font-size-lg: 1.1rem;
+            --font-size-sm: 0.75rem;
+        }
+
+        body.dark-theme {
+            --bg-color: #212529;
+            --text-color: #f8f9fa;
+            --primary-color: #0d6efd;
+            --secondary-color: #6c757d;
+            --accent-color: #198754;
+            --delete-color: #dc3545;
+            --edit-color: #ffc107;
+            --card-bg: #343a40;
+            --border-color: #495057;
+            --input-bg: #495057;
+            --table-even-bg: #343a40;
+            --table-header-bg: var(--primary-color);
+            --table-header-text: white;
+            --box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.2);
+            --notification-success-bg: #198754;
+            --notification-info-bg: #0dcaf0;
+            --notification-error-bg: #dc3545;
+        }
+
+        body {
+            font-family: Calibri, 'Noto Nastaliq Urdu', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.5;
+            direction: rtl;
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-size: var(--font-size-base);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+            padding: 0.8rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+            gap: 0.8rem;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: var(--card-bg);
+            padding: 0.8rem;
+            box-shadow: var(--box-shadow);
+            border-radius: var(--border-radius);
+            flex-shrink: 0;
+            position: sticky;
+            top: 0.8rem;
+            height: calc(100vh - 1.6rem);
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            line-height: 1.2;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.6rem;
+            font-weight: 600;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 0.4rem;
+        }
+
+        .sidebar ul li button {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 0.5rem 0.7rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: var(--font-size-base);
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            text-align: right;
+            font-family: inherit;
+            gap: 0.4rem;
+        }
+
+        .sidebar ul li button:hover {
+            background-color: color-mix(in srgb, var(--primary-color) var(--button-hover-darken), black);
+            transform: translateY(-1px);
+            box-shadow: 0 0.15rem 0.3rem rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar ul li button.active {
+            background-color: var(--accent-color);
+            font-weight: bold;
+            box-shadow: 0 0.075rem 0.15rem rgba(0, 0, 0, 0.15);
+        }
+
+        .main-content {
+            flex-grow: 1;
+            background-color: var(--card-bg);
+            padding: 1.2rem;
+            box-shadow: var(--box-shadow);
+            border-radius: var(--border-radius);
+            overflow-x: hidden;
+        }
+
+        .module-section {
+            display: none;
+        }
+
+        .module-section.active {
+            display: block;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.6rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+        }
+
+        .form-group {
+            margin-bottom: 0.8rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.2rem;
+            font-weight: 500;
+            font-size: var(--font-size-base);
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="time"],
+        input[type="email"],
+        input[type="tel"],
+        textarea,
+        select {
+            width: calc(100% - 1.2rem);
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            box-sizing: border-box;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            font-family: inherit;
+            font-size: var(--font-size-base);
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.15rem rgba(0, 123, 255, 0.25);
+            outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 50px;
+        }
+
+        button {
+            padding: 0.5rem 0.8rem;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: var(--font-size-base);
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            font-family: inherit;
+            margin-left: 0.4rem;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+        }
+
+        button i {
+            font-size: 0.8em;
+        }
+
+        button:hover {
+            filter: brightness(90%);
+            transform: translateY(-1px);
+            box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.1);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+
+        .delete-btn {
+            background-color: var(--delete-color);
+        }
+
+        .edit-btn {
+            background-color: var(--edit-color);
+            color: var(--text-color);
+        }
+
+        .whatsapp-btn {
+            background-color: #25D366;
+        }
+
+        .whatsapp-btn:hover {
+            background-color: #1DA851;
+        }
+
+        .sms-btn {
+            background-color: #4CAF50;
+        }
+
+        .sms-btn:hover {
+            background-color: #45a049;
+        }
+
+        .action-buttons {
+            margin-top: 1.2rem;
+            text-align: left;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            justify-content: flex-end;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.2rem;
+            font-size: var(--font-size-base);
+            table-layout: auto;
+        }
+
+        table th,
+        table td {
+            border: 1px solid var(--border-color);
+            padding: 0.5rem;
+            text-align: right;
+            vertical-align: top;
+        }
+
+        table th {
+            background-color: var(--table-header-bg);
+            color: var(--table-header-text);
+            white-space: nowrap;
+            font-weight: 600;
+        }
+
+        table tbody tr:nth-child(even) {
+            background-color: var(--table-even-bg);
+        }
+
+        table tbody tr:hover {
+            background-color: color-mix(in srgb, var(--table-even-bg) 10%, var(--border-color));
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .controls input[type="text"],
+        .controls input[type="date"],
+        .controls select {
+            width: auto;
+            min-width: 100px;
+            flex-grow: 1;
+            margin-left: 0;
+            padding: 0.4rem;
+            font-size: var(--font-size-sm);
+        }
+
+        .controls button {
+            padding: 0.4rem 0.7rem;
+            font-size: var(--font-size-sm);
+        }
+
+        .export-options {
+            margin-bottom: 0.8rem;
+            text-align: left;
+            display: flex;
+            gap: 0.4rem;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .export-options button {
+            margin-left: 0;
+            padding: 0.4rem 0.7rem;
+            font-size: var(--font-size-sm);
+        }
+
+        .theme-switcher {
+            position: fixed;
+            top: 0.8rem;
+            left: 0.8rem;
+            z-index: 1000;
+            display: flex;
+            gap: 0.4rem;
+        }
+
+        .theme-switcher button {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.4rem 0.7rem;
+            border-radius: var(--border-radius);
+            font-size: var(--font-size-sm);
+            margin-left: 0;
+        }
+
+        .theme-switcher button:hover {
+            background-color: color-mix(in srgb, var(--secondary-color) 10%, black);
+        }
+
+        .file-upload-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 0.4rem;
+            align-items: center;
+        }
+
+        .file-upload-preview div {
+            border: 1px solid var(--border-color);
+            padding: 0.2rem;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+            background-color: var(--input-bg);
+            font-size: var(--font-size-sm);
+        }
+
+        .file-upload-preview img {
+            max-width: 25px;
+            max-height: 25px;
+            object-fit: contain;
+            border-radius: 3px;
+        }
+
+        .file-upload-preview button {
+            background-color: var(--delete-color);
+            color: white;
+            border: none;
+            padding: 0.1rem 0.3rem;
+            font-size: 0.6em;
+            cursor: pointer;
+            border-radius: 3px;
+            margin-left: 0;
+            min-width: unset;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .notification {
+            position: fixed;
+            top: 0.8rem;
+            right: 0.8rem;
+            background-color: var(--notification-info-bg);
+            color: var(--notification-text);
+            padding: 0.7rem 0.9rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 0.15rem 0.4rem rgba(0, 0, 0, 0.2);
+            z-index: 1001;
+            display: none;
+            font-size: var(--font-size-base);
+            font-family: inherit;
+            animation: fadeIn 0.5s;
+            max-width: 250px;
+            text-align: center;
+        }
+
+        .notification.show {
+            display: block;
+        }
+
+        .notification.hide {
+            animation: fadeOut 0.5s forwards;
+        }
+
+        .notification.success {
+            background-color: var(--notification-success-bg);
+        }
+
+        .notification.error {
+            background-color: var(--notification-error-bg);
+        }
+
+        .notification.info {
+            background-color: var(--notification-info-bg);
+        }
+
+        .notification.urgent {
+            background-color: var(--delete-color);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.8rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: white;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .status-badge.complete,
+        .status-badge.منظور شدہ {
+            background-color: #28a745;
+        }
+
+        .status-badge.pending,
+        .status-badge.زیر التوا {
+            background-color: #ffc107;
+            color: #333;
+        }
+
+        .status-badge.urgent {
+            background-color: #dc3545;
+        }
+
+        .status-badge.info {
+            background-color: #17a2b8;
+        }
+
+        .status-badge.rejected,
+        .status-badge.مسترد شدہ {
+            background-color: #dc3545;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                padding: 0.4rem;
+                gap: 0.4rem;
+            }
+
+            .sidebar {
+                width: 100%;
+                margin-left: 0;
+                margin-bottom: 0.8rem;
+                padding: 0.6rem;
+                position: static;
+                height: auto;
+                border-radius: 0;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            }
+
+            .sidebar h2 {
+                display: none;
+            }
+
+            .sidebar ul {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+                gap: 0.3rem;
+            }
+
+            .sidebar ul li {
+                margin-bottom: 0;
+            }
+
+            .sidebar ul li button {
+                padding: 0.5rem 0.4rem;
+                font-size: 0.8rem;
+                text-align: center;
+                flex-direction: column;
+                gap: 0.15rem;
+            }
+
+            .sidebar ul li button i {
+                font-size: 0.9rem;
+            }
+
+            .main-content {
+                padding: 0.8rem;
+                border-radius: var(--border-radius);
+            }
+
+            h1,
+            h2,
+            h3 {
+                font-size: 1.2rem;
+                margin-bottom: 0.8rem;
+            }
+
+            input[type="text"],
+            input[type="date"],
+            input[type="time"],
+            input[type="email"],
+            input[type="tel"],
+            textarea,
+            select {
+                width: 100%;
+                padding: 0.5rem;
+                font-size: 0.85rem;
+            }
+
+            .action-buttons,
+            .controls,
+            .export-options {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: stretch;
+            }
+
+            .action-buttons button,
+            .controls button,
+            .export-options button {
+                width: 100%;
+                margin-left: 0;
+                padding: 0.6rem 0.8rem;
+                font-size: var(--font-size-base);
+            }
+
+            .controls input,
+            .controls select {
+                min-width: unset;
+                width: 100%;
+            }
+
+            table,
+            table tbody,
+            table tr,
+            table td,
+            table th {
+                display: block;
+                width: 100%;
+            }
+
+            table thead {
+                display: none;
+            }
+
+            table tr {
+                margin-bottom: 0.6rem;
+                border: 1px solid var(--border-color);
+                border-radius: var(--border-radius);
+                overflow: hidden;
+            }
+
+            table td {
+                border: none;
+                border-bottom: 1px solid var(--border-color);
+                position: relative;
+                padding-left: 40%;
+                text-align: right;
+                word-break: break-word;
+                font-size: 0.85rem;
+                display: ruby-text;
+            }
+
+            table td:last-child {
+                border-bottom: 0;
+            }
+
+            table td::before {
+                content: attr(data-label);
+                position: absolute;
+                right: 0.5rem;
+                width: 35%;
+                padding-left: 0.4rem;
+                font-weight: 600;
+                text-align: right;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                color: var(--primary-color);
+            }
+
+            #tasksTable td:nth-of-type(1)::before {
+                content: "تاریخ:";
+            }
+
+            #tasksTable td:nth-of-type(2)::before {
+                content: "کام کا عنوان:";
+            }
+
+            #tasksTable td:nth-of-type(3)::before {
+                content: "تفصیل:";
+            }
+
+            #tasksTable td:nth-of-type(4)::before {
+                content: "اہمیت:";
+            }
+
+            #tasksTable td:nth-of-type(5)::before {
+                content: "حالت:";
+            }
+
+            #tasksTable td:nth-of-type(6)::before {
+                content: "فائلیں:";
+            }
+
+            #tasksTable td:nth-of-type(7)::before {
+                content: "آپشنز:";
+            }
+
+            #remindersTable td:nth-of-type(1)::before {
+                content: "عنوان:";
+            }
+
+            #remindersTable td:nth-of-type(2)::before {
+                content: "تفصیل:";
+            }
+
+            #remindersTable td:nth-of-type(3)::before {
+                content: "تاریخ:";
+            }
+
+            #remindersTable td:nth-of-type(4)::before {
+                content: "وقت:";
+            }
+
+            #remindersTable td:nth-of-type(5)::before {
+                content: "نوعیت:";
+            }
+
+            #remindersTable td:nth-of-type(6)::before {
+                content: "آپشنز:";
+            }
+
+            #urgentTasksTable td:nth-of-type(1)::before {
+                content: "عنوان:";
+            }
+
+            #urgentTasksTable td:nth-of-type(2)::before {
+                content: "تفصیل:";
+            }
+
+            #urgentTasksTable td:nth-of-type(3)::before {
+                content: "آخری تاریخ:";
+            }
+
+            #urgentTasksTable td:nth-of-type(4)::before {
+                content: "آخری وقت:";
+            }
+
+            #urgentTasksTable td:nth-of-type(5)::before {
+                content: "آپشنز:";
+            }
+
+            #meetingsTable td:nth-of-type(1)::before {
+                content: "تاریخ:";
+            }
+
+            #meetingsTable td:nth-of-type(2)::before {
+                content: "وقت:";
+            }
+
+            #meetingsTable td:nth-of-type(3)::before {
+                content: "شخصیات:";
+            }
+
+            #meetingsTable td:nth-of-type(4)::before {
+                content: "جگہ:";
+            }
+
+            #meetingsTable td:nth-of-type(5)::before {
+                content: "تفصیل:";
+            }
+
+            #meetingsTable td:nth-of-type(6)::before {
+                content: "آپشنز:";
+            }
+
+            #notificationsTable td:nth-of-type(1)::before {
+                content: "تاریخ:";
+            }
+
+            #notificationsTable td:nth-of-type(2)::before {
+                content: "عنوان:";
+            }
+
+            #notificationsTable td:nth-of-type(3)::before {
+                content: "نوعیت:";
+            }
+
+            #notificationsTable td:nth-of-type(4)::before {
+                content: "تفصیل:";
+            }
+
+            #notificationsTable td:nth-of-type(5)::before {
+                content: "فائلیں:";
+            }
+
+            #notificationsTable td:nth-of-type(6)::before {
+                content: "آپشنز:";
+            }
+
+            #contactsTable td:nth-of-type(1)::before {
+                content: "نام/تنظیم:";
+            }
+
+            #contactsTable td:nth-of-type(2)::before {
+                content: "فون:";
+            }
+
+            #contactsTable td:nth-of-type(3)::before {
+                content: "ای میل:";
+            }
+
+            #contactsTable td:nth-of-type(4)::before {
+                content: "رشتہ/معمول:";
+            }
+
+            #contactsTable td:nth-of-type(5)::before {
+                content: "پتہ:";
+            }
+
+            #contactsTable td:nth-of-type(6)::before {
+                content: "آپشنز:";
+            }
+
+            #performanceTable td:nth-of-type(1)::before {
+                content: "تاریخ:";
+            }
+
+            #performanceTable td:nth-of-type(2)::before {
+                content: "عنوان:";
+            }
+
+            #performanceTable td:nth-of-type(3)::before {
+                content: "مدت:";
+            }
+
+            #performanceTable td:nth-of-type(4)::before {
+                content: "تفصیل:";
+            }
+
+            #performanceTable td:nth-of-type(5)::before {
+                content: "فائلیں:";
+            }
+
+            #performanceTable td:nth-of-type(6)::before {
+                content: "آپشنز:";
+            }
+
+            #schedulesTable td:nth-of-type(1)::before {
+                content: "تاریخ:";
+            }
+
+            #schedulesTable td:nth-of-type(2)::before {
+                content: "وقت:";
+            }
+
+            #schedulesTable td:nth-of-type(3)::before {
+                content: "پروگرام کا نام:";
+            }
+
+            #schedulesTable td:nth-of-type(4)::before {
+                content: "نوعیت:";
+            }
+
+            #schedulesTable td:nth-of-type(5)::before {
+                content: "جگہ:";
+            }
+
+            #schedulesTable td:nth-of-type(6)::before {
+                content: "تفصیل:";
+            }
+
+            #schedulesTable td:nth-of-type(7)::before {
+                content: "آپشنز:";
+            }
+
+            #messagesTable td:nth-of-type(1)::before {
+                content: "تاریخ:";
+            }
+
+            #messagesTable td:nth-of-type(2)::before {
+                content: "نوعیت:";
+            }
+
+            #messagesTable td:nth-of-type(3)::before {
+                content: "بھیجنے والا/وصول کنندہ:";
+            }
+
+            #messagesTable td:nth-of-type(4)::before {
+                content: "مضمون:";
+            }
+
+            #messagesTable td:nth-of-type(5)::before {
+                content: "تفصیل:";
+            }
+
+            #messagesTable td:nth-of-type(6)::before {
+                content: "فائلیں:";
+            }
+
+            #messagesTable td:nth-of-type(7)::before {
+                content: "آپشنز:";
+            }
+
+            #lettersTable td:nth-of-type(1)::before {
+                content: "تاریخ اجرا:";
+            }
+
+            #lettersTable td:nth-of-type(2)::before {
+                content: "وصول کنندہ:";
+            }
+
+            #lettersTable td:nth-of-type(3)::before {
+                content: "مضمون:";
+            }
+
+            #lettersTable td:nth-of-type(4)::before {
+                content: "تفصیل:";
+            }
+
+            #lettersTable td:nth-of-type(5)::before {
+                content: "فائلیں:";
+            }
+
+            #lettersTable td:nth-of-type(6)::before {
+                content: "آپشنز:";
+            }
+
+            #demandsTable td:nth-of-type(1)::before {
+                content: "تاریخ:";
+            }
+
+            #demandsTable td:nth-of-type(2)::before {
+                content: "عنوان:";
+            }
+
+            #demandsTable td:nth-of-type(3)::before {
+                content: "مطالبہ کرنے والا:";
+            }
+
+            #demandsTable td:nth-of-type(4)::before {
+                content: "تفصیل:";
+            }
+
+            #demandsTable td:nth-of-type(5)::before {
+                content: "حالت:";
+            }
+
+            #demandsTable td:nth-of-type(6)::before {
+                content: "فائلیں:";
+            }
+
+            #demandsTable td:nth-of-type(7)::before {
+                content: "آپشنز:";
+            }
+
+            .theme-switcher {
+                position: static;
+                text-align: left;
+                margin-bottom: 0.5rem;
+                padding: 0 0.4rem;
+                justify-content: flex-start;
+                flex-wrap: wrap;
+            }
+        }
+
+        @media print {
+            body {
+                background-color: white;
+                font-family: Calibri, 'Noto Nastaliq Urdu', Arial, sans-serif;
+                color: black;
+                font-size: 9pt;
+                line-height: 1.3;
+            }
+
+            .container {
+                display: block;
+                padding: 0;
+                max-width: 100%;
+                margin: 0;
+            }
+
+            .sidebar,
+            .controls,
+            .action-buttons,
+            .theme-switcher,
+            .export-options button:not(.print-btn),
+            input[type="file"],
+            .notification {
+                display: none !important;
+            }
+
+            .main-content {
+                box-shadow: none;
+                padding: 0;
+                margin: 0;
+                width: 100%;
+            }
+
+            table {
+                border: 1px solid black;
+                page-break-inside: auto;
+            }
+
+            table tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            table th,
+            table td {
+                border: 1px solid black;
+                padding: 5px;
+                font-size: 8pt;
+                color: black;
+            }
+
+            table th {
+                background-color: #e0e0e0 !important;
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+            }
+
+            h1,
+            h2,
+            h3 {
+                color: black;
+                border-bottom: 1px solid #ccc;
+                text-align: center;
+                font-size: 14pt;
+                margin-bottom: 8px;
+            }
+
+            input,
+            textarea,
+            select {
+                border: none !important;
+                padding: 0 !important;
+                background-color: transparent !important;
+                box-shadow: none !important;
+                width: auto !important;
+                display: inline-block;
+                min-width: 70px;
+                color: black !important;
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+            }
+
+            .form-group label {
+                display: inline-block;
+                margin-left: 6px;
+                font-weight: bold;
+            }
+
+            .form-group {
+                margin-bottom: 2px;
+            }
+
+            .file-upload-preview {
+                display: none !important;
+            }
+
+            td a {
+                text-decoration: none;
+                color: black;
+            }
+        }
+    </style>
+<link href="manifest.json" rel="manifest"/>
+</head>
+<body>
+<div class="theme-switcher">
+<button id="themeToggle"><i class="fas fa-adjust"></i></button>
+<button id="requestNotificationPermission"><i class="fas fa-bell"></i></button>
+</div>
+<div class="notification" id="notification"></div>
+<div class="container">
+<aside class="sidebar">
+<nav>
+<ul>
+<li><button data-module="tasks"><i class="fas fa-tasks"></i> کام</button></li>
+<li><button data-module="reminders"><i class="fas fa-bell"></i> مختلف امور کی یاد دہانیاں</button>
+</li>
+<li><button data-module="urgentTasks"><i class="fas fa-exclamation-triangle"></i> فوری کرنے کے
+                            کام</button></li>
+<li><button data-module="meetings"><i class="fas fa-handshake"></i> ملاقاتیں</button></li>
+<li><button data-module="notifications"><i class="fas fa-info-circle"></i> اطلاعات</button></li>
+<li><button data-module="contacts"><i class="fas fa-address-book"></i> رابطے</button></li>
+<li><button data-module="performance"><i class="fas fa-chart-line"></i> کارگزاریاں</button></li>
+<li><button data-module="schedules"><i class="fas fa-calendar-alt"></i> پروگراموں کا شیڈول</button>
+</li>
+<li><button data-module="messages"><i class="fas fa-envelope"></i> پیغامات</button></li>
+<li><button data-module="letters"><i class="fas fa-file-alt"></i> خطوط</button></li>
+<li><button data-module="demands"><i class="fas fa-money-bill-wave"></i> مطالبات</button></li>
+<li><button data-module="backupRestore"><i class="fas fa-cloud-download-alt"></i> بیک اپ / ری
+                            سٹور</button></li>
+</ul>
+</nav>
+</aside>
+<main class="main-content">
+<section class="module-section active" id="tasks">
+<h2><i class="fas fa-tasks"></i> کام – روزمرہ یا خاص نوعیت کے کام</h2>
+<form id="taskForm">
+<input id="taskId" type="hidden"/>
+<div class="form-group">
+<label for="taskName">کام کا عنوان:</label>
+<input id="taskName" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="taskDescription">تفصیل:</label>
+<textarea id="taskDescription" rows="3"></textarea>
+</div>
+<div class="form-group">
+<label for="taskDueDate">آخری تاریخ:</label>
+<input id="taskDueDate" type="date"/>
+</div>
+<div class="form-group">
+<label for="taskPriority">اہمیت:</label>
+<select id="taskPriority">
+<option value="معمولی">معمولی</option>
+<option value="اوسط">اوسط</option>
+<option value="اہم">اہم</option>
+<option value="انتہائی اہم">انتہائی اہم</option>
+</select>
+</div>
+<div class="form-group">
+<label for="taskStatus">حالت:</label>
+<select id="taskStatus">
+<option value="زیر التوا">زیر التوا</option>
+<option value="مکمل">مکمل</option>
+</select>
+</div>
+<div class="form-group">
+<label for="taskFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
+<input accept=".pdf,image/*" id="taskFiles" multiple="" type="file"/>
+<div class="file-upload-preview" id="taskFilesPreview"></div>
+</div>
+<div class="action-buttons">
+<button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
+<button id="clearTaskForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
+</div>
+</form>
+<h3><i class="fas fa-list"></i> کاموں کی فہرست</h3>
+<div class="controls">
+<input id="taskSearch" placeholder="تلاش کریں..." type="text"/>
+<input id="taskFilterDate" type="date"/>
+<select id="taskSortBy">
+<option value="dueDate">تاریخ وار (قدیم ترین)</option>
+<option value="dueDateDesc">تاریخ وار (جدید ترین)</option>
+<option value="priority">اہمیت</option>
+<option value="status">حالت</option>
+</select>
+<button onclick="filterAndSort('tasks')"><i class="fas fa-filter"></i> فلٹر / ترتیب دیں</button>
+</div>
+<div class="export-options">
+<button class="print-btn" onclick="printTable('tasksTable')"><i class="fas fa-print"></i> پرنٹ
+                        کریں</button>
+<button onclick="exportTable('tasksTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
+                        ایکسپورٹ
+                        کریں</button>
+<button onclick="exportTable('tasksTable', 'image')"><i class="fas fa-image"></i> تصویر ایکسپورٹ
+                        کریں</button>
+</div>
+<div style="overflow-x: auto;">
+<table id="tasksTable">
+<thead>
+<tr>
+<th>تاریخ</th>
+<th>کام کا عنوان</th>
+<th>تفصیل</th>
+<th>اہمیت</th>
+<th>حالت</th>
+<th>فائلیں</th>
+<th>آپشنز</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</div>
+</section>
+<section class="module-section" id="reminders">
+<h2><i class="fas fa-bell"></i> مختلف امور کی یاد دہانیاں – نوٹس، الارم، یا تاریخ وار یاددہانی</h2>
+<form id="reminderForm">
+<input id="reminderId" type="hidden"/>
+<div class="form-group">
+<label for="reminderTitle">یاد دہانی کا عنوان:</label>
+<input id="reminderTitle" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="reminderDetails">تفصیل:</label>
+<textarea id="reminderDetails" rows="3"></textarea>
+</div>
+<div class="form-group">
+<label for="reminderDate">تاریخ:</label>
+<input id="reminderDate" required="" type="date"/>
+</div>
+<div class="form-group">
+<label for="reminderTime">وقت:</label>
+<input id="reminderTime" type="time"/>
+</div>
+<div class="form-group">
+<label for="reminderType">نوعیت:</label>
+<select id="reminderType">
+<option value="نوٹس">نوٹس</option>
+<option value="الارم">الارم</option>
+<option value="تاریخ وار">تاریخ وار</option>
+</select>
+</div>
+<div class="action-buttons">
+<button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
+<button id="clearReminderForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
+</div>
+</form>
+<h3><i class="fas fa-list-alt"></i> یاد دہانیوں کی فہرست</h3>
+<div class="controls">
+<input id="reminderSearch" placeholder="تلاش کریں..." type="text"/>
+<input id="reminderFilterDate" type="date"/>
+<select id="reminderSortBy">
+<option value="dateTime">تاریخ و وقت (قدیم ترین)</option>
+<option value="dateTimeDesc">تاریخ و وقت (جدید ترین)</option>
+<option value="type">نوعیت</option>
+</select>
+<button onclick="filterAndSort('reminders')"><i class="fas fa-filter"></i> فلٹر / ترتیب دیں</button>
+</div>
+<div class="export-options">
+<button class="print-btn" onclick="printTable('remindersTable')"><i class="fas fa-print"></i> پرنٹ
+                        کریں</button>
+<button onclick="exportTable('remindersTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
+                        ایکسپورٹ
+                        کریں</button>
+<button onclick="exportTable('remindersTable', 'image')"><i class="fas fa-image"></i> تصویر ایکسپورٹ
+                        کریں</button>
+</div>
+<div style="overflow-x: auto;">
+<table id="remindersTable">
+<thead>
+<tr>
+<th>عنوان</th>
+<th>تفصیل</th>
+<th>تاریخ</th>
+<th>وقت</th>
+<th>نوعیت</th>
+<th>آپشنز</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</div>
+</section>
+<section class="module-section" id="urgentTasks">
+<h2><i class="fas fa-exclamation-triangle"></i> فوری کرنے کے کام – اہم، فوری نوعیت کے امور</h2>
+<form id="urgentTaskForm">
+<input id="urgentTaskId" type="hidden"/>
+<div class="form-group">
+<label for="urgentTaskName">فوری کام کا عنوان:</label>
+<input id="urgentTaskName" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="urgentTaskDescription">تفصیل:</label>
+<textarea id="urgentTaskDescription" rows="3"></textarea>
+</div>
+<div class="form-group">
+<label for="urgentTaskDueDate">آخری تاریخ:</label>
+<input id="urgentTaskDueDate" required="" type="date"/>
+</div>
+<div class="form-group">
+<label for="urgentTaskDueTime">آخری وقت:</label>
+<input id="urgentTaskDueTime" type="time"/>
+</div>
+<div class="action-buttons">
+<button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
+<button id="clearUrgentTaskForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
+</div>
+</form>
+<h3><i class="fas fa-clipboard-list"></i> فوری کاموں کی فہرست</h3>
+<div class="controls">
+<input id="urgentTaskSearch" placeholder="تلاش کریں..." type="text"/>
+<input id="urgentTaskFilterDate" type="date"/>
+<select id="urgentTaskSortBy">
+<option value="dueDate">تاریخ وار (قدیم ترین)</option>
+<option value="dueDateDesc">تاریخ وار (جدید ترین)</option>
+</select>
+<button onclick="filterAndSort('urgentTasks')"><i class="fas fa-filter"></i> فلٹر / ترتیب
+                        دیں</button>
+</div>
+<div class="export-options">
+<button class="print-btn" onclick="printTable('urgentTasksTable')"><i class="fas fa-print"></i> پرنٹ
+                        کریں</button>
+<button onclick="exportTable('urgentTasksTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
+                        ایکسپورٹ
+                        کریں</button>
+<button onclick="exportTable('urgentTasksTable', 'image')"><i class="fas fa-image"></i> تصویر
+                        ایکسپورٹ
+                        کریں</button>
+</div>
+<div style="overflow-x: auto;">
+<table id="urgentTasksTable">
+<thead>
+<tr>
+<th>عنوان</th>
+<th>تفصیل</th>
+<th>آخری تاریخ</th>
+<th>آخری وقت</th>
+<th>آپشنز</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</div>
+</section>
+<section class="module-section" id="meetings">
+<h2><i class="fas fa-handshake"></i> ملاقاتیں – شخصیات، وقت، جگہ، تفصیل</h2>
+<form id="meetingForm">
+<input id="meetingId" type="hidden"/>
+<div class="form-group">
+<label for="meetingPerson">شخصیات:</label>
+<input id="meetingPerson" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="meetingDate">تاریخ:</label>
+<input id="meetingDate" required="" type="date"/>
+</div>
+<div class="form-group">
+<label for="meetingTime">وقت:</label>
+<input id="meetingTime" required="" type="time"/>
+</div>
+<div class="form-group">
+<label for="meetingLocation">جگہ:</label>
+<input id="meetingLocation" type="text"/>
+</div>
+<div class="form-group">
+<label for="meetingDetails">تفصیل:</label>
+<textarea id="meetingDetails" rows="3"></textarea>
+</div>
+<div class="action-buttons">
+<button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
+<button id="clearMeetingForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
+</div>
+</form>
+<h3><i class="fas fa-calendar-check"></i> ملاقاتوں کی فہرست</h3>
+<div class="controls">
+<input id="meetingSearch" placeholder="تلاش کریں..." type="text"/>
+<input id="meetingFilterDate" type="date"/>
+<select id="meetingSortBy">
+<option value="dateTime">تاریخ و وقت (قدیم ترین)</option>
+<option value="dateTimeDesc">تاریخ و وقت (جدید ترین)</option>
+</select>
+<button onclick="filterAndSort('meetings')"><i class="fas fa-filter"></i> فلٹر / ترتیب دیں</button>
+</div>
+<div class="export-options">
+<button class="print-btn" onclick="printTable('meetingsTable')"><i class="fas fa-print"></i> پرنٹ
+                        کریں</button>
+<button onclick="exportTable('meetingsTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
+                        ایکسپورٹ
+                        کریں</button>
+<button onclick="exportTable('meetingsTable', 'image')"><i class="fas fa-image"></i> تصویر ایکسپورٹ
+                        کریں</button>
+</div>
+<div style="overflow-x: auto;">
+<table id="meetingsTable">
+<thead>
+<tr>
+<th>تاریخ</th>
+<th>وقت</th>
+<th>شخصیات</th>
+<th>جگہ</th>
+<th>تفصیل</th>
+<th>آپشنز</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</div>
+</section>
+<section class="module-section" id="notifications">
+<h2><i class="fas fa-info-circle"></i> اطلاعات – داخلی و خارجی اطلاع نامے</h2>
+<form id="notificationForm">
+<input id="notificationId" type="hidden"/>
+<div class="form-group">
+<label for="notificationTitle">اطلاع کا عنوان:</label>
+<input id="notificationTitle" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="notificationType">نوعیت:</label>
+<select id="notificationType">
+<option value="داخلی">داخلی</option>
+<option value="خارجی">خارجی</option>
+</select>
+</div>
+<div class="form-group">
+<label for="notificationDetails">تفصیل:</label>
+<textarea id="notificationDetails" rows="3"></textarea>
+</div>
+<div class="form-group">
+<label for="notificationDate">تاریخ:</label>
+<input id="notificationDate" required="" type="date"/>
+</div>
+<div class="form-group">
+<label for="notificationFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
+<input accept=".pdf,image/*" id="notificationFiles" multiple="" type="file"/>
+<div class="file-upload-preview" id="notificationFilesPreview"></div>
+</div>
+<div class="action-buttons">
+<button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
+<button id="clearNotificationForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
+</div>
+</form>
+<h3><i class="fas fa-bullhorn"></i> اطلاعات کی فہرست</h3>
+<div class="controls">
+<input id="notificationSearch" placeholder="تلاش کریں..." type="text"/>
+<input id="notificationFilterDate" type="date"/>
+<select id="notificationSortBy">
+<option value="date">تاریخ وار (قدیم ترین)</option>
+<option value="dateDesc">تاریخ وار (جدید ترین)</option>
+<option value="type">نوعیت</option>
+</select>
+<button onclick="filterAndSort('notifications')"><i class="fas fa-filter"></i> فلٹر / ترتیب
+                        دیں</button>
+</div>
+<div class="export-options">
+<button class="print-btn" onclick="printTable('notificationsTable')"><i class="fas fa-print"></i>
+                        پرنٹ کریں</button>
+<button onclick="exportTable('notificationsTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
+                        ایکسپورٹ
+                        کریں</button>
+<button onclick="exportTable('notificationsTable', 'image')"><i class="fas fa-image"></i> تصویر
+                        ایکسپورٹ
+                        کریں</button>
+</div>
+<div style="overflow-x: auto;">
+<table id="notificationsTable">
+<thead>
+<tr>
+<th>تاریخ</th>
+<th>عنوان</th>
+<th>نوعیت</th>
+<th>تفصیل</th>
+<th>فائلیں</th>
+<th>آپشنز</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</div>
+</section>
+<section class="module-section" id="contacts">
+<h2><i class="fas fa-address-book"></i> رابطے – افراد، تنظیمیں، فون، ای میل، رشتہ</h2>
+<form id="contactForm">
+<input id="contactId" type="hidden"/>
+<div class="form-group">
+<label for="contactName">نام/تنظیم:</label>
+<input id="contactName" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="contactPhone">فون:</label>
+<input id="contactPhone" type="tel"/>
+</div>
+<div class="form-group">
+<label for="contactEmail">ای میل:</label>
+<input id="contactEmail" type="email"/>
+</div>
+<div class="form-group">
+<label for="contactRelationship">رشتہ/معمول:</label>
+<input id="contactRelationship" type="text"/>
+</div>
+<div class="form-group">
+<label for="contactAddress">پتہ:</label>
+<textarea id="contactAddress" rows="2"></textarea>
+</div>
+<div class="form-group">
+<label for="contactMessage">پیغام:</label>
+<textarea id="contactMessage" rows="2"></textarea>
+</div>
+<div class="action-buttons">
+<button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
+<button id="clearContactForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
+</div>
+</form>
+<h3><i class="fas fa-users"></i> رابطوں کی فہرست</h3>
+<div class="controls">
+<input id="contactSearch" placeholder="تلاش کریں..." type="text"/>
+<select id="contactSortBy">
+<option value="name">نام (الف تا ی)</option>
+<option value="nameDesc">نام (ی تا الف)</option>
+</select>
+<button onclick="filterAndSort('contacts')"><i class="fas fa-filter"></i> فلٹر / ترتیب دیں</button>
+</div>
+<div class="export-options">
+<button class="print-btn" onclick="printTable('contactsTable')"><i class="fas fa-print"></i> پرنٹ
+                        کریں</button>
+<button onclick="exportTable('contactsTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
+                        ایکسپورٹ
+                        کریں</button>
+<button onclick="exportTable('contactsTable', 'image')"><i class="fas fa-image"></i> تصویر ایکسپورٹ
+                        کریں</button>
+</div>
+<div style="overflow-x: auto;">
+<table id="contactsTable">
+<thead>
+<tr>
+<th>نام/تنظیم</th>
+<th>فون</th>
+<th>ای میل</th>
+<th>رشتہ/معمول</th>
+<th>پیغام</th>
+<th>پتہ</th>
+<th>آپشنز</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</div>
+</section>
+<section class="module-section" id="performance">
+<h2><i class="fas fa-chart-line"></i> کارگزاریاں – ماہانہ، سہ ماہی، سالانہ کارکردگی</h2>
+<form id="performanceForm">
+<input id="performanceId" type="hidden"/>
+<div class="form-group">
+<label for="performanceTitle">کارگزاری کا عنوان:</label>
+<input id="performanceTitle" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="performancePeriod">مدت:</label>
+<select id="performancePeriod">
+<option value="ماہانہ">ماہانہ</option>
+<option value="سہ ماہی">سہ ماہی</option>
+<option value="سالانہ">سالانہ</option>
+<option value="دیگر">دیگر</option>
+</select>
+</div>
+<div class="form-group">
+<label for="performanceDate">تاریخ:</label>
+<input id="performanceDate" required="" type="date"/>
+</div>
+<div class="form-group">
+<label for="performanceDetails">تفصیل:</label>
+<textarea id="performanceDetails" rows="3"></textarea>
+</div>
+<div class="form-group">
+<label for="performanceFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
+<input accept=".pdf,image/*" id="performanceFiles" multiple="" type="file"/>
+<div class="file-upload-preview" id="performanceFilesPreview"></div>
+</div>
+<div class="action-buttons">
+<button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
+<button id="clearPerformanceForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
+</div>
+</form>
+<h3><i class="fas fa-file-invoice"></i> کارگزاریوں کی فہرست</h3>
+<div class="controls">
+<input id="performanceSearch" placeholder="تلاش کریں..." type="text"/>
+<input id="performanceFilterDate" type="date"/>
+<select id="performanceSortBy">
+<option value="date">تاریخ وار (قدیم ترین)</option>
+<option value="dateDesc">تاریخ وار (جدید ترین)</option>
+<option value="period">مدت</option>
+</select>
+<button onclick="filterAndSort('performance')"><i class="fas fa-filter"></i> فلٹر / ترتیب
+                        دیں</button>
+</div>
+<div class="export-options">
+<button class="print-btn" onclick="printTable('performanceTable')"><i class="fas fa-print"></i> پرنٹ
+                        کریں</button>
+<button onclick="exportTable('performanceTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
+                        ایکسپورٹ
+                        کریں</button>
+<button onclick="exportTable('performanceTable', 'image')"><i class="fas fa-image"></i> تصویر
+                        ایکسپورٹ
+                        کریں</button>
+</div>
+<div style="overflow-x: auto;">
+<table id="performanceTable">
+<thead>
+<tr>
+<th>تاریخ</th>
+<th>عنوان</th>
+<th>مدت</th>
+<th>تفصیل</th>
+<th>فائلیں</th>
+<th>آپشنز</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</div>
+</section>
+<section class="module-section" id="schedules">
+<h2><i class="fas fa-calendar-alt"></i> پروگراموں کا شیڈول – اجتماعات، مجلس، ختم بخاری، دیگر</h2>
+<form id="scheduleForm">
+<input id="scheduleId" type="hidden"/>
+<div class="form-group">
+<label for="scheduleName">پروگرام کا نام:</label>
+<input id="scheduleName" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="scheduleType">نوعیت:</label>
+<input id="scheduleType" placeholder="اجتماعات، مجلس، ختم بخاری، دیگر" type="text"/>
+</div>
+<div class="form-group">
+<label for="scheduleDate">تاریخ:</label>
+<input id="scheduleDate" required="" type="date"/>
+</div>
+<div class="form-group">
+<label for="scheduleTime">وقت:</label>
+<input id="scheduleTime" required="" type="time"/>
+</div>
+<div class="form-group">
+<label for="scheduleLocation">جگہ:</label>
+<input id="scheduleLocation" type="text"/>
+</div>
+<div class="form-group">
+<label for="scheduleDetails">تفصیل:</label>
+<textarea id="scheduleDetails" rows="3"></textarea>
+</div>
+<div class="action-buttons">
+<button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
+<button id="clearScheduleForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
+</div>
+</form>
+<h3><i class="fas fa-list-ul"></i> پروگراموں کے شیڈول کی فہرست</h3>
+<div class="controls">
+<input id="scheduleSearch" placeholder="تلاش کریں..." type="text"/>
+<input id="scheduleFilterDate" type="date"/>
+<select id="scheduleSortBy">
+<option value="dateTime">تاریخ و وقت (قدیم ترین)</option>
+<option value="dateTimeDesc">تاریخ و وقت (جدید ترین)</option>
+<option value="type">نوعیت</option>
+</select>
+<button onclick="filterAndSort('schedules')"><i class="fas fa-filter"></i> فلٹر / ترتیب دیں</button>
+</div>
+<div class="export-options">
+<button class="print-btn" onclick="printTable('schedulesTable')"><i class="fas fa-print"></i> پرنٹ
+                        کریں</button>
+<button onclick="exportTable('schedulesTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
+                        ایکسپورٹ
+                        کریں</button>
+<button onclick="exportTable('schedulesTable', 'image')"><i class="fas fa-image"></i> تصویر ایکسپورٹ
+                        کریں</button>
+</div>
+<div style="overflow-x: auto;">
+<table id="schedulesTable">
+<thead>
+<tr>
+<th>تاریخ</th>
+<th>وقت</th>
+<th>پروگرام کا نام</th>
+<th>نوعیت</th>
+<th>جگہ</th>
+<th>تفصیل</th>
+<th>آپشنز</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</div>
+</section>
+<section class="module-section" id="messages">
+<h2><i class="fas fa-envelope"></i> پیغامات – دفتر کو موصول یا دفتر کی جانب سے ارسال</h2>
+<form id="messageForm">
+<input id="messageId" type="hidden"/>
+<div class="form-group">
+<label for="messageType">نوعیت:</label>
+<select id="messageType">
+<option value="موصول شدہ">موصول شدہ</option>
+<option value="ارسال کردہ">ارسال کردہ</option>
+</select>
+</div>
+<div class="form-group">
+<label for="messageSenderReceiver">بھیجنے والا/وصول کنندہ:</label>
+<input id="messageSenderReceiver" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="messageSubject">مضمون:</label>
+<input id="messageSubject" type="text"/>
+</div>
+<div class="form-group">
+<label for="messageDetails">تفصیل:</label>
+<textarea id="messageDetails" rows="3"></textarea>
+</div>
+<div class="form-group">
+<label for="messageDate">تاریخ:</label>
+<input id="messageDate" required="" type="date"/>
+</div>
+<div class="form-group">
+<label for="messageFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
+<input accept=".pdf,image/*" id="messageFiles" multiple="" type="file"/>
+<div class="file-upload-preview" id="messageFilesPreview"></div>
+</div>
+<div class="action-buttons">
+<button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
+<button id="clearMessageForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
+</div>
+</form>
+<h3><i class="fas fa-inbox"></i> پیغامات کی فہرست</h3>
+<div class="controls">
+<input id="messageSearch" placeholder="تلاش کریں..." type="text"/>
+<input id="messageFilterDate" type="date"/>
+<select id="messageSortBy">
+<option value="date">تاریخ وار (قدیم ترین)</option>
+<option value="dateDesc">تاریخ وار (جدید ترین)</option>
+<option value="type">نوعیت</option>
+</select>
+<button onclick="filterAndSort('messages')"><i class="fas fa-filter"></i> فلٹر / ترتیب دیں</button>
+</div>
+<div class="export-options">
+<button class="print-btn" onclick="printTable('messagesTable')"><i class="fas fa-print"></i> پرنٹ
+                        کریں</button>
+<button onclick="exportTable('messagesTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
+                        ایکسپورٹ
+                        کریں</button>
+<button onclick="exportTable('messagesTable', 'image')"><i class="fas fa-image"></i> تصویر ایکسپورٹ
+                        کریں</button>
+</div>
+<div style="overflow-x: auto;">
+<table id="messagesTable">
+<thead>
+<tr>
+<th>تاریخ</th>
+<th>نوعیت</th>
+<th>بھیجنے والا/وصول کنندہ</th>
+<th>مضمون</th>
+<th>تفصیل</th>
+<th>فائلیں</th>
+<th>آپشنز</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</div>
+</section>
+<section class="module-section" id="letters">
+<h2><i class="fas fa-file-alt"></i> خطوط – مختلف افراد/شعبہ جات کو جاری کردہ خطوط</h2>
+<form id="letterForm">
+<input id="letterId" type="hidden"/>
+<div class="form-group">
+<label for="letterRecipient">وصول کنندہ (فرد/شعبہ):</label>
+<input id="letterRecipient" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="letterSubject">مضمون:</label>
+<input id="letterSubject" type="text"/>
+</div>
+<div class="form-group">
+<label for="letterDate">تاریخ اجرا:</label>
+<input id="letterDate" required="" type="date"/>
+</div>
+<div class="form-group">
+<label for="letterDetails">تفصیل:</label>
+<textarea id="letterDetails" rows="3"></textarea>
+</div>
+<div class="form-group">
+<label for="letterFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
+<input accept=".pdf,image/*" id="letterFiles" multiple="" type="file"/>
+<div class="file-upload-preview" id="letterFilesPreview"></div>
+</div>
+<div class="action-buttons">
+<button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
+<button id="clearLetterForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
+</div>
+</form>
+<h3><i class="fas fa-folder-open"></i> خطوط کی فہرست</h3>
+<div class="controls">
+<input id="letterSearch" placeholder="تلاش کریں..." type="text"/>
+<input id="letterFilterDate" type="date"/>
+<select id="letterSortBy">
+<option value="date">تاریخ وار (قدیم ترین)</option>
+<option value="dateDesc">تاریخ وار (جدید ترین)</option>
+</select>
+<button onclick="filterAndSort('letters')"><i class="fas fa-filter"></i> فلٹر / ترتیب دیں</button>
+</div>
+<div class="export-options">
+<button class="print-btn" onclick="printTable('lettersTable')"><i class="fas fa-print"></i> پرنٹ
+                        کریں</button>
+<button onclick="exportTable('lettersTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
+                        ایکسپورٹ
+                        کریں</button>
+<button onclick="exportTable('lettersTable', 'image')"><i class="fas fa-image"></i> تصویر ایکسپورٹ
+                        کریں</button>
+</div>
+<div style="overflow-x: auto;">
+<table id="lettersTable">
+<thead>
+<tr>
+<th>تاریخ اجرا</th>
+<th>وصول کنندہ</th>
+<th>مضمون</th>
+<th>تفصیل</th>
+<th>فائلیں</th>
+<th>آپشنز</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</div>
+</section>
+<section class="module-section" id="demands">
+<h2><i class="fas fa-money-bill-wave"></i> مطالبات – وسائل یا دیگر امور کے مطالبات</h2>
+<form id="demandForm">
+<input id="demandId" type="hidden"/>
+<div class="form-group">
+<label for="demandSubject">مطالبے کا عنوان:</label>
+<input id="demandSubject" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="demandRequester">مطالبہ کرنے والا:</label>
+<input id="demandRequester" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="demandDate">تاریخ مطالبہ:</label>
+<input id="demandDate" required="" type="date"/>
+</div>
+<div class="form-group">
+<label for="demandDetails">تفصیل:</label>
+<textarea id="demandDetails" rows="3"></textarea>
+</div>
+<div class="form-group">
+<label for="demandStatus">حالت:</label>
+<select id="demandStatus">
+<option value="زیر التوا">زیر التوا</option>
+<option value="مکمل">مکمل</option>
+<option value="منظور شدہ">منظور شدہ</option>
+<option value="مسترد شدہ">مسترد شدہ</option>
+</select>
+</div>
+<div class="form-group">
+<label for="demandFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
+<input accept=".pdf,image/*" id="demandFiles" multiple="" type="file"/>
+<div class="file-upload-preview" id="demandFilesPreview"></div>
+</div>
+<div class="action-buttons">
+<button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
+<button id="clearDemandForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
+</div>
+</form>
+<h3><i class="fas fa-list-alt"></i> مطالبات کی فہرست</h3>
+<div class="controls">
+<input id="demandSearch" placeholder="تلاش کریں..." type="text"/>
+<input id="demandFilterDate" type="date"/>
+<select id="demandSortBy">
+<option value="date">تاریخ وار (قدیم ترین)</option>
+<option value="dateDesc">تاریخ وار (جدید ترین)</option>
+<option value="status">حالت</option>
+</select>
+<button onclick="filterAndSort('demands')"><i class="fas fa-filter"></i> فلٹر / ترتیب دیں</button>
+</div>
+<div class="export-options">
+<button class="print-btn" onclick="printTable('demandsTable')"><i class="fas fa-print"></i> پرنٹ
+                        کریں</button>
+<button onclick="exportTable('demandsTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
+                        ایکسپورٹ
+                        کریں</button>
+<button onclick="exportTable('demandsTable', 'image')"><i class="fas fa-image"></i> تصویر ایکسپورٹ
+                        کریں</button>
+</div>
+<div style="overflow-x: auto;">
+<table id="demandsTable">
+<thead>
+<tr>
+<th>تاریخ</th>
+<th>عنوان</th>
+<th>مطالبہ کرنے والا</th>
+<th>تفصیل</th>
+<th>حالت</th>
+<th>فائلیں</th>
+<th>آپشنز</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</div>
+</section>
+<section class="module-section" id="backupRestore">
+<h2><i class="fas fa-cloud-download-alt"></i> ڈیٹا بیک اپ و ری سٹور (JSON)</h2>
+<h3><i class="fas fa-download"></i> ڈیٹا بیک اپ</h3>
+<p>اپنی تمام ڈیٹا کو JSON فائل میں ڈاؤن لوڈ کریں۔</p>
+<div class="action-buttons">
+<button onclick="backupData()"><i class="fas fa-download"></i> بیک اپ ڈاؤن لوڈ کریں</button>
+</div>
+<h3><i class="fas fa-upload"></i> ڈیٹا ری سٹور</h3>
+<p>JSON فائل سے ڈیٹا اپ لوڈ کر کے اپنے ڈیٹا کو بحال کریں۔</p>
+<div class="form-group">
+<label for="restoreFile">JSON فائل منتخب کریں:</label>
+<input accept=".json" id="restoreFile" type="file"/>
+</div>
+<div class="action-buttons">
+<button onclick="restoreData()"><i class="fas fa-upload"></i> ڈیٹا بحال کریں</button>
+</div>
+<p style="color: var(--delete-color); font-size: var(--font-size-sm);"><strong>وارننگ:</strong> ڈیٹا
+                    بحال کرنے سے موجودہ ڈیٹا تبدیل ہو سکتا ہے۔</p>
+</section>
+</main>
+</div>
+<script>
+        const NOTIFIED_ITEMS_KEY = 'notifiedItems';
+
+        function hasBeenNotified(itemKey, interval) {
+            const notified = JSON.parse(sessionStorage.getItem(NOTIFIED_ITEMS_KEY) || '{}');
+            return notified[itemKey] && notified[itemKey].includes(interval);
+        }
+
+        function markAsNotified(itemKey, interval) {
+            const notified = JSON.parse(sessionStorage.getItem(NOTIFIED_ITEMS_KEY) || '{}');
+            if (!notified[itemKey]) {
+                notified[itemKey] = [];
+            }
+            notified[itemKey].push(interval);
+            sessionStorage.setItem(NOTIFIED_ITEMS_KEY, JSON.stringify(notified));
+        }
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification show ${type}`;
+            setTimeout(() => {
+                notification.classList.remove('show');
+                notification.classList.add('hide');
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                    notification.classList.remove('hide');
+                }, 500);
+            }, 3000);
+        }
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+        });
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-theme');
+        }
+        const DB_NAME = 'OfficeManagerDB';
+        const DB_VERSION = 1;
+        let db;
+        const openDB = () => {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
+                request.onupgradeneeded = (event) => {
+                    db = event.target.result;
+                    const storeNames = ['tasks', 'reminders', 'urgentTasks', 'meetings', 'notifications', 'contacts', 'performance', 'schedules', 'messages', 'letters', 'demands'];
+                    storeNames.forEach(storeName => {
+                        if (!db.objectStoreNames.contains(storeName)) {
+                            db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
+                        }
+                    });
+                    showNotification('ڈیٹا بیس اپ گریڈ ہو گئی یا بن گئی!', 'info');
+                };
+                request.onsuccess = (event) => {
+                    db = event.target.result;
+                    resolve(db);
+                };
+                request.onerror = (event) => {
+                    console.error('IndexedDB error:', event.target.error);
+                    showNotification('ڈیٹا بیس لوڈ کرنے میں خرابی', 'error');
+                    reject(event.target.error);
+                };
+            });
+        };
+        const addData = async (storeName, data) => {
+            await openDB();
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([storeName], 'readwrite');
+                const store = transaction.objectStore(storeName);
+                const request = store.add(data);
+                request.onsuccess = () => {
+                    showNotification('ڈیٹا شامل کر دیا گیا!', 'success');
+                    resolve(request.result);
+                };
+                request.onerror = (event) => {
+                    console.error(`Error adding data to ${storeName}:`, event.target.error);
+                    showNotification('ڈیٹا شامل کرنے میں خرابی', 'error');
+                    reject(event.target.error);
+                };
+            });
+        };
+        const getAllData = async (storeName) => {
+            await openDB();
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([storeName], 'readonly');
+                const store = transaction.objectStore(storeName);
+                const request = store.getAll();
+                request.onsuccess = () => {
+                    resolve(request.result);
+                };
+                request.onerror = (event) => {
+                    console.error(`Error getting all data from ${storeName}:`, event.target.error);
+                    showNotification('ڈیٹا حاصل کرنے میں خرابی', 'error');
+                    reject(event.target.error);
+                };
+            });
+        };
+        const updateData = async (storeName, data) => {
+            await openDB();
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([storeName], 'readwrite');
+                const store = transaction.objectStore(storeName);
+                const request = store.put(data);
+                request.onsuccess = () => {
+                    showNotification('ڈیٹا اپ ڈیٹ کر دیا گیا!', 'success');
+                    resolve(request.result);
+                };
+                request.onerror = (event) => {
+                    console.error(`Error updating data in ${storeName}:`, event.target.error);
+                    showNotification('ڈیٹا اپ ڈیٹ کرنے میں خرابی', 'error');
+                    reject(event.target.error);
+                };
+            });
+        };
+        const deleteData = async (storeName, id) => {
+            await openDB();
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([storeName], 'readwrite');
+                const store = transaction.objectStore(storeName);
+                const request = store.delete(id);
+                request.onsuccess = () => {
+                    showNotification('ڈیٹا حذف کر دیا گیا!', 'success');
+                    resolve();
+                };
+                request.onerror = (event) => {
+                    console.error(`Error deleting data from ${storeName}:`, event.target.error);
+                    showNotification('ڈیٹا حذف کرنے میں خرابی', 'error');
+                    reject(event.target.error);
+                };
+            });
+        };
+        async function filesToBase64(files) {
+            const filePromises = Array.from(files).map(file => {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve({
+                        name: file.name,
+                        type: file.type,
+                        data: reader.result
+                    });
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
+            });
+            return Promise.all(filePromises);
+        }
+        function displayFilePreviews(fileArray, previewElementId) {
+            const previewDiv = document.getElementById(previewElementId);
+            previewDiv.innerHTML = '';
+            if (!fileArray || fileArray.length === 0) return;
+            fileArray.forEach((file, index) => {
+                const fileDiv = document.createElement('div');
+                fileDiv.innerHTML = `
+                ${file.type.startsWith('image/') ? `<img src="${file.data}" alt="${file.name}"/>` : '<i class="fas fa-file"></i>'}
+                <span>${file.name}</span>
+                <button type="button" data-index="${index}"><i class="fas fa-times"></i></button>
+            `;
+                fileDiv.querySelector('button').onclick = () => {
+                    removeFileFromFormPreview(index, previewElementId);
+                };
+                previewDiv.appendChild(fileDiv);
+            });
+        }
+        function removeFileFromFormPreview(indexToRemove, previewElementId) {
+            const moduleName = document.querySelector('.module-section.active').id;
+            const formId = `${moduleName}Form`;
+            let currentFiles = window.currentEditFiles[formId];
+            if (currentFiles && currentFiles.length > indexToRemove) {
+                currentFiles.splice(indexToRemove, 1);
+                displayFilePreviews(currentFiles, previewElementId);
+            }
+        }
+        function downloadJSON(data, filename) {
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        async function backupData() {
+            showNotification('بیک اپ تیار کیا جا رہا ہے...', 'info');
+            const allData = {};
+            const storeNames = ['tasks', 'reminders', 'urgentTasks', 'meetings', 'notifications', 'contacts', 'performance', 'schedules', 'messages', 'letters', 'demands'];
+            try {
+                for (const storeName of storeNames) {
+                    allData[storeName] = await getAllData(storeName);
+                }
+                const timestamp = new Date().toISOString().replace(/[:.-]/g, '');
+                downloadJSON(allData, `دفتر_منظم_بیک_اپ_${timestamp}.json`);
+                showNotification('بیک اپ کامیابی سے ڈاؤن لوڈ کر دیا گیا!', 'success');
+            } catch (error) {
+                console.error('Backup failed:', error);
+                showNotification('بیک اپ کرنے میں خرابی', 'error');
+            }
+        }
+        async function restoreData() {
+            const fileInput = document.getElementById('restoreFile');
+            const file = fileInput.files[0];
+            if (!file) {
+                showNotification('براہ کرم JSON فائل منتخب کریں!', 'error');
+                return;
+            }
+            showNotification('ڈیٹا بحال کیا جا رہا ہے...', 'info');
+            const reader = new FileReader();
+            reader.onload = async (event) => {
+                try {
+                    const importedData = JSON.parse(event.target.result);
+                    const storeNames = ['tasks', 'reminders', 'urgentTasks', 'meetings', 'notifications', 'contacts', 'performance', 'schedules', 'messages', 'letters', 'demands'];
+                    await openDB();
+                    for (const storeName of storeNames) {
+                        const transaction = db.transaction([storeName], 'readwrite');
+                        const store = transaction.objectStore(storeName);
+                        await new Promise((resolve, reject) => {
+                            const clearRequest = store.clear();
+                            clearRequest.onsuccess = resolve;
+                            clearRequest.onerror = reject;
+                        });
+                    }
+                    for (const storeName of storeNames) {
+                        if (importedData[storeName]) {
+                            for (const item of importedData[storeName]) {
+                                const newItem = { ...item };
+                                delete newItem.id;
+                                const transaction = db.transaction([storeName], 'readwrite');
+                                const store = transaction.objectStore(storeName);
+                                await new Promise((resolve, reject) => {
+                                    const addRequest = store.add(newItem);
+                                    addRequest.onsuccess = resolve;
+                                    addRequest.onerror = reject;
+                                });
+                            }
+                        }
+                    }
+                    showNotification('ڈیٹا کامیابی سے بحال کر دیا گیا!', 'success');
+                    loadAllTables();
+                } catch (error) {
+                    console.error('Restore failed:', error);
+                    showNotification('ڈیٹا بحال کرنے میں خرابی: ' + error.message, 'error');
+                }
+            };
+            reader.onerror = (error) => {
+                console.error('File reading error:', error);
+                showNotification('فائل پڑھنے میں خرابی', 'error');
+            };
+            reader.readAsText(file);
+        }
+        const moduleButtons = document.querySelectorAll('.sidebar ul li button');
+        const moduleSections = document.querySelectorAll('.module-section');
+        let activeModule = 'tasks';
+        const activateModule = (moduleName) => {
+            moduleSections.forEach(section => section.classList.remove('active'));
+            document.getElementById(moduleName).classList.add('active');
+            moduleButtons.forEach(button => button.classList.remove('active'));
+            document.querySelector(`.sidebar ul li button[data-module="${moduleName}"]`).classList.add('active');
+            activeModule = moduleName;
+            loadModuleData(moduleName);
+            clearForms();
+        };
+        moduleButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                activateModule(button.dataset.module);
+            });
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            activateModule(activeModule);
+        });
+        const clearForms = () => {
+            const forms = ['taskForm', 'reminderForm', 'urgentTaskForm', 'meetingForm', 'notificationForm', 'contactForm', 'performanceForm', 'scheduleForm', 'messageForm', 'letterForm', 'demandForm'];
+            forms.forEach(formId => {
+                const form = document.getElementById(formId);
+                if (form) {
+                    form.reset();
+                    const idInput = form.querySelector('input[type="hidden"]');
+                    if (idInput) idInput.value = '';
+                    const filePreview = form.querySelector('.file-upload-preview');
+                    if (filePreview) filePreview.innerHTML = '';
+                    window.currentEditFiles[formId] = [];
+                }
+            });
+            document.querySelectorAll('.controls input[type="text"]').forEach(input => input.value = '');
+            document.querySelectorAll('.controls input[type="date"]').forEach(input => input.value = '');
+            document.querySelectorAll('.controls select').forEach(select => select.selectedIndex = 0);
+        };
+        window.currentEditFiles = {
+            taskForm: [],
+            notificationForm: [],
+            performanceForm: [],
+            messageForm: [],
+            letterForm: [],
+            demandForm: []
+        };
+        const handleFormSubmit = async (event, storeName, formId, clearFunc, fileInputId, filePreviewId) => {
+            event.preventDefault();
+            const form = document.getElementById(formId);
+            const idInput = document.getElementById(`${storeName.slice(0, -1)}Id`);
+            let data = {};
+            Array.from(form.elements).forEach(element => {
+                if (element.id && element.id !== idInput.id && element.type !== 'file' && element.tagName !== 'BUTTON') {
+                    data[element.id] = element.value.trim();
+                }
+            });
+            if (fileInputId) {
+                const fileInput = document.getElementById(fileInputId);
+                let combinedFiles = window.currentEditFiles[formId] || [];
+                if (fileInput.files.length > 0) {
+                    const newFilesBase64 = await filesToBase64(fileInput.files);
+                    combinedFiles = [...combinedFiles, ...newFilesBase64];
+                }
+                data.files = combinedFiles;
+            }
+            if (idInput.value) {
+                data.id = parseInt(idInput.value);
+                await updateData(storeName, data);
+            } else {
+                await addData(storeName, data);
+            }
+            clearFunc();
+            loadModuleData(storeName);
+        };
+        const editEntry = async (storeName, id, formId, fileInputId, filePreviewId) => {
+            showNotification('ڈیٹا لوڈ کیا جا رہا ہے...', 'info');
+            await openDB();
+            const transaction = db.transaction([storeName], 'readonly');
+            const store = transaction.objectStore(storeName);
+            const request = store.get(id);
+            request.onsuccess = (event) => {
+                const item = event.target.result;
+                if (item) {
+                    const form = document.getElementById(formId);
+                    const idInput = document.getElementById(`${storeName.slice(0, -1)}Id`);
+                    idInput.value = item.id;
+                    Array.from(form.elements).forEach(element => {
+                        if (element.id && element.id !== idInput.id && element.type !== 'file' && element.tagName !== 'BUTTON') {
+                            element.value = item[element.id] || '';
+                        }
+                    });
+                    if (fileInputId && filePreviewId) {
+                        window.currentEditFiles[formId] = item.files || [];
+                        displayFilePreviews(item.files || [], filePreviewId);
+                    }
+                    showNotification('ڈیٹا فارم میں لوڈ ہو گیا!', 'info');
+                    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                    showNotification('ریکارڈ نہیں ملا!', 'error');
+                }
+            };
+            request.onerror = (event) => {
+                console.error(`Error fetching ${storeName} for edit:`, event.target.error);
+                showNotification('ڈیٹا لوڈ کرنے میں خرابی', 'error');
+            };
+        };
+        const deleteEntry = async (storeName, id) => {
+            if (confirm('کیا آپ واقعی اس ریکارڈ کو حذف کرنا چاہتے ہیں؟')) {
+                await deleteData(storeName, id);
+                loadModuleData(storeName);
+            }
+        };
+        const loadDataIntoTable = async (storeName, tableId, renderRowFunc, filterFunc, sortFunc) => {
+            const data = await getAllData(storeName);
+            let filteredData = data;
+            if (filterFunc) {
+                filteredData = filterFunc(data);
+            }
+            if (sortFunc) {
+                filteredData.sort(sortFunc);
+            }
+            const tableBody = document.querySelector(`#${tableId} tbody`);
+            tableBody.innerHTML = '';
+            if (filteredData.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="${document.querySelector(`#${tableId} thead tr`).children.length}">کوئی ریکارڈ نہیں ملا۔</td></tr>`;
+                return;
+            }
+            filteredData.forEach(item => {
+                tableBody.appendChild(renderRowFunc(item, storeName));
+            });
+        };
+        const filterAndSort = (moduleName) => {
+            loadModuleData(moduleName);
+        };
+        const addSampleData = async () => {
+            showNotification('نمونہ ڈیٹا شامل کیا جا رہا ہے...', 'info');
+            await Promise.all([
+                addData('tasks', { taskId: 1, taskName: 'میٹنگ کی تیاری', taskDescription: 'آئندہ ہفتے کی میٹنگ کے ایجنڈے اور رپورٹس تیار کریں۔', taskDueDate: '2023-11-25', taskPriority: 'انتہائی اہم', taskStatus: 'زیر التوا', files: [] }),
+                addData('tasks', { taskId: 2, taskName: 'ماہانہ رپورٹ جمع کرانا', taskDescription: 'اکتوبر کی ماہانہ کارکردگی رپورٹ جمع کرائیں۔', taskDueDate: '2023-11-15', taskPriority: 'اہم', taskStatus: 'مکمل', files: [] }),
+                addData('reminders', { reminderId: 1, reminderTitle: 'کرایہ کی ادائیگی', reminderDetails: 'دفتر کے کرایہ کی ادائیگی کی آخری تاریخ۔', reminderDate: '2023-12-01', reminderTime: '10:00', reminderType: 'الارم' }),
+                addData('reminders', { reminderId: 2, reminderTitle: 'بل جمع کرانا', reminderDetails: 'بجلی کا بل جمع کرانے کی یاد دہانی۔', reminderDate: '2023-11-20', reminderTime: '', reminderType: 'تاریخ وار' }),
+                addData('urgentTasks', { urgentTaskId: 1, urgentTaskName: 'فوری ڈاک کی ترسیل', urgentTaskDescription: 'اہم دستاویزات آج ہی بھیجنا ہیں۔', urgentTaskDueDate: '2023-11-14', urgentTaskDueTime: '17:00' }),
+                addData('urgentTasks', { urgentTaskId: 2, urgentTaskName: 'ہنگامی مرمت', urgentTaskDescription: 'سرور روم میں فوری مرمت درکار ہے۔', urgentTaskDueDate: '2023-11-16', urgentTaskDueTime: '09:00' }),
+                addData('meetings', { meetingId: 1, meetingPerson: 'سی ای او اور منیجرز', meetingDate: '2023-11-20', meetingTime: '11:00', meetingLocation: 'کانفرنس روم', meetingDetails: 'سہ ماہی کارکردگی جائزہ میٹنگ۔' }),
+                addData('meetings', { meetingId: 2, meetingPerson: 'کسٹمر سپورٹ ٹیم', meetingDate: '2023-11-22', meetingTime: '14:00', meetingLocation: 'آن لائن', meetingDetails: 'نئی پالیسی پر بریفنگ۔' }),
+                addData('notifications', { notificationId: 1, notificationTitle: 'بجلی بندش کی اطلاع', notificationType: 'داخلی', notificationDetails: 'کل دوپہر 2 سے 4 بجے تک بجلی بند رہے گی۔', notificationDate: '2023-11-14', files: [] }),
+                addData('notifications', { notificationId: 2, notificationTitle: 'عوامی چھٹی', notificationType: 'خارجی', notificationDetails: '18 نومبر کو عام تعطیل ہوگی۔', notificationDate: '2023-11-10', files: [] }),
+                addData('contacts', { contactId: 1, contactName: 'احمد خان (سپلائر)', contactPhone: '03001234567', contactEmail: 'ahmed@supplier.com', contactRelationship: 'سپلائر', contactAddress: 'کراچی' }),
+                addData('contacts', { contactId: 2, contactName: 'فاطمہ بیگم (کلائنٹ)', contactPhone: '03339876543', contactEmail: 'fatima@client.org', contactRelationship: 'اہم کلائنٹ', contactAddress: 'لاہور' }),
+                addData('performance', { performanceId: 1, performanceTitle: 'اکتوبر ماہ کی کارکردگی', performancePeriod: 'ماہانہ', performanceDate: '2023-11-05', performanceDetails: 'اکتوبر میں سیلز میں 15% اضافہ ہوا۔', files: [] }),
+                addData('performance', { performanceId: 2, performanceTitle: 'سالانہ آڈٹ رپورٹ', performancePeriod: 'سالانہ', performanceDate: '2023-10-30', performanceDetails: 'سال 2022-23 کے لیے آڈٹ مکمل۔', files: [] }),
+                addData('schedules', { scheduleId: 1, scheduleName: 'میلاد النبی ﷺ تقریب', scheduleType: 'اجتماعات', scheduleDate: '2023-09-28', scheduleTime: '19:00', scheduleLocation: 'مقامی مسجد', scheduleDetails: 'شام 7 بجے شروع ہو گی۔' }),
+                addData('schedules', { scheduleId: 2, scheduleName: 'یونیورسٹی فیسٹول', scheduleType: 'دیگر', scheduleDate: '2023-12-05', scheduleTime: '10:00', scheduleLocation: 'یونیورسٹی آڈیٹوریم', scheduleDetails: 'سہ روزہ تقریب۔' }),
+                addData('messages', { messageId: 1, messageType: 'موصول شدہ', messageSenderReceiver: 'محمد علی', messageSubject: 'پروجیکٹ کی تازہ کاری', messageDetails: 'پروجیکٹ کی پیش رفت سے متعلق ای میل موصول ہوئی۔', messageDate: '2023-11-12', files: [] }),
+                addData('messages', { messageId: 2, messageType: 'ارسال کردہ', messageSenderReceiver: 'سارہ احمد', messageSubject: 'ٹیم میٹنگ', messageDetails: 'آج کی ٹیم میٹنگ کا ایجنڈا۔', messageDate: '2023-11-13', files: [] }),
+                addData('letters', { letterId: 1, letterRecipient: 'سیکرٹری وزارت تعلیم', letterSubject: 'تعلیمی سیمینار کی دعوت', letterDate: '2023-11-08', letterDetails: 'آئندہ تعلیمی سیمینار میں شرکت کی دعوت کا خط۔', files: [] }),
+                addData('letters', { letterId: 2, letterRecipient: 'محمد عمران (ایچ آر)', letterSubject: 'چھٹی کی درخواست', letterDate: '2023-11-09', letterDetails: 'ایک دن کی چھٹی کے لیے درخواست۔', files: [] }),
+                addData('demands', { demandId: 1, demandSubject: 'نئے سٹیشنری کا مطالبہ', demandRequester: 'اکاؤنٹس ڈیپارٹمنٹ', demandDate: '2023-11-10', demandDetails: 'آفس کے لیے ضروری سٹیشنری کا مطالبہ۔', demandStatus: 'زیر التوا', files: [] }),
+                addData('demands', { demandId: 2, demandSubject: 'سافٹ ویئر لائسنس', demandRequester: 'آئی ٹی ڈیپارٹمنٹ', demandDate: '2023-11-07', demandDetails: 'نئے گرافک ڈیزائننگ سافٹ ویئر لائسنس کی درخواست۔', demandStatus: 'منظور شدہ', files: [] }),
+            ]).then(() => {
+                showNotification('نمونہ اندراجات شامل کر دیے گئے!', 'success');
+                loadAllTables();
+            }).catch(error => {
+                console.error('Error adding sample data:', error);
+                showNotification('نمونہ ڈیٹا شامل کرنے میں خرابی', 'error');
+            });
+        };
+        const loadAllTables = () => {
+            loadModuleData('tasks');
+            loadModuleData('reminders');
+            loadModuleData('urgentTasks');
+            loadModuleData('meetings');
+            loadModuleData('notifications');
+            loadModuleData('contacts');
+            loadModuleData('performance');
+            loadModuleData('schedules');
+            loadModuleData('messages');
+            loadModuleData('letters');
+            loadModuleData('demands');
+        };
+        const modules = {
+            tasks: {
+                tableId: 'tasksTable',
+                formId: 'taskForm',
+                fileInputId: 'taskFiles',
+                filePreviewId: 'taskFilesPreview',
+                render: (item) => {
+                    const tr = document.createElement('tr');
+                    const filesHtml = item.files && item.files.length > 0 ?
+                        item.files.map((file, idx) => `<a href="${file.data}" download="${file.name}" target="_blank">${file.name}</a>`).join('<br/>') : '';
+                    tr.innerHTML = `
+                        <td data-label="تاریخ:">${item.taskDueDate || 'N/A'}</td>
+                        <td data-label="کام کا عنوان:">${item.taskName}</td>
+                        <td data-label="تفصیل:">${item.taskDescription || ''}</td>
+                        <td data-label="اہمیت:"><span class="status-badge ${item.taskPriority === 'انتہائی اہم' ? 'urgent' : item.taskPriority === 'اہم' ? 'info' : ''}">${item.taskPriority}</span></td>
+                        <td data-label="حالت:"><span class="status-badge ${item.taskStatus === 'مکمل' ? 'complete' : 'pending'}">${item.taskStatus}</span></td>
+                        <td data-label="فائلیں:">${filesHtml}</td>
+                        <td data-label="آپشنز:">
+                            <button class="edit-btn" onclick="editEntry('tasks', ${item.id}, 'taskForm', 'taskFiles', 'taskFilesPreview')"><i class="fas fa-edit"></i> ترمیم کریں</button>
+                            <button class="delete-btn" onclick="deleteEntry('tasks', ${item.id})"><i class="fas fa-trash-alt"></i> حذف کریں</button>
+                        </td>
+                    `;
+                    return tr;
+                },
+                filter: (data) => {
+                    const search = document.getElementById('taskSearch').value.toLowerCase();
+                    const filterDate = document.getElementById('taskFilterDate').value;
+                    return data.filter(item =>
+                        ((item.taskName || '').toLowerCase().includes(search) || (item.taskDescription || '').toLowerCase().includes(search)) &&
+                        (!filterDate || item.taskDueDate === filterDate)
+                    );
+                },
+                sort: (a, b) => {
+                    const sortBy = document.getElementById('taskSortBy').value;
+                    if (sortBy === 'dueDate') return new Date(a.taskDueDate) - new Date(b.taskDueDate);
+                    if (sortBy === 'dueDateDesc') return new Date(b.taskDueDate) - new Date(a.taskDueDate);
+                    if (sortBy === 'priority') {
+                        const priorityOrder = { 'انتہائی اہم': 4, 'اہم': 3, 'اوسط': 2, 'معمولی': 1 };
+                        return priorityOrder[b.taskPriority] - priorityOrder[a.taskPriority];
+                    }
+                    if (sortBy === 'status') return a.taskStatus.localeCompare(b.taskStatus);
+                    return 0;
+                }
+            },
+            reminders: {
+                tableId: 'remindersTable',
+                formId: 'reminderForm',
+                render: (item) => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td data-label="عنوان:">${item.reminderTitle}</td>
+                        <td data-label="تفصیل:">${item.reminderDetails || ''}</td>
+                        <td data-label="تاریخ:">${item.reminderDate}</td>
+                        <td data-label="وقت:">${item.reminderTime || 'N/A'}</td>
+                        <td data-label="نوعیت:"><span class="status-badge ${item.reminderType === 'الارم' ? 'urgent' : item.reminderType === 'تاریخ وار' ? 'info' : ''}">${item.reminderType}</span></td>
+                        <td data-label="آپشنز:">
+                            <button class="edit-btn" onclick="editEntry('reminders', ${item.id}, 'reminderForm')"><i class="fas fa-edit"></i> ترمیم کریں</button>
+                            <button class="delete-btn" onclick="deleteEntry('reminders', ${item.id})"><i class="fas fa-trash-alt"></i> حذف کریں</button>
+                        </td>
+                    `;
+                    return tr;
+                },
+                filter: (data) => {
+                    const search = document.getElementById('reminderSearch').value.toLowerCase();
+                    const filterDate = document.getElementById('reminderFilterDate').value;
+                    return data.filter(item =>
+                        ((item.reminderTitle || '').toLowerCase().includes(search) || (item.reminderDetails || '').toLowerCase().includes(search)) &&
+                        (!filterDate || item.reminderDate === filterDate)
+                    );
+                },
+                sort: (a, b) => {
+                    const sortBy = document.getElementById('reminderSortBy').value;
+                    if (sortBy === 'dateTime') return new Date(`${a.reminderDate}T${a.reminderTime || '00:00'}`) - new Date(`${b.reminderDate}T${b.reminderTime || '00:00'}`);
+                    if (sortBy === 'dateTimeDesc') return new Date(`${b.reminderDate}T${b.reminderTime || '00:00'}`) - new Date(`${a.reminderDate}T${a.reminderTime || '00:00'}`);
+                    if (sortBy === 'type') return a.reminderType.localeCompare(b.reminderType);
+                    return 0;
+                }
+            },
+            urgentTasks: {
+                tableId: 'urgentTasksTable',
+                formId: 'urgentTaskForm',
+                render: (item) => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td data-label="عنوان:">${item.urgentTaskName}</td>
+                        <td data-label="تفصیل:">${item.urgentTaskDescription || ''}</td>
+                        <td data-label="آخری تاریخ:">${item.urgentTaskDueDate}</td>
+                        <td data-label="آخری وقت:">${item.urgentTaskDueTime || 'N/A'}</td>
+                        <td data-label="آپشنز:">
+                            <button class="edit-btn" onclick="editEntry('urgentTasks', ${item.id}, 'urgentTaskForm')"><i class="fas fa-edit"></i> ترمیم کریں</button>
+                            <button class="delete-btn" onclick="deleteEntry('urgentTasks', ${item.id})"><i class="fas fa-trash-alt"></i> حذف کریں</button>
+                        </td>
+                    `;
+                    return tr;
+                },
+                filter: (data) => {
+                    const search = document.getElementById('urgentTaskSearch').value.toLowerCase();
+                    const filterDate = document.getElementById('urgentTaskFilterDate').value;
+                    return data.filter(item =>
+                        (item.urgentTaskName.toLowerCase().includes(search) || (item.urgentTaskDescription || '').toLowerCase().includes(search)) &&
+                        (!filterDate || item.urgentTaskDueDate === filterDate)
+                    );
+                },
+                sort: (a, b) => {
+                    const sortBy = document.getElementById('urgentTaskSortBy').value;
+                    if (sortBy === 'dueDate') return new Date(a.urgentTaskDueDate) - new Date(b.urgentTaskDueDate);
+                    if (sortBy === 'dueDateDesc') return new Date(b.urgentTaskDueDate) - new Date(a.urgentTaskDueDate);
+                    return 0;
+                }
+            },
+            meetings: {
+                tableId: 'meetingsTable',
+                formId: 'meetingForm',
+                render: (item) => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td data-label="تاریخ:">${item.meetingDate}</td>
+                        <td data-label="وقت:">${item.meetingTime}</td>
+                        <td data-label="شخصیات:">${item.meetingPerson}</td>
+                        <td data-label="جگہ:">${item.meetingLocation || ''}</td>
+                        <td data-label="تفصیل:">${item.meetingDetails || ''}</td>
+                        <td data-label="آپشنز:">
+                            <button class="edit-btn" onclick="editEntry('meetings', ${item.id}, 'meetingForm')"><i class="fas fa-edit"></i> ترمیم کریں</button>
+                            <button class="delete-btn" onclick="deleteEntry('meetings', ${item.id})"><i class="fas fa-trash-alt"></i> حذف کریں</button>
+                        </td>
+                    `;
+                    return tr;
+                },
+                filter: (data) => {
+                    const search = document.getElementById('meetingSearch').value.toLowerCase();
+                    const filterDate = document.getElementById('meetingFilterDate').value;
+                    return data.filter(item =>
+                        (item.meetingPerson.toLowerCase().includes(search) || (item.meetingLocation || '').toLowerCase().includes(search) || (item.meetingDetails || '').toLowerCase().includes(search)) &&
+                        (!filterDate || item.meetingDate === filterDate)
+                    );
+                },
+                sort: (a, b) => {
+                    const sortBy = document.getElementById('meetingSortBy').value;
+                    if (sortBy === 'dateTime') return new Date(`${a.meetingDate}T${a.meetingTime}`) - new Date(`${b.meetingDate}T${b.meetingTime}`);
+                    if (sortBy === 'dateTimeDesc') return new Date(`${b.meetingDate}T${b.meetingTime}`) - new Date(`${a.meetingDate}T${a.meetingTime}`);
+                    return 0;
+                }
+            },
+            notifications: {
+                tableId: 'notificationsTable',
+                formId: 'notificationForm',
+                fileInputId: 'notificationFiles',
+                filePreviewId: 'notificationFilesPreview',
+                render: (item) => {
+                    const tr = document.createElement('tr');
+                    const filesHtml = item.files && item.files.length > 0 ?
+                        item.files.map((file, idx) => `<a href="${file.data}" download="${file.name}" target="_blank">${file.name}</a>`).join('<br/>') : '';
+                    tr.innerHTML = `
+                        <td data-label="تاریخ:">${item.notificationDate}</td>
+                        <td data-label="عنوان:">${item.notificationTitle}</td>
+                        <td data-label="نوعیت:"><span class="status-badge ${item.notificationType === 'داخلی' ? 'info' : 'secondary'}">${item.notificationType}</span></td>
+                        <td data-label="تفصیل:">${item.notificationDetails || ''}</td>
+                        <td data-label="فائلیں:">${filesHtml}</td>
+                        <td data-label="آپشنز:">
+                            <button class="edit-btn" onclick="editEntry('notifications', ${item.id}, 'notificationForm', 'notificationFiles', 'notificationFilesPreview')"><i class="fas fa-edit"></i> ترمیم کریں</button>
+                            <button class="delete-btn" onclick="deleteEntry('notifications', ${item.id})"><i class="fas fa-trash-alt"></i> حذف کریں</button>
+                        </td>
+                    `;
+                    return tr;
+                },
+                filter: (data) => {
+                    const search = document.getElementById('notificationSearch').value.toLowerCase();
+                    const filterDate = document.getElementById('notificationFilterDate').value;
+                    return data.filter(item =>
+                        (item.notificationTitle.toLowerCase().includes(search) || (item.notificationDetails || '').toLowerCase().includes(search)) &&
+                        (!filterDate || item.notificationDate === filterDate)
+                    );
+                },
+                sort: (a, b) => {
+                    const sortBy = document.getElementById('notificationSortBy').value;
+                    if (sortBy === 'date') return new Date(a.notificationDate) - new Date(b.notificationDate);
+                    if (sortBy === 'dateDesc') return new Date(b.notificationDate) - new Date(a.notificationDate);
+                    if (sortBy === 'type') return a.notificationType.localeCompare(b.notificationType);
+                    return 0;
+                }
+            },
+            contacts: {
+                tableId: 'contactsTable',
+                formId: 'contactForm',
+                render: (item) => {
+                    const tr = document.createElement('tr');
+                    const encodedMessage = encodeURIComponent(item.contactMessage || '');
+
+                    tr.innerHTML = `
+        <td data-label="نام/تنظیم:">${(item.contactName || '')}</td>
+        <td data-label="فون:">${item.contactPhone || 'N/A'} 
+            ${item.contactPhone ? `<button class="whatsapp-btn" onclick="window.open('https://wa.me/${item.contactPhone.replace(/\D/g, '')}?text=${encodedMessage}', '_blank')"><i class="fab fa-whatsapp"></i> WhatsApp</button>` : ''}
+            ${item.contactPhone ? `<button class="sms-btn" onclick="window.open('sms:${item.contactPhone.replace(/\D/g, '')}?body=${encodedMessage}', '_blank')"><i class="fas fa-sms"></i> SMS</button>` : ''}
+        </td>
+        <td data-label="ای میل:">${item.contactEmail || 'N/A'} ${item.contactEmail ? `<a href="mailto:${item.contactEmail}"><i class="fas fa-envelope"></i> ای میل کریں</a>` : ''}</td>
+        <td data-label="رشتہ/معمول:">${item.contactRelationship || ''}</td>
+        <td data-label="پیغام:">${item.contactMessage || ''}</td>
+        <td data-label="پتہ:">${item.contactAddress || ''}</td>
+        <td data-label="آپشنز:">
+            <button class="edit-btn" onclick="editEntry('contacts', ${item.id}, 'contactForm')"><i class="fas fa-edit"></i> ترمیم کریں</button>
+            <button class="delete-btn" onclick="deleteEntry('contacts', ${item.id})"><i class="fas fa-trash-alt"></i> حذف کریں</button>
+        </td>
+    `;
+                    return tr;
+                },
+                filter: (data) => {
+                    const search = document.getElementById('contactSearch').value.toLowerCase();
+                    return data.filter(item =>
+                        (item.contactName.toLowerCase().includes(search) || (item.contactPhone || '').toLowerCase().includes(search) || (item.contactEmail || '').toLowerCase().includes(search) || (item.contactRelationship || '').toLowerCase().includes(search) || (item.contactAddress || '').toLowerCase().includes(search))
+                    );
+                },
+                sort: (a, b) => {
+                    const sortBy = document.getElementById('contactSortBy').value;
+                    if (sortBy === 'name') return a.contactName.localeCompare(b.contactName);
+                    if (sortBy === 'nameDesc') return b.contactName.localeCompare(a.contactName);
+                    return 0;
+                }
+            },
+            performance: {
+                tableId: 'performanceTable',
+                formId: 'performanceForm',
+                fileInputId: 'performanceFiles',
+                filePreviewId: 'performanceFilesPreview',
+                render: (item) => {
+                    const tr = document.createElement('tr');
+                    const filesHtml = item.files && item.files.length > 0 ?
+                        item.files.map((file, idx) => `<a href="${file.data}" download="${file.name}" target="_blank">${file.name}</a>`).join('<br/>') : '';
+                    tr.innerHTML = `
+                        <td data-label="تاریخ:">${item.performanceDate}</td>
+                        <td data-label="عنوان:">${item.performanceTitle}</td>
+                        <td data-label="مدت:">${item.performancePeriod}</td>
+                        <td data-label="تفصیل:">${item.performanceDetails || ''}</td>
+                        <td data-label="فائلیں:">${filesHtml}</td>
+                        <td data-label="آپشنز:">
+                            <button class="edit-btn" onclick="editEntry('performance', ${item.id}, 'performanceForm', 'performanceFiles', 'performanceFilesPreview')"><i class="fas fa-edit"></i> ترمیم کریں</button>
+                            <button class="delete-btn" onclick="deleteEntry('performance', ${item.id})"><i class="fas fa-trash-alt"></i> حذف کریں</button>
+                        </td>
+                    `;
+                    return tr;
+                },
+                filter: (data) => {
+                    const search = document.getElementById('performanceSearch').value.toLowerCase();
+                    const filterDate = document.getElementById('performanceFilterDate').value;
+                    return data.filter(item =>
+                        (item.performanceTitle.toLowerCase().includes(search) || (item.performanceDetails || '').toLowerCase().includes(search)) &&
+                        (!filterDate || item.performanceDate === filterDate)
+                    );
+                },
+                sort: (a, b) => {
+                    const sortBy = document.getElementById('performanceSortBy').value;
+                    if (sortBy === 'date') return new Date(a.performanceDate) - new Date(b.performanceDate);
+                    if (sortBy === 'dateDesc') return new Date(b.performanceDate) - new Date(a.performanceDate);
+                    if (sortBy === 'period') {
+                        const periodOrder = { 'ماہانہ': 1, 'سہ ماہی': 2, 'سالانہ': 3, 'دیگر': 4 };
+                        return periodOrder[a.performancePeriod] - periodOrder[b.performancePeriod];
+                    }
+                    return 0;
+                }
+            },
+            schedules: {
+                tableId: 'schedulesTable',
+                formId: 'scheduleForm',
+                render: (item) => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td data-label="تاریخ:">${item.scheduleDate}</td>
+                        <td data-label="وقت:">${item.scheduleTime}</td>
+                        <td data-label="پروگرام کا نام:">${item.scheduleName}</td>
+                        <td data-label="نوعیت:">${item.scheduleType || ''}</td>
+                        <td data-label="جگہ:">${item.scheduleLocation || ''}</td>
+                        <td data-label="تفصیل:">${item.scheduleDetails || ''}</td>
+                        <td data-label="آپشنز:">
+                            <button class="edit-btn" onclick="editEntry('schedules', ${item.id}, 'scheduleForm')"><i class="fas fa-edit"></i> ترمیم کریں</button>
+                            <button class="delete-btn" onclick="deleteEntry('schedules', ${item.id})"><i class="fas fa-trash-alt"></i> حذف کریں</button>
+                        </td>
+                    `;
+                    return tr;
+                },
+                filter: (data) => {
+                    const search = document.getElementById('scheduleSearch').value.toLowerCase();
+                    const filterDate = document.getElementById('scheduleFilterDate').value;
+                    return data.filter(item =>
+                        (item.scheduleName.toLowerCase().includes(search) || (item.scheduleType || '').toLowerCase().includes(search) || (item.scheduleLocation || '').toLowerCase().includes(search) || (item.scheduleDetails || '').toLowerCase().includes(search)) &&
+                        (!filterDate || item.scheduleDate === filterDate)
+                    );
+                },
+                sort: (a, b) => {
+                    const sortBy = document.getElementById('scheduleSortBy').value;
+                    if (sortBy === 'dateTime') return new Date(`${a.scheduleDate}T${a.scheduleTime}`) - new Date(`${b.scheduleDate}T${b.scheduleTime}`);
+                    if (sortBy === 'dateTimeDesc') return new Date(`${b.scheduleDate}T${b.scheduleTime}`) - new Date(`${a.scheduleDate}T${a.scheduleTime}`);
+                    if (sortBy === 'type') return a.scheduleType.localeCompare(b.scheduleType);
+                    return 0;
+                }
+            },
+            messages: {
+                tableId: 'messagesTable',
+                formId: 'messageForm',
+                fileInputId: 'messageFiles',
+                filePreviewId: 'messageFilesPreview',
+                render: (item) => {
+                    const tr = document.createElement('tr');
+                    const filesHtml = item.files && item.files.length > 0 ?
+                        item.files.map((file, idx) => `<a href="${file.data}" download="${file.name}" target="_blank">${file.name}</a>`).join('<br/>') : '';
+                    tr.innerHTML = `
+                        <td data-label="تاریخ:">${item.messageDate}</td>
+                        <td data-label="نوعیت:">${item.messageType}</td>
+                        <td data-label="بھیجنے والا/وصول کنندہ:">${item.messageSenderReceiver}</td>
+                        <td data-label="مضمون:">${item.messageSubject || ''}</td>
+                        <td data-label="تفصیل:">${item.messageDetails || ''}</td>
+                        <td data-label="فائلیں:">${filesHtml}</td>
+                        <td data-label="آپشنز:">
+                            <button class="edit-btn" onclick="editEntry('messages', ${item.id}, 'messageForm', 'messageFiles', 'messageFilesPreview')"><i class="fas fa-edit"></i> ترمیم کریں</button>
+                            <button class="delete-btn" onclick="deleteEntry('messages', ${item.id})"><i class="fas fa-trash-alt"></i> حذف کریں</button>
+                        </td>
+                    `;
+                    return tr;
+                },
+                filter: (data) => {
+                    const search = document.getElementById('messageSearch').value.toLowerCase();
+                    const filterDate = document.getElementById('messageFilterDate').value;
+                    return data.filter(item =>
+                        (item.messageSenderReceiver.toLowerCase().includes(search) || (item.messageSubject || '').toLowerCase().includes(search) || (item.messageDetails || '').toLowerCase().includes(search)) &&
+                        (!filterDate || item.messageDate === filterDate)
+                    );
+                },
+                sort: (a, b) => {
+                    const sortBy = document.getElementById('messageSortBy').value;
+                    if (sortBy === 'date') return new Date(a.messageDate) - new Date(b.messageDate);
+                    if (sortBy === 'dateDesc') return new Date(b.messageDate) - new Date(a.messageDate);
+                    if (sortBy === 'type') return a.messageType.localeCompare(b.messageType);
+                    return 0;
+                }
+            },
+            letters: {
+                tableId: 'lettersTable',
+                formId: 'letterForm',
+                fileInputId: 'letterFiles',
+                filePreviewId: 'letterFilesPreview',
+                render: (item) => {
+                    const tr = document.createElement('tr');
+                    const filesHtml = item.files && item.files.length > 0 ?
+                        item.files.map((file, idx) => `<a href="${file.data}" download="${file.name}" target="_blank">${file.name}</a>`).join('<br/>') : '';
+                    tr.innerHTML = `
+                        <td data-label="تاریخ اجرا:">${item.letterDate}</td>
+                        <td data-label="وصول کنندہ:">${item.letterRecipient}</td>
+                        <td data-label="مضمون:">${item.letterSubject || ''}</td>
+                        <td data-label="تفصیل:">${item.letterDetails || ''}</td>
+                        <td data-label="فائلیں:">${filesHtml}</td>
+                        <td data-label="آپشنز:">
+                            <button class="edit-btn" onclick="editEntry('letters', ${item.id}, 'letterForm', 'letterFiles', 'letterFilesPreview')"><i class="fas fa-edit"></i> ترمیم کریں</button>
+                            <button class="delete-btn" onclick="deleteEntry('letters', ${item.id})"><i class="fas fa-trash-alt"></i> حذف کریں</button>
+                        </td>
+                    `;
+                    return tr;
+                },
+                filter: (data) => {
+                    const search = document.getElementById('letterSearch').value.toLowerCase();
+                    const filterDate = document.getElementById('letterFilterDate').value;
+                    return data.filter(item =>
+                        (item.letterRecipient.toLowerCase().includes(search) || (item.letterSubject || '').toLowerCase().includes(search) || (item.letterDetails || '').toLowerCase().includes(search)) &&
+                        (!filterDate || item.letterDate === filterDate)
+                    );
+                },
+                sort: (a, b) => {
+                    const sortBy = document.getElementById('letterSortBy').value;
+                    if (sortBy === 'date') return new Date(a.letterDate) - new Date(b.letterDate);
+                    if (sortBy === 'dateDesc') return new Date(b.letterDate) - new Date(a.letterDate);
+                    return 0;
+                }
+            },
+            demands: {
+                tableId: 'demandsTable',
+                formId: 'demandForm',
+                fileInputId: 'demandFiles',
+                filePreviewId: 'demandFilesPreview',
+                render: (item) => {
+                    const tr = document.createElement('tr');
+                    const filesHtml = item.files && item.files.length > 0 ?
+                        item.files.map((file, idx) => `<a href="${file.data}" download="${file.name}" target="_blank">${file.name}</a>`).join('<br/>') : '';
+                    tr.innerHTML = `
+                        <td data-label="تاریخ:">${item.demandDate}</td>
+                        <td data-label="عنوان:">${item.demandSubject}</td>
+                        <td data-label="مطالبہ کرنے والا:">${item.demandRequester}</td>
+                        <td data-label="تفصیل:">${item.demandDetails || ''}</td>
+                        <td data-label="حالت:"><span class="status-badge ${item.demandStatus === 'منظور شدہ' ? 'complete' : item.demandStatus === 'مسترد شدہ' ? 'rejected' : 'pending'}">${item.demandStatus}</span></td>
+                        <td data-label="فائلیں:">${filesHtml}</td>
+                        <td data-label="آپشنز:">
+                            <button class="edit-btn" onclick="editEntry('demands', ${item.id}, 'demandForm', 'demandFiles', 'demandFilesPreview')"><i class="fas fa-edit"></i> ترمیم کریں</button>
+                            <button class="delete-btn" onclick="deleteEntry('demands', ${item.id})"><i class="fas fa-trash-alt"></i> حذف کریں</button>
+                        </td>
+                    `;
+                    return tr;
+                },
+                filter: (data) => {
+                    const search = document.getElementById('demandSearch').value.toLowerCase();
+                    const filterDate = document.getElementById('demandFilterDate').value;
+                    const statusFilter = document.getElementById('demandSortBy').value === 'status' ? document.getElementById('demandStatus').value : null;
+                    return data.filter(item =>
+                        (item.demandSubject.toLowerCase().includes(search) || item.demandRequester.toLowerCase().includes(search) || (item.demandDetails || '').toLowerCase().includes(search)) &&
+                        (!filterDate || item.demandDate === filterDate) &&
+                        (!statusFilter || item.demandStatus === statusFilter)
+                    );
+                },
+                sort: (a, b) => {
+                    const sortBy = document.getElementById('demandSortBy').value;
+                    if (sortBy === 'date') return new Date(a.demandDate) - new Date(b.demandDate);
+                    if (sortBy === 'dateDesc') return new Date(b.demandDate) - new Date(a.demandDate);
+                    if (sortBy === 'status') {
+                        const statusOrder = { 'زیر التوا': 1, 'مکمل': 2, 'منظور شدہ': 3, 'مسترد شدہ': 4 };
+                        return statusOrder[a.demandStatus] - statusOrder[b.demandStatus];
+                    }
+                    return 0;
+                }
+            }
+        };
+        const loadModuleData = async (moduleName) => {
+            const module = modules[moduleName];
+            if (module) {
+                await loadDataIntoTable(moduleName, module.tableId, module.render, module.filter, module.sort);
+            }
+        };
+        document.getElementById('taskForm').addEventListener('submit', (e) => handleFormSubmit(e, 'tasks', 'taskForm', clearForms, 'taskFiles', 'taskFilesPreview'));
+        document.getElementById('clearTaskForm').addEventListener('click', clearForms);
+        document.getElementById('taskFiles').addEventListener('change', function () {
+            if (this.files.length > 0) {
+                filesToBase64(this.files).then(base64Files => {
+                    window.currentEditFiles.taskForm = base64Files;
+                    displayFilePreviews(base64Files, 'taskFilesPreview');
+                });
+            } else {
+                document.getElementById('taskFilesPreview').innerHTML = '';
+                window.currentEditFiles.taskForm = [];
+            }
+        });
+        document.getElementById('reminderForm').addEventListener('submit', (e) => handleFormSubmit(e, 'reminders', 'reminderForm', clearForms));
+        document.getElementById('clearReminderForm').addEventListener('click', clearForms);
+        document.getElementById('urgentTaskForm').addEventListener('submit', (e) => handleFormSubmit(e, 'urgentTasks', 'urgentTaskForm', clearForms));
+        document.getElementById('clearUrgentTaskForm').addEventListener('click', clearForms);
+        document.getElementById('meetingForm').addEventListener('submit', (e) => handleFormSubmit(e, 'meetings', 'meetingForm', clearForms));
+        document.getElementById('clearMeetingForm').addEventListener('click', clearForms);
+        document.getElementById('notificationForm').addEventListener('submit', (e) => handleFormSubmit(e, 'notifications', 'notificationForm', clearForms, 'notificationFiles', 'notificationFilesPreview'));
+        document.getElementById('clearNotificationForm').addEventListener('click', clearForms);
+        document.getElementById('notificationFiles').addEventListener('change', function () {
+            if (this.files.length > 0) {
+                filesToBase64(this.files).then(base64Files => {
+                    window.currentEditFiles.notificationForm = base64Files;
+                    displayFilePreviews(base64Files, 'notificationFilesPreview');
+                });
+            } else {
+                document.getElementById('notificationFilesPreview').innerHTML = '';
+                window.currentEditFiles.notificationForm = [];
+            }
+        });
+        document.getElementById('contactForm').addEventListener('submit', (e) => handleFormSubmit(e, 'contacts', 'contactForm', clearForms));
+        document.getElementById('clearContactForm').addEventListener('click', clearForms);
+        document.getElementById('performanceForm').addEventListener('submit', (e) => handleFormSubmit(e, 'performance', 'performanceForm', clearForms, 'performanceFiles', 'performanceFilesPreview'));
+        document.getElementById('clearPerformanceForm').addEventListener('click', clearForms);
+        document.getElementById('performanceFiles').addEventListener('change', function () {
+            if (this.files.length > 0) {
+                filesToBase64(this.files).then(base64Files => {
+                    window.currentEditFiles.performanceForm = base64Files;
+                    displayFilePreviews(base64Files, 'performanceFilesPreview');
+                });
+            } else {
+                document.getElementById('performanceFilesPreview').innerHTML = '';
+                window.currentEditFiles.performanceForm = [];
+            }
+        });
+        document.getElementById('scheduleForm').addEventListener('submit', (e) => handleFormSubmit(e, 'schedules', 'scheduleForm', clearForms));
+        document.getElementById('clearScheduleForm').addEventListener('click', clearForms);
+        document.getElementById('messageForm').addEventListener('submit', (e) => handleFormSubmit(e, 'messages', 'messageForm', clearForms, 'messageFiles', 'messageFilesPreview'));
+        document.getElementById('clearMessageForm').addEventListener('click', clearForms);
+        document.getElementById('messageFiles').addEventListener('change', function () {
+            if (this.files.length > 0) {
+                filesToBase64(this.files).then(base64Files => {
+                    window.currentEditFiles.messageForm = base64Files;
+                    displayFilePreviews(base64Files, 'messageFilesPreview');
+                });
+            } else {
+                document.getElementById('messageFilesPreview').innerHTML = '';
+                window.currentEditFiles.messageForm = [];
+            }
+        });
+        document.getElementById('letterForm').addEventListener('submit', (e) => handleFormSubmit(e, 'letters', 'letterForm', clearForms, 'letterFiles', 'letterFilesPreview'));
+        document.getElementById('clearLetterForm').addEventListener('click', clearForms);
+        document.getElementById('letterFiles').addEventListener('change', function () {
+            if (this.files.length > 0) {
+                filesToBase64(this.files).then(base64Files => {
+                    window.currentEditFiles.letterForm = base64Files;
+                    displayFilePreviews(base64Files, 'letterFilesPreview');
+                });
+            } else {
+                document.getElementById('letterFilesPreview').innerHTML = '';
+                window.currentEditFiles.letterForm = [];
+            }
+        });
+        document.getElementById('demandForm').addEventListener('submit', (e) => handleFormSubmit(e, 'demands', 'demandForm', clearForms, 'demandFiles', 'demandFilesPreview'));
+        document.getElementById('clearDemandForm').addEventListener('click', clearForms);
+        document.getElementById('demandFiles').addEventListener('change', function () {
+            if (this.files.length > 0) {
+                filesToBase64(this.files).then(base64Files => {
+                    window.currentEditFiles.demandForm = base64Files;
+                    displayFilePreviews(base64Files, 'demandFilesPreview');
+                });
+            } else {
+                document.getElementById('demandFilesPreview').innerHTML = '';
+                window.currentEditFiles.demandForm = [];
+            }
+        });
+        window.exportTable = async (tableId, format) => {
+            const table = document.getElementById(tableId);
+            if (!table) {
+                showNotification('ٹیبل نہیں ملا!', 'error');
+                return;
+            }
+            const headers = Array.from(table.querySelectorAll('thead th:not(:last-child)')).map(th => th.textContent.trim());
+            const rows = Array.from(table.querySelectorAll('tbody tr'));
+            const data = rows.map(row => {
+                const cells = Array.from(row.querySelectorAll('td:not(:last-child)'));
+                return cells.map(cell => {
+                    const links = cell.querySelectorAll('a');
+                    if (links.length > 0) {
+                        return Array.from(links).map(link => link.textContent.trim()).join(', ');
+                    }
+                    const badge = cell.querySelector('.status-badge');
+                    if (badge) {
+                        return badge.textContent.trim();
+                    }
+                    return cell.textContent.trim();
+                });
+            }).filter(row => row.length > 0);
+            if (data.length === 0) {
+                showNotification('ایکسپورٹ کرنے کے لیے کوئی ڈیٹا نہیں!', 'info');
+                return;
+            }
+            if (format === 'excel') {
+                const ws_data = [headers, ...data];
+                const ws = XLSX.utils.aoa_to_sheet(ws_data);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+                XLSX.writeFile(wb, `${tableId}.xlsx`);
+                showNotification('ایکسل فائل ایکسپورٹ کر دی گئی!', 'success');
+            } else if (format === 'image') {
+                showNotification('تصویر تیار کی جا رہی ہے...', 'info');
+                const moduleSection = table.closest('.module-section');
+                const tempDiv = document.createElement('div');
+                tempDiv.style.position = 'absolute';
+                tempDiv.style.left = '-9999px';
+                tempDiv.style.width = moduleSection.offsetWidth + 'px';
+                tempDiv.style.padding = '20px';
+                tempDiv.style.backgroundColor = 'white';
+                tempDiv.style.direction = 'rtl';
+                tempDiv.style.textAlign = 'right';
+                tempDiv.style.fontFamily = 'Calibri, "Noto Nastaliq Urdu", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif';
+                tempDiv.innerHTML = `
+                    <h2 style="text-align: center; color: black; border-bottom: 1px solid #ccc; padding-bottom: 10px;">${moduleSection.querySelector('h2').textContent}</h2>
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                        <thead>
+                            <tr style="background-color: #f2f2f2; font-weight: bold; color: black;">
+                                ${headers.map(h => `<th style="border: 1px solid #ccc; padding: 8px; text-align: right; background-color: #f2f2f2;">${h}</th>`).join('')}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${data.map(row => `
+                                <tr>
+                                    ${row.map(cell => `<td style="border: 1px solid #ccc; padding: 8px; text-align: right;">${cell}</td>`).join('')}
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+                document.body.appendChild(tempDiv);
+                html2canvas(tempDiv, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: null
+                }).then(canvas => {
+                    const image = canvas.toDataURL('image/png');
+                    const link = document.createElement('a');
+                    link.href = image;
+                    link.download = `${tableId}.png`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    document.body.removeChild(tempDiv);
+                    showNotification('تصویر کامیابی سے ایکسپورٹ کر دی گئی!', 'success');
+                }).catch(error => {
+                    console.error('Error exporting image:', error);
+                    showNotification('تصویر ایکسپورٹ کرنے میں خرابی', 'error');
+                    document.body.removeChild(tempDiv);
+                });
+            }
+        };
+        window.printTable = (tableId) => {
+            const printContent = document.getElementById(tableId).closest('.module-section').innerHTML;
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+            <!DOCTYPE html>
+            <html dir="rtl" lang="ur">
+            <head>
+                <meta charset="utf-8">
+                <title>پرنٹ ${document.getElementById(tableId).closest('.module-section').querySelector('h2').textContent}</title>
+                <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu&display=swap">
+                <style>
+                    body {
+                        font-family: Calibri, 'Noto Nastaliq Urdu', Arial, sans-serif;
+                        direction: rtl;
+                        text-align: right;
+                        margin: 20px;
+                        font-size: 11pt;
+                        line-height: 1.6;
+                        color: #333;
+                    }
+                    h2 {
+                        text-align: center;
+                        font-size: 20pt;
+                        margin-bottom: 20px;
+                        color: #007bff;
+                        border-bottom: 2px solid #eee;
+                        padding-bottom: 10px;
+                    }
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-top: 20px;
+                    }
+                    th, td {
+                        border: 1px solid #ccc;
+                        padding: 8px;
+                        text-align: right;
+                        vertical-align: top;
+                    }
+                    th {
+                        background-color: #f2f2f2;
+                        font-weight: bold;
+                        color: #007bff;
+                    }
+                    a {
+                        color: #007bff;
+                        text-decoration: none;
+                    }
+                    .status-badge {
+                        display: inline-block;
+                        padding: 3px 8px;
+                        border-radius: 10px;
+                        font-size: 0.85em;
+                        font-weight: bold;
+                        color: white;
+                        text-align: center;
+                        white-space: nowrap;
+                    }
+                    .status-badge.complete, .status-badge.منظور شدہ { background-color: #28a745; }
+                    .status-badge.pending, .status-badge.زیر التوا { background-color: #ffc107; color: #333; }
+                    .status-badge.urgent { background-color: #dc3545; }
+                    .status-badge.info { background-color: #17a2b8; }
+                    .status-badge.rejected, .status-badge.مسترد شدہ { background-color: #dc3545; }
+                    @page {
+                        size: A4 landscape;
+                        margin: 1.5cm;
+                    }
+                </style>
+            </head>
+            <body>
+                ${printContent}
+                <script>
+                    window.onload = function() {
+                        window.print();
+                        window.onafterprint = function() {
+                            window.close();
+                        };
+                    };
+                <\/script>
+            </body>
+            </html>
+        `);
+            printWindow.document.close();
+        };
+        document.getElementById('requestNotificationPermission').addEventListener('click', () => {
+            if (!('Notification' in window)) {
+                showNotification('یہ براؤزر نوٹیفیکیشن کو سپورٹ نہیں کرتا۔', 'error');
+                return;
+            }
+            Notification.requestPermission().then(permission => {
+                if (permission === 'granted') {
+                    showNotification('نوٹیفیکیشن کی اجازت دے دی گئی!', 'success');
+                    new Notification('دفتر منظم', {
+                        body: 'نوٹیفیکیشن کامیابی سے کام کر رہا ہے!',
+                        icon: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏢</text></svg>'
+                    });
+                } else {
+                    showNotification('نوٹیفیکیشن کی اجازت نہیں دی گئی!', 'error');
+                }
+            });
+        });
+        function checkLongTermNotifications() {
+            if (!('Notification' in window) || Notification.permission !== 'granted') return;
+
+            const today = new Date();
+            const todayStr = today.toISOString().split('T')[0];
+            today.setHours(0, 0, 0, 0);
+
+            const processLongTermItem = (item, type, titlePrefix) => {
+                const itemDateStr = item[`${type}Date`];
+                const itemTitle = item[`${type}Name`] || item[`${type}Title`] || item[`${type}Person`] || item.reminderTitle;
+
+                if (!itemDateStr || !itemTitle) return;
+
+                const eventDate = new Date(itemDateStr);
+                eventDate.setHours(0, 0, 0, 0);
+
+                if (eventDate < today) return; // Ignore past events
+
+                const daysRemaining = Math.round((eventDate - today) / (1000 * 60 * 60 * 24));
+
+                if (daysRemaining <= 20) {
+                    const notificationKey = `longTermNotified-${type}-${item.id}-${todayStr}`;
+                    if (!localStorage.getItem(notificationKey)) {
+                        let body = '';
+                        if (daysRemaining === 0) {
+                            body = `آج ہے`; // is today
+                        } else if (daysRemaining === 1) {
+                            body = `کل ہے`; // is tomorrow
+                        } else {
+                            body = `${daysRemaining} دن میں ہے`; // is in X days
+                        }
+
+                        new Notification(`${titlePrefix}: ${itemTitle}`, {
+                            body: body,
+                            icon: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗓️</text></svg>'
+                        });
+                        localStorage.setItem(notificationKey, 'true');
+                    }
+                }
+            };
+
+            const modulesToProcess = [
+                { store: 'tasks', type: 'task', prefix: 'کام' },
+                { store: 'urgentTasks', type: 'urgentTask', prefix: 'فوری کام' },
+                { store: 'meetings', type: 'meeting', prefix: 'ملاقات' },
+                { store: 'schedules', type: 'schedule', prefix: 'شیڈول' },
+                { store: 'reminders', type: 'reminder', prefix: 'یاد دہانی' }
+            ];
+
+            modulesToProcess.forEach(async (moduleInfo) => {
+                const items = await getAllData(moduleInfo.store);
+                items.forEach(item => {
+                    if (moduleInfo.store === 'tasks' && item.taskStatus !== 'زیر التوا') {
+                        return;
+                    }
+                    processLongTermItem(item, moduleInfo.type, moduleInfo.prefix);
+                });
+            });
+        }
+        async function checkAllNotifications() {
+            if (!('Notification' in window) || Notification.permission !== 'granted') return;
+
+            const now = new Date();
+            const todayDate = now.toISOString().split('T')[0];
+
+            // Helper to format remaining time
+            const formatTimeRemaining = (minutes) => {
+                if (minutes <= 0) return "ابھی شروع ہو رہا ہے";
+                if (minutes < 60) return `${minutes} منٹ میں`;
+                const hours = Math.floor(minutes / 60);
+                const remMinutes = minutes % 60;
+                return remMinutes === 0 ? `${hours} گھنٹے میں` : `${hours} گھنٹے اور ${remMinutes} منٹ میں`;
+            };
+
+            const createNotification = (title, options, itemKey) => {
+                new Notification(title, options);
+                markAsNotified(itemKey, options.tag);
+            };
+
+            const processItem = (item, type) => {
+                const itemDate = item[`${type}Date`];
+                const itemTime = item[`${type}Time`];
+                const itemTitle = item[`${type}Name`] || item[`${type}Title`] || item[`${type}Person`];
+                const itemKey = `${type}-${item.id}`;
+
+                if (!itemDate || !itemTime) return;
+
+                const eventDateTime = new Date(`${itemDate}T${itemTime}`);
+                const minutesRemaining = Math.round((eventDateTime - now) / 60000);
+
+                if (minutesRemaining > 1440 || minutesRemaining < -15) return; // Ignore if > 24h away or 15m past
+
+                const intervals = [
+                    { minutes: 1440, tag: '24h' },
+                    { minutes: 60, tag: '1h' },
+                    { minutes: 15, tag: '15m' },
+                    { minutes: 0, tag: 'now' }
+                ];
+
+                for (const interval of intervals) {
+                    if (minutesRemaining <= interval.minutes && !hasBeenNotified(itemKey, interval.tag)) {
+                        const title = `${item.titlePrefix}: ${itemTitle}`;
+                        const body = `یہ ${formatTimeRemaining(minutesRemaining)}.`;
+                        createNotification(title, { body: body, icon: item.icon, tag: interval.tag }, itemKey);
+                        break;
+                    }
+                }
+            };
+
+            // --- Daily notifications (Tasks) ---
+            const tasks = await getAllData('tasks');
+            tasks.forEach(task => {
+                if (task.taskDueDate === todayDate && task.taskStatus === 'زیر التوا' && !hasBeenNotified(`task-${task.id}`, 'daily')) {
+                    new Notification(`آج کا ٹاسک: ${task.taskName}`, { body: task.taskDescription || 'یہ کام آج مکمل کرنا ہے۔', icon: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📋</text></svg>' });
+                    markAsNotified(`task-${task.id}`, 'daily');
+                }
+            });
+
+            // --- Time-sensitive notifications ---
+            const urgentTasks = await getAllData('urgentTasks');
+            urgentTasks.forEach(item => processItem({ ...item, titlePrefix: 'فوری کام', icon: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❗</text></svg>' }, 'urgentTask'));
+
+            const meetings = await getAllData('meetings');
+            meetings.forEach(item => processItem({ ...item, titlePrefix: 'ملاقات', icon: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤝</text></svg>' }, 'meeting'));
+
+            const schedules = await getAllData('schedules');
+            schedules.forEach(item => processItem({ ...item, titlePrefix: 'شیڈول', icon: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗓️</text></svg>' }, 'schedule'));
+
+            const reminders = await getAllData('reminders');
+            reminders.forEach(item => {
+                if (item.reminderType === 'الارم') {
+                    processItem({ ...item, titlePrefix: 'الارم', icon: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⏰</text></svg>' }, 'reminder');
+                }
+            });
+        }
+        setInterval(() => {
+            checkAllNotifications();      // For short-term reminders (24h, 1h, etc.)
+            checkLongTermNotifications(); // For long-term daily reminders (20 days)
+        }, 60000);
+        openDB().then(async () => {
+            const tasks = await getAllData('tasks');
+            if (tasks.length === 0) {
+                await addSampleData();
+            } else {
+                loadAllTables();
+            }
+        });
+        window.editEntry = editEntry;
+        window.deleteEntry = deleteEntry;
+        window.filterAndSort = filterAndSort;
+        window.backupData = backupData;
+        window.restoreData = restoreData;
+        window.displayFilePreviews = displayFilePreviews;
+        window.removeFileFromFormPreview = removeFileFromFormPreview;
+        window.showNotification = showNotification;
+    </script>
+<script>
+        document.querySelectorAll('*').forEach(element => {
+            const currentSize = window.getComputedStyle(element).fontSize;
+            const currentSizeNum = parseFloat(currentSize);
+            element.style.fontSize = `${currentSizeNum + 1}px`;
+        });
+    </script>
+
+<script type="module">
+  import { Workbox } from 'https://storage.googleapis.com/workbox-cdn/releases/7.0.0/workbox-window.prod.mjs';
+
+  const swUrl = './sw.js';
+  const wb = new Workbox(swUrl);
+
+  // This event fires when a new service worker has installed but is waiting to activate.
+  wb.addEventListener('waiting', (event) => {
+    console.log('A new service worker is waiting to activate.');
+    // This sends a message to the waiting service worker, telling it to activate.
+    wb.messageSW({ type: 'SKIP_WAITING' });
+  });
+
+  // This event fires when the new service worker has taken control.
+  wb.addEventListener('controlling', (event) => {
+    console.log('The new service worker is now in control. Reloading page for updates...');
+    window.location.reload();
+  });
+
+  // Register the service worker.
+  wb.register();
+</script></body>
+</html>
