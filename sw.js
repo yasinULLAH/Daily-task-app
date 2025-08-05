@@ -50,8 +50,12 @@ if (workbox) {
         "revision": "2fc7c1c94e2f15173083ebeda834d953"
     },
     {
+        "url": "Copy of index.html",
+        "revision": "a5802af42585a19e78f604bc0af1b0a5"
+    },
+    {
         "url": "index.html",
-        "revision": "254526eed4a3df713b6bc1d88ee0790d"
+        "revision": "a5802af42585a19e78f604bc0af1b0a5"
     },
     {
         "url": "manifest.json",
@@ -66,8 +70,12 @@ if (workbox) {
         "revision": "986de93949013e958b0e14acd85491cd"
     },
     {
+        "url": "README.md",
+        "revision": "1dfaf6c7e47027f9d4a6d348f4a4b14b"
+    },
+    {
         "url": "sw.js",
-        "revision": "175b70aab101b29eef0f1cd882ba0c8c"
+        "revision": "fadefee9f81e721fead9fb669aa1c4d4"
     }
 ]);
 
