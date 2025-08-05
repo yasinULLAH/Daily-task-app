@@ -1,15 +1,15 @@
 
 <!DOCTYPE html>
-<html lang="ur" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دفتر منظم</title>
-    <link rel="manifest" href="/manifest.json">
-    <link rel="apple-touch-icon" href="icon-192x192.png"> <!-- Placeholder, include your app icon -->
-    <meta name="theme-color" content="#007bff">
 
-    <style>
+<html dir="rtl" lang="ur">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>دفتر منظم</title>
+<link href="/manifest.json" rel="manifest"/>
+<link href="icon-192x192.png" rel="apple-touch-icon"/> <!-- Placeholder, include your app icon -->
+<meta content="#007bff" name="theme-color"/>
+<style>
         /* Jameel Noori Nastaleeq Font - Fallback to system fonts */
         @font-face {
             font-family: 'Jameel Noori Nastaleeq';
@@ -704,1700 +704,791 @@
     </style>
 </head>
 <body>
-    <div class="theme-switcher">
-        <button id="themeToggle">تھیم بدلیں</button>
-        <button id="requestNotificationPermission">نوٹیفیکیشن کی اجازت دیں</button>
-    </div>
-
-    <div class="notification" id="notification"></div>
-
-    <div class="container">
-        <aside class="sidebar">
-            <h2>دفتر منظم</h2>
-            <nav>
-                <ul>
-                    <li><button data-module="tasks">کام</button></li>
-                    <li><button data-module="reminders">مختلف امور کی یاد دہانیاں</button></li>
-                    <li><button data-module="urgentTasks">فوری کرنے کے کام</button></li>
-                    <li><button data-module="meetings">ملاقاتیں</button></li>
-                    <li><button data-module="notifications">اطلاعات</button></li>
-                    <li><button data-module="contacts">رابطے</button></li>
-                    <li><button data-module="performance">کارگزاریاں</button></li>
-                    <li><button data-module="schedules">پروگراموں کا شیڈول</button></li>
-                    <li><button data-module="messages">پیغامات</button></li>
-                    <li><button data-module="letters">خطوط</button></li>
-                    <li><button data-module="demands">مطالبات</button></li>
-                    <li><button data-module="backupRestore">بیک اپ / ری سٹور</button></li>
-                </ul>
-            </nav>
-        </aside>
-
-        <main class="main-content">
-            <!-- کام Module -->
-            <section id="tasks" class="module-section active">
-                <h2>کام – روزمرہ یا خاص نوعیت کے کام</h2>
-                <form id="taskForm">
-                    <input type="hidden" id="taskId">
-                    <div class="form-group">
-                        <label for="taskName">کام کا عنوان:</label>
-                        <input type="text" id="taskName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="taskDescription">تفصیل:</label>
-                        <textarea id="taskDescription" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="taskDueDate">آخری تاریخ:</label>
-                        <input type="date" id="taskDueDate">
-                    </div>
-                    <div class="form-group">
-                        <label for="taskPriority">اہمیت:</label>
-                        <select id="taskPriority">
-                            <option value="معمولی">معمولی</option>
-                            <option value="اوسط">اوسط</option>
-                            <option value="اہم">اہم</option>
-                            <option value="انتہائی اہم">انتہائی اہم</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="taskStatus">حالت:</label>
-                        <select id="taskStatus">
-                            <option value="زیر التوا">زیر التوا</option>
-                            <option value="مکمل">مکمل</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="taskFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
-                        <input type="file" id="taskFiles" multiple accept=".pdf,image/*">
-                        <div class="file-upload-preview" id="taskFilesPreview"></div>
-                    </div>
-                    <div class="action-buttons">
-                        <button type="submit">محفوظ کریں</button>
-                        <button type="button" id="clearTaskForm">صاف کریں</button>
-                    </div>
-                </form>
-
-                <h3>کاموں کی فہرست</h3>
-                <div class="controls">
-                    <input type="text" id="taskSearch" placeholder="تلاش کریں...">
-                    <input type="date" id="taskFilterDate">
-                    <select id="taskSortBy">
-                        <option value="dueDate">تاریخ وار (قدیم ترین)</option>
-                        <option value="dueDateDesc">تاریخ وار (جدید ترین)</option>
-                        <option value="priority">اہمیت</option>
-                        <option value="status">حالت</option>
-                    </select>
-                    <button onclick="filterAndSort('tasks')">فلٹر / ترتیب دیں</button>
-                </div>
-                <div class="export-options">
-                    <button class="print-btn" onclick="printTable('tasksTable')">پرنٹ کریں</button>
-                    <button onclick="exportTable('tasksTable', 'csv')">CSV ایکسپورٹ کریں</button>
-                    <button onclick="exportTable('tasksTable', 'pdf')">PDF ایکسپورٹ کریں</button>
-                </div>
-                <table id="tasksTable">
-                    <thead>
-                        <tr>
-                            <th>تاریخ</th>
-                            <th>کام کا عنوان</th>
-                            <th>تفصیل</th>
-                            <th>اہمیت</th>
-                            <th>حالت</th>
-                            <th>فائلیں</th>
-                            <th>آپشنز</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </section>
-
-            <!-- مختلف امور کی یاد دہانیاں Module -->
-            <section id="reminders" class="module-section">
-                <h2>مختلف امور کی یاد دہانیاں – نوٹس، الارم، یا تاریخ وار یاددہانی</h2>
-                <form id="reminderForm">
-                    <input type="hidden" id="reminderId">
-                    <div class="form-group">
-                        <label for="reminderTitle">یاد دہانی کا عنوان:</label>
-                        <input type="text" id="reminderTitle" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="reminderDetails">تفصیل:</label>
-                        <textarea id="reminderDetails" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="reminderDate">تاریخ:</label>
-                        <input type="date" id="reminderDate" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="reminderTime">وقت:</label>
-                        <input type="time" id="reminderTime">
-                    </div>
-                    <div class="form-group">
-                        <label for="reminderType">نوعیت:</label>
-                        <select id="reminderType">
-                            <option value="نوٹس">نوٹس</option>
-                            <option value="الارم">الارم</option>
-                            <option value="تاریخ وار">تاریخ وار</option>
-                        </select>
-                    </div>
-                    <div class="action-buttons">
-                        <button type="submit">محفوظ کریں</button>
-                        <button type="button" id="clearReminderForm">صاف کریں</button>
-                    </div>
-                </form>
-
-                <h3>یاد دہانیوں کی فہرست</h3>
-                <div class="controls">
-                    <input type="text" id="reminderSearch" placeholder="تلاش کریں...">
-                    <input type="date" id="reminderFilterDate">
-                    <select id="reminderSortBy">
-                        <option value="dateTime">تاریخ و وقت (قدیم ترین)</option>
-                        <option value="dateTimeDesc">تاریخ و وقت (جدید ترین)</option>
-                        <option value="type">نوعیت</option>
-                    </select>
-                    <button onclick="filterAndSort('reminders')">فلٹر / ترتیب دیں</button>
-                </div>
-                <div class="export-options">
-                    <button class="print-btn" onclick="printTable('remindersTable')">پرنٹ کریں</button>
-                    <button onclick="exportTable('remindersTable', 'csv')">CSV ایکسپورٹ کریں</button>
-                    <button onclick="exportTable('remindersTable', 'pdf')">PDF ایکسپورٹ کریں</button>
-                </div>
-                <table id="remindersTable">
-                    <thead>
-                        <tr>
-                            <th>عنوان</th>
-                            <th>تفصیل</th>
-                            <th>تاریخ</th>
-                            <th>وقت</th>
-                            <th>نوعیت</th>
-                            <th>آپشنز</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </section>
-
-            <!-- فوری کرنے کے کام Module -->
-            <section id="urgentTasks" class="module-section">
-                <h2>فوری کرنے کے کام – اہم، فوری نوعیت کے امور</h2>
-                <form id="urgentTaskForm">
-                    <input type="hidden" id="urgentTaskId">
-                    <div class="form-group">
-                        <label for="urgentTaskName">فوری کام کا عنوان:</label>
-                        <input type="text" id="urgentTaskName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="urgentTaskDescription">تفصیل:</label>
-                        <textarea id="urgentTaskDescription" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="urgentTaskDueDate">آخری تاریخ:</label>
-                        <input type="date" id="urgentTaskDueDate" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="urgentTaskDueTime">آخری وقت:</label>
-                        <input type="time" id="urgentTaskDueTime">
-                    </div>
-                    <div class="action-buttons">
-                        <button type="submit">محفوظ کریں</button>
-                        <button type="button" id="clearUrgentTaskForm">صاف کریں</button>
-                    </div>
-                </form>
-
-                <h3>فوری کاموں کی فہرست</h3>
-                <div class="controls">
-                    <input type="text" id="urgentTaskSearch" placeholder="تلاش کریں...">
-                    <input type="date" id="urgentTaskFilterDate">
-                    <select id="urgentTaskSortBy">
-                        <option value="dueDate">تاریخ وار (قدیم ترین)</option>
-                        <option value="dueDateDesc">تاریخ وار (جدید ترین)</option>
-                    </select>
-                    <button onclick="filterAndSort('urgentTasks')">فلٹر / ترتیب دیں</button>
-                </div>
-                <div class="export-options">
-                    <button class="print-btn" onclick="printTable('urgentTasksTable')">پرنٹ کریں</button>
-                    <button onclick="exportTable('urgentTasksTable', 'csv')">CSV ایکسپورٹ کریں</button>
-                    <button onclick="exportTable('urgentTasksTable', 'pdf')">PDF ایکسپورٹ کریں</button>
-                </div>
-                <table id="urgentTasksTable">
-                    <thead>
-                        <tr>
-                            <th>عنوان</th>
-                            <th>تفصیل</th>
-                            <th>آخری تاریخ</th>
-                            <th>آخری وقت</th>
-                            <th>آپشنز</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </section>
-
-            <!-- ملاقاتیں Module -->
-            <section id="meetings" class="module-section">
-                <h2>ملاقاتیں – شخصیات، وقت، جگہ، تفصیل</h2>
-                <form id="meetingForm">
-                    <input type="hidden" id="meetingId">
-                    <div class="form-group">
-                        <label for="meetingPerson">شخصیات:</label>
-                        <input type="text" id="meetingPerson" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="meetingDate">تاریخ:</label>
-                        <input type="date" id="meetingDate" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="meetingTime">وقت:</label>
-                        <input type="time" id="meetingTime" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="meetingLocation">جگہ:</label>
-                        <input type="text" id="meetingLocation">
-                    </div>
-                    <div class="form-group">
-                        <label for="meetingDetails">تفصیل:</label>
-                        <textarea id="meetingDetails" rows="3"></textarea>
-                    </div>
-                    <div class="action-buttons">
-                        <button type="submit">محفوظ کریں</button>
-                        <button type="button" id="clearMeetingForm">صاف کریں</button>
-                    </div>
-                </form>
-
-                <h3>ملاقاتوں کی فہرست</h3>
-                <div class="controls">
-                    <input type="text" id="meetingSearch" placeholder="تلاش کریں...">
-                    <input type="date" id="meetingFilterDate">
-                    <select id="meetingSortBy">
-                        <option value="dateTime">تاریخ و وقت (قدیم ترین)</option>
-                        <option value="dateTimeDesc">تاریخ و وقت (جدید ترین)</option>
-                    </select>
-                    <button onclick="filterAndSort('meetings')">فلٹر / ترتیب دیں</button>
-                </div>
-                <div class="export-options">
-                    <button class="print-btn" onclick="printTable('meetingsTable')">پرنٹ کریں</button>
-                    <button onclick="exportTable('meetingsTable', 'csv')">CSV ایکسپورٹ کریں</button>
-                    <button onclick="exportTable('meetingsTable', 'pdf')">PDF ایکسپورٹ کریں</button>
-                </div>
-                <table id="meetingsTable">
-                    <thead>
-                        <tr>
-                            <th>تاریخ</th>
-                            <th>وقت</th>
-                            <th>شخصیات</th>
-                            <th>جگہ</th>
-                            <th>تفصیل</th>
-                            <th>آپشنز</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </section>
-
-            <!-- اطلاعات Module -->
-            <section id="notifications" class="module-section">
-                <h2>اطلاعات – داخلی و خارجی اطلاع نامے</h2>
-                <form id="notificationForm">
-                    <input type="hidden" id="notificationId">
-                    <div class="form-group">
-                        <label for="notificationTitle">اطلاع کا عنوان:</label>
-                        <input type="text" id="notificationTitle" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="notificationType">نوعیت:</label>
-                        <select id="notificationType">
-                            <option value="داخلی">داخلی</option>
-                            <option value="خارجی">خارجی</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="notificationDetails">تفصیل:</label>
-                        <textarea id="notificationDetails" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="notificationDate">تاریخ:</label>
-                        <input type="date" id="notificationDate" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="notificationFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
-                        <input type="file" id="notificationFiles" multiple accept=".pdf,image/*">
-                        <div class="file-upload-preview" id="notificationFilesPreview"></div>
-                    </div>
-                    <div class="action-buttons">
-                        <button type="submit">محفوظ کریں</button>
-                        <button type="button" id="clearNotificationForm">صاف کریں</button>
-                    </div>
-                </form>
-
-                <h3>اطلاعات کی فہرست</h3>
-                <div class="controls">
-                    <input type="text" id="notificationSearch" placeholder="تلاش کریں...">
-                    <input type="date" id="notificationFilterDate">
-                    <select id="notificationSortBy">
-                        <option value="date">تاریخ وار (قدیم ترین)</option>
-                        <option value="dateDesc">تاریخ وار (جدید ترین)</option>
-                        <option value="type">نوعیت</option>
-                    </select>
-                    <button onclick="filterAndSort('notifications')">فلٹر / ترتیب دیں</button>
-                </div>
-                <div class="export-options">
-                    <button class="print-btn" onclick="printTable('notificationsTable')">پرنٹ کریں</button>
-                    <button onclick="exportTable('notificationsTable', 'csv')">CSV ایکسپورٹ کریں</button>
-                    <button onclick="exportTable('notificationsTable', 'pdf')">PDF ایکسپورٹ کریں</button>
-                </div>
-                <table id="notificationsTable">
-                    <thead>
-                        <tr>
-                            <th>تاریخ</th>
-                            <th>عنوان</th>
-                            <th>نوعیت</th>
-                            <th>تفصیل</th>
-                            <th>فائلیں</th>
-                            <th>آپشنز</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </section>
-
-            <!-- رابطے Module -->
-            <section id="contacts" class="module-section">
-                <h2>رابطے – افراد، تنظیمیں، فون، ای میل، رشتہ</h2>
-                <form id="contactForm">
-                    <input type="hidden" id="contactId">
-                    <div class="form-group">
-                        <label for="contactName">نام/تنظیم:</label>
-                        <input type="text" id="contactName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="contactPhone">فون:</label>
-                        <input type="tel" id="contactPhone">
-                    </div>
-                    <div class="form-group">
-                        <label for="contactEmail">ای میل:</label>
-                        <input type="email" id="contactEmail">
-                    </div>
-                    <div class="form-group">
-                        <label for="contactRelationship">رشتہ/معمول:</label>
-                        <input type="text" id="contactRelationship">
-                    </div>
-                    <div class="form-group">
-                        <label for="contactAddress">پتہ:</label>
-                        <textarea id="contactAddress" rows="2"></textarea>
-                    </div>
-                    <div class="action-buttons">
-                        <button type="submit">محفوظ کریں</button>
-                        <button type="button" id="clearContactForm">صاف کریں</button>
-                    </div>
-                </form>
-
-                <h3>رابطوں کی فہرست</h3>
-                <div class="controls">
-                    <input type="text" id="contactSearch" placeholder="تلاش کریں...">
-                    <select id="contactSortBy">
-                        <option value="name">نام (الف تا ی)</option>
-                        <option value="nameDesc">نام (ی تا الف)</option>
-                    </select>
-                    <button onclick="filterAndSort('contacts')">فلٹر / ترتیب دیں</button>
-                </div>
-                <div class="export-options">
-                    <button class="print-btn" onclick="printTable('contactsTable')">پرنٹ کریں</button>
-                    <button onclick="exportTable('contactsTable', 'csv')">CSV ایکسپورٹ کریں</button>
-                    <button onclick="exportTable('contactsTable', 'pdf')">PDF ایکسپورٹ کریں</button>
-                </div>
-                <table id="contactsTable">
-                    <thead>
-                        <tr>
-                            <th>نام/تنظیم</th>
-                            <th>فون</th>
-                            <th>ای میل</th>
-                            <th>رشتہ/معمول</th>
-                            <th>پتہ</th>
-                            <th>آپشنز</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </section>
-
-            <!-- کارگزاریاں Module -->
-            <section id="performance" class="module-section">
-                <h2>کارگزاریاں – ماہانہ، سہ ماہی، سالانہ کارکردگی</h2>
-                <form id="performanceForm">
-                    <input type="hidden" id="performanceId">
-                    <div class="form-group">
-                        <label for="performanceTitle">کارگزاری کا عنوان:</label>
-                        <input type="text" id="performanceTitle" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="performancePeriod">مدت:</label>
-                        <select id="performancePeriod">
-                            <option value="ماہانہ">ماہانہ</option>
-                            <option value="سہ ماہی">سہ ماہی</option>
-                            <option value="سالانہ">سالانہ</option>
-                            <option value="دیگر">دیگر</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="performanceDate">تاریخ:</label>
-                        <input type="date" id="performanceDate" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="performanceDetails">تفصیل:</label>
-                        <textarea id="performanceDetails" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="performanceFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
-                        <input type="file" id="performanceFiles" multiple accept=".pdf,image/*">
-                        <div class="file-upload-preview" id="performanceFilesPreview"></div>
-                    </div>
-                    <div class="action-buttons">
-                        <button type="submit">محفوظ کریں</button>
-                        <button type="button" id="clearPerformanceForm">صاف کریں</button>
-                    </div>
-                </form>
-
-                <h3>کارگزاریوں کی فہرست</h3>
-                <div class="controls">
-                    <input type="text" id="performanceSearch" placeholder="تلاش کریں...">
-                    <input type="date" id="performanceFilterDate">
-                    <select id="performanceSortBy">
-                        <option value="date">تاریخ وار (قدیم ترین)</option>
-                        <option value="dateDesc">تاریخ وار (جدید ترین)</option>
-                        <option value="period">مدت</option>
-                    </select>
-                    <button onclick="filterAndSort('performance')">فلٹر / ترتیب دیں</button>
-                </div>
-                <div class="export-options">
-                    <button class="print-btn" onclick="printTable('performanceTable')">پرنٹ کریں</button>
-                    <button onclick="exportTable('performanceTable', 'csv')">CSV ایکسپورٹ کریں</button>
-                    <button onclick="exportTable('performanceTable', 'pdf')">PDF ایکسپورٹ کریں</button>
-                </div>
-                <table id="performanceTable">
-                    <thead>
-                        <tr>
-                            <th>تاریخ</th>
-                            <th>عنوان</th>
-                            <th>مدت</th>
-                            <th>تفصیل</th>
-                            <th>فائلیں</th>
-                            <th>آپشنز</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </section>
-
-            <!-- پروگراموں کا شیڈول Module -->
-            <section id="schedules" class="module-section">
-                <h2>پروگراموں کا شیڈول – اجتماعات، مجلس، ختم بخاری، دیگر</h2>
-                <form id="scheduleForm">
-                    <input type="hidden" id="scheduleId">
-                    <div class="form-group">
-                        <label for="scheduleName">پروگرام کا نام:</label>
-                        <input type="text" id="scheduleName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="scheduleType">نوعیت:</label>
-                        <input type="text" id="scheduleType" placeholder="اجتماعات، مجلس، ختم بخاری، دیگر">
-                    </div>
-                    <div class="form-group">
-                        <label for="scheduleDate">تاریخ:</label>
-                        <input type="date" id="scheduleDate" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="scheduleTime">وقت:</label>
-                        <input type="time" id="scheduleTime" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="scheduleLocation">جگہ:</label>
-                        <input type="text" id="scheduleLocation">
-                    </div>
-                    <div class="form-group">
-                        <label for="scheduleDetails">تفصیل:</label>
-                        <textarea id="scheduleDetails" rows="3"></textarea>
-                    </div>
-                    <div class="action-buttons">
-                        <button type="submit">محفوظ کریں</button>
-                        <button type="button" id="clearScheduleForm">صاف کریں</button>
-                    </div>
-                </form>
-
-                <h3>پروگراموں کے شیڈول کی فہرست</h3>
-                <div class="controls">
-                    <input type="text" id="scheduleSearch" placeholder="تلاش کریں...">
-                    <input type="date" id="scheduleFilterDate">
-                    <select id="scheduleSortBy">
-                        <option value="dateTime">تاریخ و وقت (قدیم ترین)</option>
-                        <option value="dateTimeDesc">تاریخ و وقت (جدید ترین)</option>
-                        <option value="type">نوعیت</option>
-                    </select>
-                    <button onclick="filterAndSort('schedules')">فلٹر / ترتیب دیں</button>
-                </div>
-                <div class="export-options">
-                    <button class="print-btn" onclick="printTable('schedulesTable')">پرنٹ کریں</button>
-                    <button onclick="exportTable('schedulesTable', 'csv')">CSV ایکسپورٹ کریں</button>
-                    <button onclick="exportTable('schedulesTable', 'pdf')">PDF ایکسپورٹ کریں</button>
-                </div>
-                <table id="schedulesTable">
-                    <thead>
-                        <tr>
-                            <th>تاریخ</th>
-                            <th>وقت</th>
-                            <th>پروگرام کا نام</th>
-                            <th>نوعیت</th>
-                            <th>جگہ</th>
-                            <th>تفصیل</th>
-                            <th>آپشنز</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </section>
-
-            <!-- پیغامات Module -->
-            <section id="messages" class="module-section">
-                <h2>پیغامات – دفتر کو موصول یا دفتر کی جانب سے ارسال</h2>
-                <form id="messageForm">
-                    <input type="hidden" id="messageId">
-                    <div class="form-group">
-                        <label for="messageType">نوعیت:</label>
-                        <select id="messageType">
-                            <option value="موصول شدگان">موصول شدگان</option>
-                            <option value="ارسال کردہ">ارسال کردہ</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="messageSenderReceiver">بھیجنے والا/وصول کنندہ:</label>
-                        <input type="text" id="messageSenderReceiver" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="messageSubject">مضمون:</label>
-                        <input type="text" id="messageSubject">
-                    </div>
-                    <div class="form-group">
-                        <label for="messageDetails">تفصیل:</label>
-                        <textarea id="messageDetails" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="messageDate">تاریخ:</label>
-                        <input type="date" id="messageDate" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="messageFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
-                        <input type="file" id="messageFiles" multiple accept=".pdf,image/*">
-                        <div class="file-upload-preview" id="messageFilesPreview"></div>
-                    </div>
-                    <div class="action-buttons">
-                        <button type="submit">محفوظ کریں</button>
-                        <button type="button" id="clearMessageForm">صاف کریں</button>
-                    </div>
-                </form>
-
-                <h3>پیغامات کی فہرست</h3>
-                <div class="controls">
-                    <input type="text" id="messageSearch" placeholder="تلاش کریں...">
-                    <input type="date" id="messageFilterDate">
-                    <select id="messageSortBy">
-                        <option value="date">تاریخ وار (قدیم ترین)</option>
-                        <option value="dateDesc">تاریخ وار (جدید ترین)</option>
-                        <option value="type">نوعیت</option>
-                    </select>
-                    <button onclick="filterAndSort('messages')">فلٹر / ترتیب دیں</button>
-                </div>
-                <div class="export-options">
-                    <button class="print-btn" onclick="printTable('messagesTable')">پرنٹ کریں</button>
-                    <button onclick="exportTable('messagesTable', 'csv')">CSV ایکسپورٹ کریں</button>
-                    <button onclick="exportTable('messagesTable', 'pdf')">PDF ایکسپورٹ کریں</button>
-                </div>
-                <table id="messagesTable">
-                    <thead>
-                        <tr>
-                            <th>تاریخ</th>
-                            <th>نوعیت</th>
-                            <th>بھیجنے والا/وصول کنندہ</th>
-                            <th>مضمون</th>
-                            <th>تفصیل</th>
-                            <th>فائلیں</th>
-                            <th>آپشنز</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </section>
-
-            <!-- خطوط Module -->
-            <section id="letters" class="module-section">
-                <h2>خطوط – مختلف افراد/شعبہ جات کو جاری کردہ خطوط</h2>
-                <form id="letterForm">
-                    <input type="hidden" id="letterId">
-                    <div class="form-group">
-                        <label for="letterRecipient">وصول کنندہ (فرد/شعبہ):</label>
-                        <input type="text" id="letterRecipient" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="letterSubject">مضمون:</label>
-                        <input type="text" id="letterSubject">
-                    </div>
-                    <div class="form-group">
-                        <label for="letterDate">تاریخ اجرا:</label>
-                        <input type="date" id="letterDate" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="letterDetails">تفصیل:</label>
-                        <textarea id="letterDetails" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="letterFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
-                        <input type="file" id="letterFiles" multiple accept=".pdf,image/*">
-                        <div class="file-upload-preview" id="letterFilesPreview"></div>
-                    </div>
-                    <div class="action-buttons">
-                        <button type="submit">محفوظ کریں</button>
-                        <button type="button" id="clearLetterForm">صاف کریں</button>
-                    </div>
-                </form>
-
-                <h3>خطوط کی فہرست</h3>
-                <div class="controls">
-                    <input type="text" id="letterSearch" placeholder="تلاش کریں...">
-                    <input type="date" id="letterFilterDate">
-                    <select id="letterSortBy">
-                        <option value="date">تاریخ وار (قدیم ترین)</option>
-                        <option value="dateDesc">تاریخ وار (جدید ترین)</option>
-                    </select>
-                    <button onclick="filterAndSort('letters')">فلٹر / ترتیب دیں</button>
-                </div>
-                <div class="export-options">
-                    <button class="print-btn" onclick="printTable('lettersTable')">پرنٹ کریں</button>
-                    <button onclick="exportTable('lettersTable', 'csv')">CSV ایکسپورٹ کریں</button>
-                    <button onclick="exportTable('lettersTable', 'pdf')">PDF ایکسپورٹ کریں</button>
-                </div>
-                <table id="lettersTable">
-                    <thead>
-                        <tr>
-                            <th>تاریخ اجرا</th>
-                            <th>وصول کنندہ</th>
-                            <th>مضمون</th>
-                            <th>تفصیل</th>
-                            <th>فائلیں</th>
-                            <th>آپشنز</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </section>
-
-            <!-- مطالبات Module -->
-            <section id="demands" class="module-section">
-                <h2>مطالبات – وسائل یا دیگر امور کے مطالبات</h2>
-                <form id="demandForm">
-                    <input type="hidden" id="demandId">
-                    <div class="form-group">
-                        <label for="demandSubject">مطالبے کا عنوان:</label>
-                        <input type="text" id="demandSubject" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="demandRequester">مطالبہ کرنے والا:</label>
-                        <input type="text" id="demandRequester" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="demandDate">تاریخ مطالبہ:</label>
-                        <input type="date" id="demandDate" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="demandDetails">تفصیل:</label>
-                        <textarea id="demandDetails" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="demandStatus">حالت:</label>
-                        <select id="demandStatus">
-                            <option value="زیر التوا">زیر التوا</option>
-                            <option value="مکمل">مکمل</option>
-                            <option value="منظور شدہ">منظور شدہ</option>
-                            <option value="مسترد شدہ">مسترد شدہ</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="demandFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
-                        <input type="file" id="demandFiles" multiple accept=".pdf,image/*">
-                        <div class="file-upload-preview" id="demandFilesPreview"></div>
-                    </div>
-                    <div class="action-buttons">
-                        <button type="submit">محفوظ کریں</button>
-                        <button type="button" id="clearDemandForm">صاف کریں</button>
-                    </div>
-                </form>
-
-                <h3>مطالبات کی فہرست</h3>
-                <div class="controls">
-                    <input type="text" id="demandSearch" placeholder="تلاش کریں...">
-                    <input type="date" id="demandFilterDate">
-                    <select id="demandSortBy">
-                        <option value="date">تاریخ وار (قدیم ترین)</option>
-                        <option value="dateDesc">تاریخ وار (جدید ترین)</option>
-                        <option value="status">حالت</option>
-                    </select>
-                    <button onclick="filterAndSort('demands')">فلٹر / ترتیب دیں</button>
-                </div>
-                <div class="export-options">
-                    <button class="print-btn" onclick="printTable('demandsTable')">پرنٹ کریں</button>
-                    <button onclick="exportTable('demandsTable', 'csv')">CSV ایکسپورٹ کریں</button>
-                    <button onclick="exportTable('demandsTable', 'pdf')">PDF ایکسپورٹ کریں</button>
-                </div>
-                <table id="demandsTable">
-                    <thead>
-                        <tr>
-                            <th>تاریخ</th>
-                            <th>عنوان</th>
-                            <th>مطالبہ کرنے والا</th>
-                            <th>تفصیل</th>
-                            <th>حالت</th>
-                            <th>فائلیں</th>
-                            <th>آپشنز</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </section>
-
-            <!-- بیک اپ / ری سٹور Module -->
-            <section id="backupRestore" class="module-section">
-                <h2>ڈیٹا بیک اپ و ری سٹور (JSON)</h2>
-                <h3>ڈیٹا بیک اپ</h3>
-                <p>اپنی تمام ڈیٹا کو JSON فائل میں ڈاؤن لوڈ کریں۔</p>
-                <div class="action-buttons">
-                    <button onclick="backupData()">بیک اپ ڈاؤن لوڈ کریں</button>
-                </div>
-
-                <h3>ڈیٹا ری سٹور</h3>
-                <p>JSON فائل سے ڈیٹا اپ لوڈ کر کے اپنے ڈیٹا کو بحال کریں۔</p>
-                <div class="form-group">
-                    <label for="restoreFile">JSON فائل منتخب کریں:</label>
-                    <input type="file" id="restoreFile" accept=".json">
-                </div>
-                <div class="action-buttons">
-                    <button onclick="restoreData()">ڈیٹا بحال کریں</button>
-                </div>
-                <p style="color: red;"><strong>وارننگ:</strong> ڈیٹا بحال کرنے سے موجودہ ڈیٹا تبدیل ہو سکتا ہے۔</p>
-            </section>
-        </main>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-    <script>
-        function createAndSaveServiceWorkerFile() {
-            const blob = new Blob([SW_JS_CONTENT], { type: 'application/javascript' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'sw.js';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            console.log("sw.js file created for download. Please save it in the same directory as index.html.");
-            showNotification("sw.js فائل ڈاؤن لوڈ کے لیے تیار ہے، اسے index.html کے ساتھ ایک ہی فولڈر میں محفوظ کریں۔", "info");
-        }
-
-        // Call this once to create the file if it doesn't exist.
-        // In a real deployment, you'd have sw.js as a static file.
-        // For this single-file HTML, this is a workaround to ensure the file exists.
-        // You might want to remove this line after the first run.
-        // createAndSaveServiceWorkerFile();
-
-        const DB_NAME = 'DaftarMunazzamDB';
-        const DB_VERSION = 1;
-        let db;
-
-        const STORE_NAMES = [
-            'tasks', 'reminders', 'urgentTasks', 'meetings', 'notifications',
-            'contacts', 'performance', 'schedules', 'messages', 'letters', 'demands'
-        ];
-
-        const moduleConfigs = {
-            tasks: {
-                formId: 'taskForm', tableId: 'tasksTable',
-                fields: ['taskName', 'taskDescription', 'taskDueDate', 'taskPriority', 'taskStatus', 'taskFiles'],
-                fileField: 'taskFiles', filePreview: 'taskFilesPreview',
-                search: 'taskSearch', filterDate: 'taskFilterDate', sortBy: 'taskSortBy',
-                displayOrder: ['taskDueDate', 'taskName', 'taskDescription', 'taskPriority', 'taskStatus', 'taskFiles'],
-                defaultSort: 'taskDueDate',
-                headers: ['تاریخ', 'کام کا عنوان', 'تفصیل', 'اہمیت', 'حالت', 'فائلیں', 'آپشنز']
-            },
-            reminders: {
-                formId: 'reminderForm', tableId: 'remindersTable',
-                fields: ['reminderTitle', 'reminderDetails', 'reminderDate', 'reminderTime', 'reminderType'],
-                fileField: null, filePreview: null,
-                search: 'reminderSearch', filterDate: 'reminderFilterDate', sortBy: 'reminderSortBy',
-                displayOrder: ['reminderTitle', 'reminderDetails', 'reminderDate', 'reminderTime', 'reminderType'],
-                defaultSort: 'dateTime',
-                headers: ['عنوان', 'تفصیل', 'تاریخ', 'وقت', 'نوعیت', 'آپشنز']
-            },
-            urgentTasks: {
-                formId: 'urgentTaskForm', tableId: 'urgentTasksTable',
-                fields: ['urgentTaskName', 'urgentTaskDescription', 'urgentTaskDueDate', 'urgentTaskDueTime'],
-                fileField: null, filePreview: null,
-                search: 'urgentTaskSearch', filterDate: 'urgentTaskFilterDate', sortBy: 'urgentTaskSortBy',
-                displayOrder: ['urgentTaskName', 'urgentTaskDescription', 'urgentTaskDueDate', 'urgentTaskDueTime'],
-                defaultSort: 'dueDate',
-                headers: ['عنوان', 'تفصیل', 'آخری تاریخ', 'آخری وقت', 'آپشنز']
-            },
-            meetings: {
-                formId: 'meetingForm', tableId: 'meetingsTable',
-                fields: ['meetingPerson', 'meetingDate', 'meetingTime', 'meetingLocation', 'meetingDetails'],
-                fileField: null, filePreview: null,
-                search: 'meetingSearch', filterDate: 'meetingFilterDate', sortBy: 'meetingSortBy',
-                displayOrder: ['meetingDate', 'meetingTime', 'meetingPerson', 'meetingLocation', 'meetingDetails'],
-                defaultSort: 'dateTime',
-                headers: ['تاریخ', 'وقت', 'شخصیات', 'جگہ', 'تفصیل', 'آپشنز']
-            },
-            notifications: {
-                formId: 'notificationForm', tableId: 'notificationsTable',
-                fields: ['notificationTitle', 'notificationType', 'notificationDetails', 'notificationDate', 'notificationFiles'],
-                fileField: 'notificationFiles', filePreview: 'notificationFilesPreview',
-                search: 'notificationSearch', filterDate: 'notificationFilterDate', sortBy: 'notificationSortBy',
-                displayOrder: ['notificationDate', 'notificationTitle', 'notificationType', 'notificationDetails', 'notificationFiles'],
-                defaultSort: 'date',
-                headers: ['تاریخ', 'عنوان', 'نوعیت', 'تفصیل', 'فائلیں', 'آپشنز']
-            },
-            contacts: {
-                formId: 'contactForm', tableId: 'contactsTable',
-                fields: ['contactName', 'contactPhone', 'contactEmail', 'contactRelationship', 'contactAddress'],
-                fileField: null, filePreview: null,
-                search: 'contactSearch', filterDate: null, sortBy: 'contactSortBy',
-                displayOrder: ['contactName', 'contactPhone', 'contactEmail', 'contactRelationship', 'contactAddress'],
-                defaultSort: 'name',
-                headers: ['نام/تنظیم', 'فون', 'ای میل', 'رشتہ/معمول', 'پتہ', 'آپشنز']
-            },
-            performance: {
-                formId: 'performanceForm', tableId: 'performanceTable',
-                fields: ['performanceTitle', 'performancePeriod', 'performanceDate', 'performanceDetails', 'performanceFiles'],
-                fileField: 'performanceFiles', filePreview: 'performanceFilesPreview',
-                search: 'performanceSearch', filterDate: 'performanceFilterDate', sortBy: 'performanceSortBy',
-                displayOrder: ['performanceDate', 'performanceTitle', 'performancePeriod', 'performanceDetails', 'performanceFiles'],
-                defaultSort: 'date',
-                headers: ['تاریخ', 'عنوان', 'مدت', 'تفصیل', 'فائلیں', 'آپشنز']
-            },
-            schedules: {
-                formId: 'scheduleForm', tableId: 'schedulesTable',
-                fields: ['scheduleName', 'scheduleType', 'scheduleDate', 'scheduleTime', 'scheduleLocation', 'scheduleDetails'],
-                fileField: null, filePreview: null,
-                search: 'scheduleSearch', filterDate: 'scheduleFilterDate', sortBy: 'scheduleSortBy',
-                displayOrder: ['scheduleDate', 'scheduleTime', 'scheduleName', 'scheduleType', 'scheduleLocation', 'scheduleDetails'],
-                defaultSort: 'dateTime',
-                headers: ['تاریخ', 'وقت', 'پروگرام کا نام', 'نوعیت', 'جگہ', 'تفصیل', 'آپشنز']
-            },
-            messages: {
-                formId: 'messageForm', tableId: 'messagesTable',
-                fields: ['messageType', 'messageSenderReceiver', 'messageSubject', 'messageDetails', 'messageDate', 'messageFiles'],
-                fileField: 'messageFiles', filePreview: 'messageFilesPreview',
-                search: 'messageSearch', filterDate: 'messageFilterDate', sortBy: 'messageSortBy',
-                displayOrder: ['messageDate', 'messageType', 'messageSenderReceiver', 'messageSubject', 'messageDetails', 'messageFiles'],
-                defaultSort: 'date',
-                headers: ['تاریخ', 'نوعیت', 'بھیجنے والا/وصول کنندہ', 'مضمون', 'تفصیل', 'فائلیں', 'آپشنز']
-            },
-            letters: {
-                formId: 'letterForm', tableId: 'lettersTable',
-                fields: ['letterRecipient', 'letterSubject', 'letterDate', 'letterDetails', 'letterFiles'],
-                fileField: 'letterFiles', filePreview: 'letterFilesPreview',
-                search: 'letterSearch', filterDate: 'letterFilterDate', sortBy: 'letterSortBy',
-                displayOrder: ['letterDate', 'letterRecipient', 'letterSubject', 'letterDetails', 'letterFiles'],
-                defaultSort: 'date',
-                headers: ['تاریخ اجرا', 'وصول کنندہ', 'مضمون', 'تفصیل', 'فائلیں', 'آپشنز']
-            },
-            demands: {
-                formId: 'demandForm', tableId: 'demandsTable',
-                fields: ['demandSubject', 'demandRequester', 'demandDate', 'demandDetails', 'demandStatus', 'demandFiles'],
-                fileField: 'demandFiles', filePreview: 'demandFilesPreview',
-                search: 'demandSearch', filterDate: 'demandFilterDate', sortBy: 'demandSortBy',
-                displayOrder: ['demandDate', 'demandSubject', 'demandRequester', 'demandDetails', 'demandStatus', 'demandFiles'],
-                defaultSort: 'date',
-                headers: ['تاریخ', 'عنوان', 'مطالبہ کرنے والا', 'تفصیل', 'حالت', 'فائلیں', 'آپشنز']
-            }
-        };
-
-        let currentModule = 'tasks';
-
-        function showNotification(message, type = 'success', duration = 5000) {
-            const notificationDiv = document.getElementById('notification');
-            notificationDiv.textContent = message;
-            notificationDiv.className = `notification show ${type}`;
-            setTimeout(() => {
-                notificationDiv.classList.add('hide');
-                notificationDiv.addEventListener('animationend', () => {
-                    notificationDiv.classList.remove('show', 'hide');
-                    notificationDiv.style.display = 'none';
-                }, { once: true });
-            }, duration);
-        }
-
-        function openDB() {
-            return new Promise((resolve, reject) => {
-                const request = indexedDB.open(DB_NAME, DB_VERSION);
-
-                request.onupgradeneeded = (event) => {
-                    db = event.target.result;
-                    STORE_NAMES.forEach(storeName => {
-                        if (!db.objectStoreNames.contains(storeName)) {
-                            const objectStore = db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
-                            // Define indexes for sorting and filtering
-                            if (storeName === 'tasks') {
-                                objectStore.createIndex('taskDueDate', 'taskDueDate', { unique: false });
-                                objectStore.createIndex('taskPriority', 'taskPriority', { unique: false });
-                                objectStore.createIndex('taskStatus', 'taskStatus', { unique: false });
-                            } else if (storeName === 'reminders') {
-                                objectStore.createIndex('reminderDateTime', ['reminderDate', 'reminderTime'], { unique: false });
-                                objectStore.createIndex('reminderType', 'reminderType', { unique: false });
-                            } else if (storeName === 'urgentTasks') {
-                                objectStore.createIndex('urgentTaskDueDate', 'urgentTaskDueDate', { unique: false });
-                            } else if (storeName === 'meetings') {
-                                objectStore.createIndex('meetingDateTime', ['meetingDate', 'meetingTime'], { unique: false });
-                            } else if (storeName === 'notifications') {
-                                objectStore.createIndex('notificationDate', 'notificationDate', { unique: false });
-                                objectStore.createIndex('notificationType', 'notificationType', { unique: false });
-                            } else if (storeName === 'contacts') {
-                                objectStore.createIndex('contactName', 'contactName', { unique: false });
-                            } else if (storeName === 'performance') {
-                                objectStore.createIndex('performanceDate', 'performanceDate', { unique: false });
-                                objectStore.createIndex('performancePeriod', 'performancePeriod', { unique: false });
-                            } else if (storeName === 'schedules') {
-                                objectStore.createIndex('scheduleDateTime', ['scheduleDate', 'scheduleTime'], { unique: false });
-                                objectStore.createIndex('scheduleType', 'scheduleType', { unique: false });
-                            } else if (storeName === 'messages') {
-                                objectStore.createIndex('messageDate', 'messageDate', { unique: false });
-                                objectStore.createIndex('messageType', 'messageType', { unique: false });
-                            } else if (storeName === 'letters') {
-                                objectStore.createIndex('letterDate', 'letterDate', { unique: false });
-                            } else if (storeName === 'demands') {
-                                objectStore.createIndex('demandDate', 'demandDate', { unique: false });
-                                objectStore.createIndex('demandStatus', 'demandStatus', { unique: false });
-                            }
-                        }
-                    });
-                };
-
-                request.onsuccess = (event) => {
-                    db = event.target.result;
-                    console.log('IndexedDB opened successfully');
-                    resolve(db);
-                };
-
-                request.onerror = (event) => {
-                    console.error('IndexedDB error:', event.target.errorCode);
-                    reject(event.target.errorCode);
-                };
-            });
-        }
-
-        async function addData(storeName, data) {
-            const tx = db.transaction(storeName, 'readwrite');
-            const store = tx.objectStore(storeName);
-            return new Promise((resolve, reject) => {
-                const request = store.add(data);
-                request.onsuccess = () => {
-                    showNotification('ڈیٹا کامیابی سے محفوظ ہو گیا!');
-                    resolve(request.result);
-                };
-                request.onerror = (e) => {
-                    showNotification('ڈیٹا محفوظ کرتے وقت خرابی!', 'error');
-                    console.error('Error adding data:', e.target.error);
-                    reject(e.target.error);
-                };
-            });
-        }
-
-        async function updateData(storeName, data) {
-            const tx = db.transaction(storeName, 'readwrite');
-            const store = tx.objectStore(storeName);
-            return new Promise((resolve, reject) => {
-                const request = store.put(data);
-                request.onsuccess = () => {
-                    showNotification('ڈیٹا کامیابی سے اپ ڈیٹ ہو گیا!');
-                    resolve(request.result);
-                };
-                request.onerror = (e) => {
-                    showNotification('ڈیٹا اپ ڈیٹ کرتے وقت خرابی!', 'error');
-                    console.error('Error updating data:', e.target.error);
-                    reject(e.target.error);
-                };
-            });
-        }
-
-        async function deleteData(storeName, id) {
-            const tx = db.transaction(storeName, 'readwrite');
-            const store = tx.objectStore(storeName);
-            return new Promise((resolve, reject) => {
-                const request = store.delete(id);
-                request.onsuccess = () => {
-                    showNotification('ڈیٹا کامیابی سے حذف ہو گیا!');
-                    resolve();
-                };
-                request.onerror = (e) => {
-                    showNotification('ڈیٹا حذف کرتے وقت خرابی!', 'error');
-                    console.error('Error deleting data:', e.target.error);
-                    reject(e.target.error);
-                };
-            });
-        }
-
-        async function getAllData(storeName) {
-            const tx = db.transaction(storeName, 'readonly');
-            const store = tx.objectStore(storeName);
-            return new Promise((resolve, reject) => {
-                const request = store.getAll();
-                request.onsuccess = () => resolve(request.result);
-                request.onerror = (e) => reject(e.target.error);
-            });
-        }
-
-        async function getDataById(storeName, id) {
-            const tx = db.transaction(storeName, 'readonly');
-            const store = tx.objectStore(storeName);
-            return new Promise((resolve, reject) => {
-                const request = store.get(id);
-                request.onsuccess = () => resolve(request.result);
-                request.onerror = (e) => reject(e.target.error);
-            });
-        }
-
-        async function renderTable(storeName) {
-            const data = await getAllData(storeName);
-            const tableBody = document.querySelector(`#${moduleConfigs[storeName].tableId} tbody`);
-            tableBody.innerHTML = '';
-            const config = moduleConfigs[storeName];
-
-            let sortedData = data;
-            const sortBy = document.getElementById(config.sortBy)?.value || config.defaultSort;
-
-            if (sortBy) {
-                sortedData.sort((a, b) => {
-                    let valA, valB;
-                    let desc = false;
-
-                    if (sortBy.endsWith('Desc')) {
-                        desc = true;
-                        const actualSortBy = sortBy.replace('Desc', '');
-                        valA = a[actualSortBy] || (a[`${actualSortBy}Date`] && a[`${actualSortBy}Time`] ? `${a[`${actualSortBy}Date`]}T${a[`${actualSortBy}Time`]}` : '');
-                        valB = b[actualSortBy] || (b[`${actualSortBy}Date`] && b[`${actualSortBy}Time`] ? `${b[`${actualSortBy}Date`]}T${b[`${actualSortBy}Time`]}` : '');
-                    } else {
-                        valA = a[sortBy] || (a[`${sortBy}Date`] && a[`${sortBy}Time`] ? `${a[`${sortBy}Date`]}T${a[`${sortBy}Time`]}` : '');
-                        valB = b[sortBy] || (b[`${sortBy}Date`] && b[`${sortBy}Time`] ? `${b[`${sortBy}Date`]}T${b[`${sortBy}Time`]}` : '');
-                    }
-
-                    if (sortBy.includes('Date') || sortBy.includes('Time')) { // Handle date/time sorting
-                        valA = new Date(valA);
-                        valB = new Date(valB);
-                    } else if (sortBy === 'priority') {
-                        const priorityOrder = { 'انتہائی اہم': 4, 'اہم': 3, 'اوسط': 2, 'معمولی': 1 };
-                        valA = priorityOrder[a.taskPriority];
-                        valB = priorityOrder[b.taskPriority];
-                    } else if (sortBy === 'status') {
-                        const statusOrder = { 'زیر التوا': 1, 'مکمل': 2, 'منظور شدہ': 3, 'مسترد شدہ': 4 };
-                        valA = statusOrder[a.demandStatus || a.taskStatus];
-                        valB = statusOrder[b.demandStatus || b.taskStatus];
-                    }
-
-                    if (valA < valB) return desc ? 1 : -1;
-                    if (valA > valB) return desc ? -1 : 1;
-                    return 0;
-                });
-            }
-
-            const searchTerm = document.getElementById(config.search)?.value.toLowerCase() || '';
-            const filterDate = document.getElementById(config.filterDate)?.value;
-
-            const filteredData = sortedData.filter(item => {
-                const matchesSearch = searchTerm === '' || Object.values(item).some(val =>
-                    typeof val === 'string' && val.toLowerCase().includes(searchTerm)
-                );
-                const dateField = config.displayOrder.find(f => f.toLowerCase().includes('date'));
-                const matchesDate = !filterDate || (dateField && item[dateField] && item[dateField].includes(filterDate));
-                return matchesSearch && matchesDate;
-            });
-
-            filteredData.forEach(item => {
-                const row = tableBody.insertRow();
-                // Assign data-label for responsive tables
-                config.displayOrder.forEach((field, index) => {
-                    const cell = row.insertCell();
-                    cell.setAttribute('data-label', config.headers[index] || '');
-
-                    let value = item[field];
-                    if (field.includes('Files') && value instanceof Array) {
-                        if (value.length > 0) {
-                            cell.innerHTML = value.map((file, idx) => {
-                                const filename = file.name || `فائل ${idx + 1}`;
-                                if (file.type && file.type.startsWith('image/')) {
-                                    return `<a href="${file.data}" target="_blank">${filename} (تصویر)</a>`;
-                                } else if (file.type === 'application/pdf') {
-                                    return `<a href="${file.data}" target="_blank">${filename} (پی ڈی ایف)</a>`;
-                                } else {
-                                    return `<a href="${file.data}" target="_blank">${filename}</a>`;
-                                }
-                            }).join('<br>');
-                        } else {
-                            cell.textContent = 'کوئی فائل نہیں';
-                        }
-                    } else if (field.includes('Status')) {
-                        let statusClass = '';
-                        if (value === 'مکمل' || value === 'منظور شدہ') {
-                            statusClass = 'complete';
-                        } else if (value === 'زیر التوا') {
-                            statusClass = 'pending';
-                        } else if (value === 'مسترد شدہ') {
-                            statusClass = 'rejected';
-                        } else if (value === 'اہم' || value === 'انتہائی اہم') {
-                             statusClass = 'urgent';
-                        } else {
-                            statusClass = 'info';
-                        }
-                        cell.innerHTML = `<span class="status-badge ${statusClass}">${value}</span>`;
-                    } else {
-                        cell.textContent = value || '';
-                    }
-                });
-
-                const actionsCell = row.insertCell();
-                actionsCell.setAttribute('data-label', config.headers[config.headers.length - 1] || ''); // Label for action column
-
-                const editButton = document.createElement('button');
-                editButton.textContent = 'ترمیم کریں';
-                editButton.className = 'edit-btn';
-                editButton.onclick = () => editItem(storeName, item.id);
-                actionsCell.appendChild(editButton);
-
-                const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'حذف کریں';
-                deleteButton.className = 'delete-btn';
-                deleteButton.onclick = () => confirmAndDelete(storeName, item.id);
-                actionsCell.appendChild(deleteButton);
-
-                // Add WhatsApp/SMS buttons for contacts module
-                if (storeName === 'contacts' && item.contactPhone) {
-                    const whatsappBtn = document.createElement('button');
-                    whatsappBtn.textContent = 'WhatsApp';
-                    whatsappBtn.className = 'whatsapp-btn';
-                    // Clean phone number for URL (remove spaces, dashes etc.)
-                    const cleanPhone = item.contactPhone.replace(/\D/g, '');
-                    whatsappBtn.onclick = () => window.open(`https://wa.me/${cleanPhone}`, '_blank');
-                    actionsCell.appendChild(whatsappBtn);
-
-                    const smsBtn = document.createElement('button');
-                    smsBtn.textContent = 'SMS';
-                    smsBtn.className = 'sms-btn';
-                    smsBtn.onclick = () => window.open(`sms:${cleanPhone}`, '_blank');
-                    actionsCell.appendChild(smsBtn);
-                }
-            });
-        }
-
-        async function setupForm(storeName) {
-            const config = moduleConfigs[storeName];
-            const form = document.getElementById(config.formId);
-            const idField = document.getElementById(`${storeName.slice(0, -1)}Id`); // e.g., taskId, reminderId
-            const clearButton = document.getElementById(`clear${storeName.slice(0, -1).charAt(0).toUpperCase() + storeName.slice(0, -1).slice(1)}Form`);
-
-            idField.value = ''; // Clear ID for new entry
-
-            form.reset();
-            if (config.filePreview) {
-                document.getElementById(config.filePreview).innerHTML = '';
-            }
-
-            form.onsubmit = async (event) => {
-                event.preventDefault();
-                const item = {};
-                for (const field of config.fields) {
-                    const input = document.getElementById(field);
-                    if (input.type === 'file') {
-                        // Merge existing files with newly selected ones
-                        const existingFiles = idField.value ? (await getDataById(storeName, parseInt(idField.value)))[field] || [] : [];
-                        const newFiles = input.files.length > 0 ? await readFilesAsDataURLs(input.files) : [];
-                        item[field] = [...existingFiles, ...newFiles];
-                    } else if (input.type === 'checkbox') {
-                        item[field] = input.checked;
-                    } else {
-                        item[field] = input.value;
-                    }
-                }
-
-                if (idField.value) {
-                    item.id = parseInt(idField.value);
-                    await updateData(storeName, item);
-                } else {
-                    await addData(storeName, item);
-                }
-                form.reset();
-                if (config.filePreview) {
-                    document.getElementById(config.filePreview).innerHTML = '';
-                }
-                idField.value = '';
-                await renderTable(storeName);
-            };
-
-            clearButton.onclick = () => {
-                form.reset();
-                idField.value = '';
-                if (config.filePreview) {
-                    document.getElementById(config.filePreview).innerHTML = '';
-                }
-            };
-
-            if (config.fileField) {
-                const fileInput = document.getElementById(config.fileField);
-                const filePreviewDiv = document.getElementById(config.filePreview);
-                fileInput.onchange = (event) => displayFilePreviews(event.target.files, filePreviewDiv);
-            }
-        }
-
-        async function editItem(storeName, id) {
-            const config = moduleConfigs[storeName];
-            const item = await getDataById(storeName, id);
-            if (item) {
-                const idField = document.getElementById(`${storeName.slice(0, -1)}Id`);
-                idField.value = id;
-                for (const field of config.fields) {
-                    const input = document.getElementById(field);
-                    if (input.type === 'file') {
-                        const filePreviewDiv = document.getElementById(config.filePreview);
-                        filePreviewDiv.innerHTML = '';
-                        if (item[field] && item[field].length > 0) {
-                            item[field].forEach((fileData, index) => {
-                                const fileEntryDiv = document.createElement('div');
-                                const fileNameSpan = document.createElement('span');
-                                fileNameSpan.textContent = fileData.name || `فائل ${index + 1}`;
-                                fileEntryDiv.appendChild(fileNameSpan);
-
-                                if (fileData.type && fileData.type.startsWith('image/')) {
-                                    const img = document.createElement('img');
-                                    img.src = fileData.data;
-                                    fileEntryDiv.prepend(img);
-                                }
-
-                                const removeBtn = document.createElement('button');
-                                removeBtn.textContent = 'x';
-                                removeBtn.onclick = () => {
-                                    fileEntryDiv.remove();
-                                    // Remove the file from the item's data array
-                                    item[field].splice(index, 1);
-                                    // The updated 'item' will be saved on form submission
-                                };
-                                fileEntryDiv.appendChild(removeBtn);
-                                filePreviewDiv.appendChild(fileEntryDiv);
-                            });
-                        }
-                    } else if (input.type === 'checkbox') {
-                        input.checked = item[field] || false;
-                    } else {
-                        input.value = item[field] || '';
-                    }
-                }
-                showNotification('ریکارڈ ترمیم کے لیے تیار ہے!', 'info');
-            }
-        }
-
-        async function confirmAndDelete(storeName, id) {
-            if (confirm('کیا آپ واقعی اس ریکارڈ کو حذف کرنا چاہتے ہیں؟')) {
-                await deleteData(storeName, id);
-                await renderTable(storeName);
-            }
-        }
-
-        function readFilesAsDataURLs(files) {
-            const filePromises = Array.from(files).map(file => {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = (e) => resolve({
-                        name: file.name,
-                        type: file.type,
-                        size: file.size,
-                        data: e.target.result // Base64 encoded string
-                    });
-                    reader.onerror = (e) => reject(e);
-                    reader.readAsDataURL(file);
-                });
-            });
-            return Promise.all(filePromises);
-        }
-
-        function displayFilePreviews(files, previewDiv) {
-            previewDiv.innerHTML = ''; // Clear existing previews for new selections
-            Array.from(files).forEach(file => {
-                const fileEntryDiv = document.createElement('div');
-                const fileNameSpan = document.createElement('span');
-                fileNameSpan.textContent = file.name;
-                fileEntryDiv.appendChild(fileNameSpan);
-
-                if (file.type.startsWith('image/')) {
-                    const img = document.createElement('img');
-                    img.src = URL.createObjectURL(file);
-                    img.onload = () => URL.revokeObjectURL(img.src); // Clean up memory
-                    fileEntryDiv.prepend(img);
-                }
-
-                // For new files selected, there's no direct "remove from item" logic
-                // as they haven't been added to the item yet. Clearing the input field
-                // or re-selecting files will reset this preview.
-                const removeBtn = document.createElement('button');
-                removeBtn.textContent = 'x';
-                removeBtn.onclick = () => {
-                    fileEntryDiv.remove();
-                    // If you want to allow individual removal of *newly selected* files
-                    // you'd need a more complex state management for the file input.
-                    // For simplicity, for now, this just removes the visual preview.
-                };
-                fileEntryDiv.appendChild(removeBtn);
-                previewDiv.appendChild(fileEntryDiv);
-            });
-        }
-
-
-        function switchModule(moduleName) {
-            const sections = document.querySelectorAll('.module-section');
-            sections.forEach(section => section.classList.remove('active'));
-            document.getElementById(moduleName).classList.add('active');
-            currentModule = moduleName;
-            setupForm(moduleName);
-            renderTable(moduleName);
-        }
-
-        document.querySelectorAll('.sidebar button').forEach(button => {
-            button.onclick = (e) => switchModule(e.target.dataset.module);
-        });
-
-        // Initial setup
-        openDB().then(() => {
-            switchModule('tasks'); // Default module on load
-            registerServiceWorker(); // Register service worker
-            setupNotificationChecks(); // Setup recurring notification checks
-        });
-
-        function filterAndSort(moduleName) {
-            renderTable(moduleName);
-        }
-
-        // Theme Switcher
-        const themeToggle = document.getElementById('themeToggle');
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-theme');
-            const isDark = document.body.classList.contains('dark-theme');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        });
-
-        // Apply saved theme
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            document.body.classList.add('dark-theme');
-        }
-
-        // Backup and Restore
-        async function backupData() {
-            const allData = {};
-            for (const storeName of STORE_NAMES) {
-                allData[storeName] = await getAllData(storeName);
-            }
-            const dataStr = JSON.stringify(allData, null, 2);
-            const blob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `daftar_munazzam_backup_${new Date().toISOString().slice(0,10)}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            showNotification('ڈیٹا بیک اپ کامیابی سے ڈاؤن لوڈ ہو گیا!');
-        }
-
-        async function restoreData() {
-            const fileInput = document.getElementById('restoreFile');
-            if (!fileInput.files.length) {
-                showNotification('براہ کرم بحال کرنے کے لیے ایک JSON فائل منتخب کریں!', 'error');
-                return;
-            }
-
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-
-            reader.onload = async (e) => {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    const tx = db.transaction(STORE_NAMES, 'readwrite');
-                    const restorePromises = STORE_NAMES.map(storeName => {
-                        return new Promise(async (resolve, reject) => {
-                            const store = tx.objectStore(storeName);
-                            const clearRequest = store.clear();
-                            clearRequest.onsuccess = () => {
-                                if (data[storeName]) {
-                                    Promise.all(data[storeName].map(item => store.add(item)))
-                                        .then(resolve)
-                                        .catch(reject);
-                                } else {
-                                    resolve();
-                                }
-                            };
-                            clearRequest.onerror = reject;
-                        });
-                    });
-                    await Promise.all(restorePromises);
-                    await tx.oncomplete;
-                    showNotification('ڈیٹا کامیابی سے بحال ہو گیا! براہ کرم صفحہ ریفریش کریں۔', 'success');
-                    // Reload data for current module
-                    switchModule(currentModule);
-                } catch (error) {
-                    showNotification('ڈیٹا بحال کرتے وقت خرابی: غلط فائل فارمیٹ یا ڈیٹا کرپٹ ہے!', 'error');
-                    console.error('Restore error:', error);
-                }
-            };
-
-            reader.onerror = (e) => {
-                showNotification('فائل پڑھتے وقت خرابی!', 'error');
-                console.error('File read error:', e);
-            };
-
-            reader.readAsText(file);
-        }
-
-        // Print & Export
-        function printTable(tableId) {
-            const table = document.getElementById(tableId);
-            const printWindow = window.open('', '', 'height=600,width=800');
-            printWindow.document.write('<html><head><title>دفتر منظم</title>');
-            printWindow.document.write('<style>');
-            // Inline print styles for self-contained HTML
-            printWindow.document.write(document.querySelector('style').textContent);
-            printWindow.document.write('</style>');
-            printWindow.document.write('</head><body>');
-            printWindow.document.write(`<h1>${document.querySelector(`#${currentModule} h2`).textContent}</h1>`);
-            printWindow.document.write(table.outerHTML);
-            printWindow.document.write('</body></html>');
-            printWindow.document.close();
-            printWindow.print();
-        }
-
-        function exportTable(tableId, format) {
-            const table = document.getElementById(tableId);
-            const rows = table.querySelectorAll('tr');
-            const data = [];
-            const config = moduleConfigs[currentModule];
-
-            // Get headers from config
-            const headers = config.headers.slice(0, -1); // Exclude "آپشنز" column
-            data.push(headers);
-
-            // Get data rows
-            for (let i = 1; i < rows.length; i++) {
-                const cols = rows[i].querySelectorAll('td');
-                const rowData = Array.from(cols).slice(0, -1).map(td => { // Exclude "آپشنز" column
-                    if (td.querySelector('.status-badge')) {
-                        return td.querySelector('.status-badge').textContent.trim();
-                    }
-                    if (td.querySelector('a')) {
-                        return Array.from(td.querySelectorAll('a')).map(a => a.textContent.trim()).join(', ');
-                    }
-                    return td.textContent.trim();
-                });
-                data.push(rowData);
-            }
-
-            if (format === 'csv') {
-                // Ensure correct BOM for UTF-8 in CSV for Excel to read Urdu
-                let csvContent = "\uFEFF" + data.map(e => e.map(cell => `"${cell.replace(/"/g, '""')}"`).join(",")).join("\n");
-                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `${currentModule}_data.csv`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                showNotification('ڈیٹا کامیابی سے CSV میں ایکسپورٹ ہو گیا!');
-            } else if (format === 'pdf') {
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF({
-                    orientation: 'landscape',
-                    unit: 'pt',
-                    format: 'a4'
-                });
-
-                // For jsPDF to correctly render Urdu, you usually need to embed the font.
-                // This is a complex topic for a single HTML file without a build step.
-                // The `addFont` call is here as a placeholder. For actual Urdu PDF export,
-                // you would likely need to:
-                // 1. Convert Jameel Noori Nastaleeq to a Base64 string.
-                // 2. Use `doc.addFileToVFS('JameelNooriNastaleeq.ttf', 'BASE64_STRING_OF_FONT');`
-                // 3. Then `doc.addFont('JameelNooriNastaleeq.ttf', 'JameelNooriNastaleeq', 'normal');`
-                // 4. And set `font: 'JameelNooriNastaleeq'` in autoTable styles.
-                // For demonstration, it might show garbled text without proper font embedding.
-
-                // Example of embedding for a simple font:
-                // doc.addFont('Amiri-Regular.ttf', 'Amiri', 'normal'); // Example for Arabic/Urdu
-                // doc.setFont('Amiri');
-
-                doc.addFont('JameelNooriNastaleeq.ttf', 'JameelNooriNastaleeq', 'normal');
-                doc.setFont('JameelNooriNastaleeq');
-
-                doc.text(document.querySelector(`#${currentModule} h2`).textContent, doc.internal.pageSize.getWidth() / 2, 40, { align: 'center' });
-
-                doc.autoTable({
-                    head: [data[0]],
-                    body: data.slice(1),
-                    startY: 70,
-                    styles: {
-                        font: 'JameelNooriNastaleeq',
-                        fontSize: 10,
-                        cellPadding: 6,
-                        halign: 'right', // Right-align text for RTL
-                        direction: 'rtl' // Set text direction to RTL
-                    },
-                    headStyles: {
-                        fillColor: [0, 123, 255],
-                        textColor: 255,
-                        fontStyle: 'bold'
-                    },
-                    columnStyles: {
-                        // Apply specific styles if needed for columns
-                    },
-                    didParseCell: function(cellData) {
-                        // This callback allows you to modify cell content/style before rendering
-                        // For example, if you want to ensure the status badge text is just the text
-                        // and not the HTML, which autoTable already handles by default for text content.
-                    }
-                });
-
-                doc.save(`${currentModule}_data.pdf`);
-                showNotification('ڈیٹا کامیابی سے PDF میں ایکسپورٹ ہو گیا!');
-            }
-        }
-
-        // --- Push Notifications (Web Push API) ---
-        async function registerServiceWorker() {
-            if ('serviceWorker' in navigator) {
-                try {
-                    const registration = await navigator.serviceWorker.register('/sw.js');
-                    console.log('Service Worker registered with scope:', registration.scope);
-                } catch (error) {
-                    console.error('Service Worker registration failed:', error);
-                    showNotification('نوٹیفیکیشن کے لیے سروس ورکر رجسٹر نہیں ہو سکا!', 'error');
-                }
-            } else {
-                showNotification('آپ کا براؤزر سروس ورکرز کو سپورٹ نہیں کرتا۔', 'info');
-            }
-        }
-
-        // Request Notification Permission on button click
-        document.getElementById('requestNotificationPermission').addEventListener('click', async () => {
-            if (!('Notification' in window)) {
-                showNotification('یہ براؤزر نوٹیفیکیشن کو سپورٹ نہیں کرتا۔', 'error');
-                return;
-            }
-
-            const permission = await Notification.requestPermission();
-            if (permission === 'granted') {
-                showNotification('نوٹیفیکیشن کی اجازت دے دی گئی ہے!', 'success');
-                // You could subscribe to push here if you had a backend to send VAPID keys
-                // For client-side triggered notifications, no further subscription is needed.
-            } else {
-                showNotification('نوٹیفیکیشن کی اجازت سے انکار کر دیا گیا۔', 'info');
-            }
-        });
-
-        // Function to show a native browser notification
-        function showNativeNotification(title, body, type = 'info') {
-            if (Notification.permission === 'granted') {
-                const iconPath = 'icon-192x192.png'; // Make sure you have an icon file at root or specify full path
-                new Notification(title, {
-                    body: body,
-                    icon: iconPath,
-                    tag: `app-notification-${type}-${Date.now()}`, // Group notifications
-                    renotify: true
-                });
-            } else {
-                console.warn('Notification permission not granted, cannot show native notification.');
-                // Fallback to in-app notification if native is not allowed
-                showNotification(title + ': ' + body, type);
-            }
-        }
-
-
-        // Notification Alerts for Reminders and Urgent Tasks
-        let reminderCheckInterval;
-        let urgentTaskCheckInterval;
-
-        function setupNotificationChecks() {
-            // Clear existing intervals to prevent duplicates if function is called again
-            if (reminderCheckInterval) clearInterval(reminderCheckInterval);
-            if (urgentTaskCheckInterval) clearInterval(urgentTaskCheckInterval);
-
-            reminderCheckInterval = setInterval(checkReminders, 60 * 1000); // Check every minute
-            urgentTaskCheckInterval = setInterval(checkUrgentTasks, 60 * 1000); // Check every minute
-            checkReminders(); // Run on load
-            checkUrgentTasks(); // Run on load
-        }
-
-        async function checkReminders() {
-            const reminders = await getAllData('reminders');
-            const now = new Date();
-            const today = now.toISOString().slice(0, 10); // YYYY-MM-DD
-            const currentTime = now.toTimeString().slice(0, 5); // HH:MM
-
-            reminders.forEach(reminder => {
-                if (reminder.reminderDate === today && reminder.reminderTime && reminder.reminderType === 'الارم') {
-                    // Check if current time matches reminder time, and add a small buffer for precision issues
-                    const reminderDateTime = new Date(`${reminder.reminderDate}T${reminder.reminderTime}`);
-                    const diffMinutes = (reminderDateTime.getTime() - now.getTime()) / (1000 * 60);
-
-                    // Alert if within 1 minute of the reminder time
-                    if (Math.abs(diffMinutes) < 1) {
-                        showNativeNotification('یاد دہانی کا الارم!', `"${reminder.reminderTitle}" کیلئے وقت آ گیا ہے: ${reminder.reminderDetails}`, 'info');
-                    }
-                }
-            });
-        }
-
-        async function checkUrgentTasks() {
-            const urgentTasks = await getAllData('urgentTasks');
-            const now = new Date();
-            const today = now.toISOString().slice(0, 10);
-
-            urgentTasks.forEach(task => {
-                if (task.urgentTaskDueDate === today) {
-                    if (task.urgentTaskDueTime) {
-                        const taskDateTime = new Date(`${task.urgentTaskDueDate}T${task.urgentTaskDueTime}`);
-                        const diffMinutes = (taskDateTime.getTime() - now.getTime()) / (1000 * 60);
-
-                        // Alert if within 1 minute of the due time
-                        if (Math.abs(diffMinutes) < 1) {
-                            showNativeNotification('فوری کام کی اطلاع!', `فوری کام "${task.urgentTaskName}" کا آخری وقت آ گیا ہے!`, 'urgent');
-                        }
-                    } else {
-                        // For urgent tasks without a specific time, alert once on the due date.
-                        // This requires tracking if an alert for this specific task on this specific day has been shown.
-                        // For simplicity in this self-contained HTML, it will re-alert if logic is re-run.
-                        // A more robust solution would add a `lastAlerted` timestamp to the IndexedDB record.
-                        if (!task.alertedToday || task.alertedToday !== today) {
-                            showNativeNotification('فوری کام کی اطلاع!', `آج "${task.urgentTaskName}" کا آخری دن ہے!`, 'urgent');
-                            // Update the item to mark it as alerted for today
-                            task.alertedToday = today;
-                            updateData('urgentTasks', task); // This will re-trigger renderTable, be mindful of performance for many items.
-                        }
-                    }
-                }
-            });
-        }
-    </script>
-</body>
+<div class="theme-switcher">
+<button id="themeToggle">تھیم بدلیں</button>
+<button id="requestNotificationPermission">نوٹیفیکیشن کی اجازت دیں</button>
+</div>
+<div class="notification" id="notification"></div>
+<div class="container">
+<aside class="sidebar">
+<h2>دفتر منظم</h2>
+<nav>
+<ul>
+<li><button data-module="tasks">کام</button></li>
+<li><button data-module="reminders">مختلف امور کی یاد دہانیاں</button></li>
+<li><button data-module="urgentTasks">فوری کرنے کے کام</button></li>
+<li><button data-module="meetings">ملاقاتیں</button></li>
+<li><button data-module="notifications">اطلاعات</button></li>
+<li><button data-module="contacts">رابطے</button></li>
+<li><button data-module="performance">کارگزاریاں</button></li>
+<li><button data-module="schedules">پروگراموں کا شیڈول</button></li>
+<li><button data-module="messages">پیغامات</button></li>
+<li><button data-module="letters">خطوط</button></li>
+<li><button data-module="demands">مطالبات</button></li>
+<li><button data-module="backupRestore">بیک اپ / ری سٹور</button></li>
+</ul>
+</nav>
+</aside>
+<main class="main-content">
+<!-- کام Module -->
+<section class="module-section active" id="tasks">
+<h2>کام – روزمرہ یا خاص نوعیت کے کام</h2>
+<form id="taskForm">
+<input id="taskId" type="hidden"/>
+<div class="form-group">
+<label for="taskName">کام کا عنوان:</label>
+<input id="taskName" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="taskDescription">تفصیل:</label>
+<textarea id="taskDescription" rows="3"></textarea>
+</div>
+<div class="form-group">
+<label for="taskDueDate">آخری تاریخ:</label>
+<input id="taskDueDate" type="date"/>
+</div>
+<div class="form-group">
+<label for="taskPriority">اہمیت:</label>
+<select id="taskPriority">
+<option value="معمولی">معمولی</option>
+<option value="اوسط">اوسط</option>
+<option value="اہم">اہم</option>
+<option value="انتہائی اہم">انتہائی اہم</option>
+</select>
+</div>
+<div class="form-group">
+<label for="taskStatus">حالت:</label>
+<select id="taskStatus">
+<option value="زیر التوا">زیر التوا</option>
+<option value="مکمل">مکمل</option>
+</select>
+</div>
+<div class="form-group">
+<label for="taskFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
+<input accept=".pdf,image/*" id="taskFiles" multiple="" type="file"/>
+<div class="file-upload-preview" id="taskFilesPreview"></div>
+</div>
+<div class="action-buttons">
+<button type="submit">محفوظ کریں</button>
+<button id="clearTaskForm" type="button">صاف کریں</button>
+</div>
+</form>
+<h3>کاموں کی فہرست</h3>
+<div class="controls">
+<input id="taskSearch" placeholder="تلاش کریں..." type="text"/>
+<input id="taskFilterDate" type="date"/>
+<select id="taskSortBy">
+<option value="dueDate">تاریخ وار (قدیم ترین)</option>
+<option value="dueDateDesc">تاریخ وار (جدید ترین)</option>
+<option value="priority">اہمیت</option>
+<option value="status">حالت</option>
+</select>
+<button onclick="filterAndSort('tasks')">فلٹر / ترتیب دیں</button>
+</div>
+<div class="export-options">
+<button class="print-btn" onclick="printTable('tasksTable')">پرنٹ کریں</button>
+<button onclick="exportTable('tasksTable', 'csv')">CSV ایکسپورٹ کریں</button>
+<button onclick="exportTable('tasksTable', 'pdf')">PDF ایکسپورٹ کریں</button>
+</div>
+<table id="tasksTable">
+<thead>
+<tr>
+<th>تاریخ</th>
+<th>کام کا عنوان</th>
+<th>تفصیل</th>
+<th>اہمیت</th>
+<th>حالت</th>
+<th>فائلیں</th>
+<th>آپشنز</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</section>
+<!-- مختلف امور کی یاد دہانیاں Module -->
+<section class="module-section" id="reminders">
+<h2>مختلف امور کی یاد دہانیاں – نوٹس، الارم، یا تاریخ وار یاددہانی</h2>
+<form id="reminderForm">
+<input id="reminderId" type="hidden"/>
+<div class="form-group">
+<label for="reminderTitle">یاد دہانی کا عنوان:</label>
+<input id="reminderTitle" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="reminderDetails">تفصیل:</label>
+<textarea id="reminderDetails" rows="3"></textarea>
+</div>
+<div class="form-group">
+<label for="reminderDate">تاریخ:</label>
+<input id="reminderDate" required="" type="date"/>
+</div>
+<div class="form-group">
+<label for="reminderTime">وقت:</label>
+<input id="reminderTime" type="time"/>
+</div>
+<div class="form-group">
+<label for="reminderType">نوعیت:</label>
+<select id="reminderType">
+<option value="نوٹس">نوٹس</option>
+<option value="الارم">الارم</option>
+<option value="تاریخ وار">تاریخ وار</option>
+</select>
+</div>
+<div class="action-buttons">
+<button type="submit">محفوظ کریں</button>
+<button id="clearReminderForm" type="button">صاف کریں</button>
+</div>
+</form>
+<h3>یاد دہانیوں کی فہرست</h3>
+<div class="controls">
+<input id="reminderSearch" placeholder="تلاش کریں..." type="text"/>
+<input id="reminderFilterDate" type="date"/>
+<select id="reminderSortBy">
+<option value="dateTime">تاریخ و وقت (قدیم ترین)</option>
+<option value="dateTimeDesc">تاریخ و وقت (جدید ترین)</option>
+<option value="type">نوعیت</option>
+</select>
+<button onclick="filterAndSort('reminders')">فلٹر / ترتیب دیں</button>
+</div>
+<div class="export-options">
+<button class="print-btn" onclick="printTable('remindersTable')">پرنٹ کریں</button>
+<button onclick="exportTable('remindersTable', 'csv')">CSV ایکسپورٹ کریں</button>
+<button onclick="exportTable('remindersTable', 'pdf')">PDF ایکسپورٹ کریں</button>
+</div>
+<table id="remindersTable">
+<thead>
+<tr>
+<th>عنوان</th>
+<th>تفصیل</th>
+<th>تاریخ</th>
+<th>وقت</th>
+<th>نوعیت</th>
+<th>آپشنز</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</section>
+<!-- فوری کرنے کے کام Module -->
+<section class="module-section" id="urgentTasks">
+<h2>فوری کرنے کے کام – اہم، فوری نوعیت کے امور</h2>
+<form id="urgentTaskForm">
+<input id="urgentTaskId" type="hidden"/>
+<div class="form-group">
+<label for="urgentTaskName">فوری کام کا عنوان:</label>
+<input id="urgentTaskName" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="urgentTaskDescription">تفصیل:</label>
+<textarea id="urgentTaskDescription" rows="3"></textarea>
+</div>
+<div class="form-group">
+<label for="urgentTaskDueDate">آخری تاریخ:</label>
+<input id="urgentTaskDueDate" required="" type="date"/>
+</div>
+<div class="form-group">
+<label for="urgentTaskDueTime">آخری وقت:</label>
+<input id="urgentTaskDueTime" type="time"/>
+</div>
+<div class="action-buttons">
+<button type="submit">محفوظ کریں</button>
+<button id="clearUrgentTaskForm" type="button">صاف کریں</button>
+</div>
+</form>
+<h3>فوری کاموں کی فہرست</h3>
+<div class="controls">
+<input id="urgentTaskSearch" placeholder="تلاش کریں..." type="text"/>
+<input id="urgentTaskFilterDate" type="date"/>
+<select id="urgentTaskSortBy">
+<option value="dueDate">تاریخ وار (قدیم ترین)</option>
+<option value="dueDateDesc">تاریخ وار (جدید ترین)</option>
+</select>
+<button onclick="filterAndSort('urgentTasks')">فلٹر / ترتیب دیں</button>
+</div>
+<div class="export-options">
+<button class="print-btn" onclick="printTable('urgentTasksTable')">پرنٹ کریں</button>
+<button onclick="exportTable('urgentTasksTable', 'csv')">CSV ایکسپورٹ کریں</button>
+<button onclick="exportTable('urgentTasksTable', 'pdf')">PDF ایکسپورٹ کریں</button>
+</div>
+<table id="urgentTasksTable">
+<thead>
+<tr>
+<th>عنوان</th>
+<th>تفصیل</th>
+<th>آخری تاریخ</th>
+<th>آخری وقت</th>
+<th>آپشنز</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</section>
+<!-- ملاقاتیں Module -->
+<section class="module-section" id="meetings">
+<h2>ملاقاتیں – شخصیات، وقت، جگہ، تفصیل</h2>
+<form id="meetingForm">
+<input id="meetingId" type="hidden"/>
+<div class="form-group">
+<label for="meetingPerson">شخصیات:</label>
+<input id="meetingPerson" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="meetingDate">تاریخ:</label>
+<input id="meetingDate" required="" type="date"/>
+</div>
+<div class="form-group">
+<label for="meetingTime">وقت:</label>
+<input id="meetingTime" required="" type="time"/>
+</div>
+<div class="form-group">
+<label for="meetingLocation">جگہ:</label>
+<input id="meetingLocation" type="text"/>
+</div>
+<div class="form-group">
+<label for="meetingDetails">تفصیل:</label>
+<textarea id="meetingDetails" rows="3"></textarea>
+</div>
+<div class="action-buttons">
+<button type="submit">محفوظ کریں</button>
+<button id="clearMeetingForm" type="button">صاف کریں</button>
+</div>
+</form>
+<h3>ملاقاتوں کی فہرست</h3>
+<div class="controls">
+<input id="meetingSearch" placeholder="تلاش کریں..." type="text"/>
+<input id="meetingFilterDate" type="date"/>
+<select id="meetingSortBy">
+<option value="dateTime">تاریخ و وقت (قدیم ترین)</option>
+<option value="dateTimeDesc">تاریخ و وقت (جدید ترین)</option>
+</select>
+<button onclick="filterAndSort('meetings')">فلٹر / ترتیب دیں</button>
+</div>
+<div class="export-options">
+<button class="print-btn" onclick="printTable('meetingsTable')">پرنٹ کریں</button>
+<button onclick="exportTable('meetingsTable', 'csv')">CSV ایکسپورٹ کریں</button>
+<button onclick="exportTable('meetingsTable', 'pdf')">PDF ایکسپورٹ کریں</button>
+</div>
+<table id="meetingsTable">
+<thead>
+<tr>
+<th>تاریخ</th>
+<th>وقت</th>
+<th>شخصیات</th>
+<th>جگہ</th>
+<th>تفصیل</th>
+<th>آپشنز</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</section>
+<!-- اطلاعات Module -->
+<section class="module-section" id="notifications">
+<h2>اطلاعات – داخلی و خارجی اطلاع نامے</h2>
+<form id="notificationForm">
+<input id="notificationId" type="hidden"/>
+<div class="form-group">
+<label for="notificationTitle">اطلاع کا عنوان:</label>
+<input id="notificationTitle" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="notificationType">نوعیت:</label>
+<select id="notificationType">
+<option value="داخلی">داخلی</option>
+<option value="خارجی">خارجی</option>
+</select>
+</div>
+<div class="form-group">
+<label for="notificationDetails">تفصیل:</label>
+<textarea id="notificationDetails" rows="3"></textarea>
+</div>
+<div class="form-group">
+<label for="notificationDate">تاریخ:</label>
+<input id="notificationDate" required="" type="date"/>
+</div>
+<div class="form-group">
+<label for="notificationFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
+<input accept=".pdf,image/*" id="notificationFiles" multiple="" type="file"/>
+<div class="file-upload-preview" id="notificationFilesPreview"></div>
+</div>
+<div class="action-buttons">
+<button type="submit">محفوظ کریں</button>
+<button id="clearNotificationForm" type="button">صاف کریں</button>
+</div>
+</form>
+<h3>اطلاعات کی فہرست</h3>
+<div class="controls">
+<input id="notificationSearch" placeholder="تلاش کریں..." type="text"/>
+<input id="notificationFilterDate" type="date"/>
+<select id="notificationSortBy">
+<option value="date">تاریخ وار (قدیم ترین)</option>
+<option value="dateDesc">تاریخ وار (جدید ترین)</option>
+<option value="type">نوعیت</option>
+</select>
+<button onclick="filterAndSort('notifications')">فلٹر / ترتیب دیں</button>
+</div>
+<div class="export-options">
+<button class="print-btn" onclick="printTable('notificationsTable')">پرنٹ کریں</button>
+<button onclick="exportTable('notificationsTable', 'csv')">CSV ایکسپورٹ کریں</button>
+<button onclick="exportTable('notificationsTable', 'pdf')">PDF ایکسپورٹ کریں</button>
+</div>
+<table id="notificationsTable">
+<thead>
+<tr>
+<th>تاریخ</th>
+<th>عنوان</th>
+<th>نوعیت</th>
+<th>تفصیل</th>
+<th>فائلیں</th>
+<th>آپشنز</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</section>
+<!-- رابطے Module -->
+<section class="module-section" id="contacts">
+<h2>رابطے – افراد، تنظیمیں، فون، ای میل، رشتہ</h2>
+<form id="contactForm">
+<input id="contactId" type="hidden"/>
+<div class="form-group">
+<label for="contactName">نام/تنظیم:</label>
+<input id="contactName" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="contactPhone">فون:</label>
+<input id="contactPhone" type="tel"/>
+</div>
+<div class="form-group">
+<label for="contactEmail">ای میل:</label>
+<input id="contactEmail" type="email"/>
+</div>
+<div class="form-group">
+<label for="contactRelationship">رشتہ/معمول:</label>
+<input id="contactRelationship" type="text"/>
+</div>
+<div class="form-group">
+<label for="contactAddress">پتہ:</label>
+<textarea id="contactAddress" rows="2"></textarea>
+</div>
+<div class="action-buttons">
+<button type="submit">محفوظ کریں</button>
+<button id="clearContactForm" type="button">صاف کریں</button>
+</div>
+</form>
+<h3>رابطوں کی فہرست</h3>
+<div class="controls">
+<input id="contactSearch" placeholder="تلاش کریں..." type="text"/>
+<select id="contactSortBy">
+<option value="name">نام (الف تا ی)</option>
+<option value="nameDesc">نام (ی تا الف)</option>
+</select>
+<button onclick="filterAndSort('contacts')">فلٹر / ترتیب دیں</button>
+</div>
+<div class="export-options">
+<button class="print-btn" onclick="printTable('contactsTable')">پرنٹ کریں</button>
+<button onclick="exportTable('contactsTable', 'csv')">CSV ایکسپورٹ کریں</button>
+<button onclick="exportTable('contactsTable', 'pdf')">PDF ایکسپورٹ کریں</button>
+</div>
+<table id="contactsTable">
+<thead>
+<tr>
+<th>نام/تنظیم</th>
+<th>فون</th>
+<th>ای میل</th>
+<th>رشتہ/معمول</th>
+<th>پتہ</th>
+<th>آپشنز</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</section>
+<!-- کارگزاریاں Module -->
+<section class="module-section" id="performance">
+<h2>کارگزاریاں – ماہانہ، سہ ماہی، سالانہ کارکردگی</h2>
+<form id="performanceForm">
+<input id="performanceId" type="hidden"/>
+<div class="form-group">
+<label for="performanceTitle">کارگزاری کا عنوان:</label>
+<input id="performanceTitle" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="performancePeriod">مدت:</label>
+<select id="performancePeriod">
+<option value="ماہانہ">ماہانہ</option>
+<option value="سہ ماہی">سہ ماہی</option>
+<option value="سالانہ">سالانہ</option>
+<option value="دیگر">دیگر</option>
+</select>
+</div>
+<div class="form-group">
+<label for="performanceDate">تاریخ:</label>
+<input id="performanceDate" required="" type="date"/>
+</div>
+<div class="form-group">
+<label for="performanceDetails">تفصیل:</label>
+<textarea id="performanceDetails" rows="3"></textarea>
+</div>
+<div class="form-group">
+<label for="performanceFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
+<input accept=".pdf,image/*" id="performanceFiles" multiple="" type="file"/>
+<div class="file-upload-preview" id="performanceFilesPreview"></div>
+</div>
+<div class="action-buttons">
+<button type="submit">محفوظ کریں</button>
+<button id="clearPerformanceForm" type="button">صاف کریں</button>
+</div>
+</form>
+<h3>کارگزاریوں کی فہرست</h3>
+<div class="controls">
+<input id="performanceSearch" placeholder="تلاش کریں..." type="text"/>
+<input id="performanceFilterDate" type="date"/>
+<select id="performanceSortBy">
+<option value="date">تاریخ وار (قدیم ترین)</option>
+<option value="dateDesc">تاریخ وار (جدید ترین)</option>
+<option value="period">مدت</option>
+</select>
+<button onclick="filterAndSort('performance')">فلٹر / ترتیب دیں</button>
+</div>
+<div class="export-options">
+<button class="print-btn" onclick="printTable('performanceTable')">پرنٹ کریں</button>
+<button onclick="exportTable('performanceTable', 'csv')">CSV ایکسپورٹ کریں</button>
+<button onclick="exportTable('performanceTable', 'pdf')">PDF ایکسپورٹ کریں</button>
+</div>
+<table id="performanceTable">
+<thead>
+<tr>
+<th>تاریخ</th>
+<th>عنوان</th>
+<th>مدت</th>
+<th>تفصیل</th>
+<th>فائلیں</th>
+<th>آپشنز</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</section>
+<!-- پروگراموں کا شیڈول Module -->
+<section class="module-section" id="schedules">
+<h2>پروگراموں کا شیڈول – اجتماعات، مجلس، ختم بخاری، دیگر</h2>
+<form id="scheduleForm">
+<input id="scheduleId" type="hidden"/>
+<div class="form-group">
+<label for="scheduleName">پروگرام کا نام:</label>
+<input id="scheduleName" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="scheduleType">نوعیت:</label>
+<input id="scheduleType" placeholder="اجتماعات، مجلس، ختم بخاری، دیگر" type="text"/>
+</div>
+<div class="form-group">
+<label for="scheduleDate">تاریخ:</label>
+<input id="scheduleDate" required="" type="date"/>
+</div>
+<div class="form-group">
+<label for="scheduleTime">وقت:</label>
+<input id="scheduleTime" required="" type="time"/>
+</div>
+<div class="form-group">
+<label for="scheduleLocation">جگہ:</label>
+<input id="scheduleLocation" type="text"/>
+</div>
+<div class="form-group">
+<label for="scheduleDetails">تفصیل:</label>
+<textarea id="scheduleDetails" rows="3"></textarea>
+</div>
+<div class="action-buttons">
+<button type="submit">محفوظ کریں</button>
+<button id="clearScheduleForm" type="button">صاف کریں</button>
+</div>
+</form>
+<h3>پروگراموں کے شیڈول کی فہرست</h3>
+<div class="controls">
+<input id="scheduleSearch" placeholder="تلاش کریں..." type="text"/>
+<input id="scheduleFilterDate" type="date"/>
+<select id="scheduleSortBy">
+<option value="dateTime">تاریخ و وقت (قدیم ترین)</option>
+<option value="dateTimeDesc">تاریخ و وقت (جدید ترین)</option>
+<option value="type">نوعیت</option>
+</select>
+<button onclick="filterAndSort('schedules')">فلٹر / ترتیب دیں</button>
+</div>
+<div class="export-options">
+<button class="print-btn" onclick="printTable('schedulesTable')">پرنٹ کریں</button>
+<button onclick="exportTable('schedulesTable', 'csv')">CSV ایکسپورٹ کریں</button>
+<button onclick="exportTable('schedulesTable', 'pdf')">PDF ایکسپورٹ کریں</button>
+</div>
+<table id="schedulesTable">
+<thead>
+<tr>
+<th>تاریخ</th>
+<th>وقت</th>
+<th>پروگرام کا نام</th>
+<th>نوعیت</th>
+<th>جگہ</th>
+<th>تفصیل</th>
+<th>آپشنز</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</section>
+<!-- پیغامات Module -->
+<section class="module-section" id="messages">
+<h2>پیغامات – دفتر کو موصول یا دفتر کی جانب سے ارسال</h2>
+<form id="messageForm">
+<input id="messageId" type="hidden"/>
+<div class="form-group">
+<label for="messageType">نوعیت:</label>
+<select id="messageType">
+<option value="موصول شدگان">موصول شدگان</option>
+<option value="ارسال کردہ">ارسال کردہ</option>
+</select>
+</div>
+<div class="form-group">
+<label for="messageSenderReceiver">بھیجنے والا/وصول کنندہ:</label>
+<input id="messageSenderReceiver" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="messageSubject">مضمون:</label>
+<input id="messageSubject" type="text"/>
+</div>
+<div class="form-group">
+<label for="messageDetails">تفصیل:</label>
+<textarea id="messageDetails" rows="3"></textarea>
+</div>
+<div class="form-group">
+<label for="messageDate">تاریخ:</label>
+<input id="messageDate" required="" type="date"/>
+</div>
+<div class="form-group">
+<label for="messageFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
+<input accept=".pdf,image/*" id="messageFiles" multiple="" type="file"/>
+<div class="file-upload-preview" id="messageFilesPreview"></div>
+</div>
+<div class="action-buttons">
+<button type="submit">محفوظ کریں</button>
+<button id="clearMessageForm" type="button">صاف کریں</button>
+</div>
+</form>
+<h3>پیغامات کی فہرست</h3>
+<div class="controls">
+<input id="messageSearch" placeholder="تلاش کریں..." type="text"/>
+<input id="messageFilterDate" type="date"/>
+<select id="messageSortBy">
+<option value="date">تاریخ وار (قدیم ترین)</option>
+<option value="dateDesc">تاریخ وار (جدید ترین)</option>
+<option value="type">نوعیت</option>
+</select>
+<button onclick="filterAndSort('messages')">فلٹر / ترتیب دیں</button>
+</div>
+<div class="export-options">
+<button class="print-btn" onclick="printTable('messagesTable')">پرنٹ کریں</button>
+<button onclick="exportTable('messagesTable', 'csv')">CSV ایکسپورٹ کریں</button>
+<button onclick="exportTable('messagesTable', 'pdf')">PDF ایکسپورٹ کریں</button>
+</div>
+<table id="messagesTable">
+<thead>
+<tr>
+<th>تاریخ</th>
+<th>نوعیت</th>
+<th>بھیجنے والا/وصول کنندہ</th>
+<th>مضمون</th>
+<th>تفصیل</th>
+<th>فائلیں</th>
+<th>آپشنز</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</section>
+<!-- خطوط Module -->
+<section class="module-section" id="letters">
+<h2>خطوط – مختلف افراد/شعبہ جات کو جاری کردہ خطوط</h2>
+<form id="letterForm">
+<input id="letterId" type="hidden"/>
+<div class="form-group">
+<label for="letterRecipient">وصول کنندہ (فرد/شعبہ):</label>
+<input id="letterRecipient" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="letterSubject">مضمون:</label>
+<input id="letterSubject" type="text"/>
+</div>
+<div class="form-group">
+<label for="letterDate">تاریخ اجرا:</label>
+<input id="letterDate" required="" type="date"/>
+</div>
+<div class="form-group">
+<label for="letterDetails">تفصیل:</label>
+<textarea id="letterDetails" rows="3"></textarea>
+</div>
+<div class="form-group">
+<label for="letterFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
+<input accept=".pdf,image/*" id="letterFiles" multiple="" type="file"/>
+<div class="file-upload-preview" id="letterFilesPreview"></div>
+</div>
+<div class="action-buttons">
+<button type="submit">محفوظ کریں</button>
+<button id="clearLetterForm" type="button">صاف کریں</button>
+</div>
+</form>
+<h3>خطوط کی فہرست</h3>
+<div class="controls">
+<input id="letterSearch" placeholder="تلاش کریں..." type="text"/>
+<input id="letterFilterDate" type="date"/>
+<select id="letterSortBy">
+<option value="date">تاریخ وار (قدیم ترین)</option>
+<option value="dateDesc">تاریخ وار (جدید ترین)</option>
+</select>
+<button onclick="filterAndSort('letters')">فلٹر / ترتیب دیں</button>
+</div>
+<div class="export-options">
+<button class="print-btn" onclick="printTable('lettersTable')">پرنٹ کریں</button>
+<button onclick="exportTable('lettersTable', 'csv')">CSV ایکسپورٹ کریں</button>
+<button onclick="exportTable('lettersTable', 'pdf')">PDF ایکسپورٹ کریں</button>
+</div>
+<table id="lettersTable">
+<thead>
+<tr>
+<th>تاریخ اجرا</th>
+<th>وصول کنندہ</th>
+<th>مضمون</th>
+<th>تفصیل</th>
+<th>فائلیں</th>
+<th>آپشنز</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</section>
+<!-- مطالبات Module -->
+<section class="module-section" id="demands">
+<h2>مطالبات – وسائل یا دیگر امور کے مطالبات</h2>
+<form id="demandForm">
+<input id="demandId" type="hidden"/>
+<div class="form-group">
+<label for="demandSubject">مطالبے کا عنوان:</label>
+<input id="demandSubject" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="demandRequester">مطالبہ کرنے والا:</label>
+<input id="demandRequester" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="demandDate">تاریخ مطالبہ:</label>
+<input id="demandDate" required="" type="date"/>
+</div>
+<div class="form-group">
+<label for="demandDetails">تفصیل:</label>
+<textarea id="demandDetails" rows="3"></textarea>
+</div>
+<div class="form-group">
+<label for="demandStatus">حالت:</label>
+<select id="demandStatus">
+<option value="زیر التوا">زیر التوا</option>
+<option value="مکمل">مکمل</option>
+<option value="منظور شدہ">منظور شدہ</option>
+<option value="مسترد شدہ">مسترد شدہ</option>
+</select>
+</div>
+<div class="form-group">
+<label for="demandFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
+<input accept=".pdf,image/*" id="demandFiles" multiple="" type="file"/>
+<div class="file-upload-preview" id="demandFilesPreview"></div>
+</div>
+<div class="action-buttons">
+<button type="submit">محفوظ کریں</button>
+<button id="clearDemandForm" type="button">صاف کریں</button>
+</div>
+</form>
+<h3>مطالبات کی فہرست</h3>
+<div class="controls">
+<input id="demandSearch" placeholder="تلاش کریں..." type="text"/>
+<input id="demandFilterDate" type="date"/>
+<select id="demandSortBy">
+<option value="date">تاریخ وار (قدیم ترین)</option>
+<option value="dateDesc">تاریخ وار (جدید ترین)</option>
+<option value="status">حالت</option>
+</select>
+<button onclick="filterAndSort('demands')">فلٹر / ترتیب دیں</button>
+</div>
+<div class="export-options">
+<button class="print-btn" onclick="printTable('demandsTable')">پرنٹ کریں</button>
+<button onclick="exportTable('demandsTable', 'csv')">CSV ایکسپورٹ کریں</button>
+<button onclick="exportTable('demandsTable', 'pdf')">PDF ایکسپورٹ کریں</button>
+</div>
+<table id="demandsTable">
+<thead>
+<tr>
+<th>تاریخ</th>
+<th>عنوان</th>
+<th>مطالبہ کرنے والا</th>
+<th>تفصیل</th>
+<th>حالت</th>
+<th>فائلیں</th>
+<th>آپشنز</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</section>
+<!-- بیک اپ / ری سٹور Module -->
+<section class="module-section" id="backupRestore">
+<h2>ڈیٹا بیک اپ و ری سٹور (JSON)</h2>
+<h3>ڈیٹا بیک اپ</h3>
+<p>اپنی تمام ڈیٹا کو JSON فائل میں ڈاؤن لوڈ کریں۔</p>
+<div class="action-buttons">
+<button onclick="backupData()">بیک اپ ڈاؤن لوڈ کریں</button>
+</div>
+<h3>ڈیٹا ری سٹور</h3>
+<p>JSON فائل سے ڈیٹا اپ لوڈ کر کے اپنے ڈیٹا کو بحال کریں۔</p>
+<div class="form-group">
+<label for="restoreFile">JSON فائل منتخب کریں:</label>
+<input accept=".json" id="restoreFile" type="file"/>
+</div>
+<div class="action-buttons">
+<button onclick="restoreData()">ڈیٹا بحال کریں</button>
+</div>
+<p style="color: red;"><strong>وارننگ:</strong> ڈیٹا بحال کرنے سے موجودہ ڈیٹا تبدیل ہو سکتا ہے۔</p>
+</section>
+</main>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+<script type="module">
+  import { Workbox } from 'https://storage.googleapis.com/workbox-cdn/releases/7.0.0/workbox-window.prod.mjs';
+
+  const swUrl = './sw.js';
+  const wb = new Workbox(swUrl);
+
+  // This event fires when a new service worker has installed but is waiting to activate.
+  wb.addEventListener('waiting', (event) => {
+    console.log('A new service worker is waiting to activate.');
+    // This sends a message to the waiting service worker, telling it to activate.
+    wb.messageSW({ type: 'SKIP_WAITING' });
+  });
+
+  // This event fires when the new service worker has taken control.
+  wb.addEventListener('controlling', (event) => {
+    console.log('The new service worker is now in control. Reloading page for updates...');
+    window.location.reload();
+  });
+
+  // Register the service worker.
+  wb.register();
+</script></body>
 </html>
