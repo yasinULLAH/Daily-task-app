@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 
 <html dir="rtl" lang="ur">
+
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<meta content="دفتر منظم - آپ کا مکمل دفتری معاون" name="title"/>
-<meta content="دفتر منظم ایک جامع ویب ایپلیکیشن ہے جو روزمرہ کے دفتری امور جیسے کام، یاددہانی، ملاقاتیں، پیغامات، اور رابطوں کا انتظام کرتی ہے۔ پاکستان میں دفتری استعمال کے لیے ڈیزائن کیا گیا ہے۔" name="description"/>
-<meta content="دفتر منظم, دفتری انتظام, ٹاسک مینیجر, ریمائنڈر ایپ, ملاقاتیں, اطلاعات, رابطے, کارکردگی, شیڈول, پیغامات, خطوط, مطالبات, پاکستان, یسین اللہ" name="keywords"/>
-<meta content="Yasin Ullah, Pakistan" name="author"/>
-<title>دفتر منظم</title>
-<link href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text y=%22.9em%22 font-size=%2290%22&gt;🏢&lt;/text&gt;&lt;/svg&gt;" rel="icon"/>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<style>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="دفتر منظم - آپ کا مکمل دفتری معاون" name="title" />
+    <meta
+        content="دفتر منظم ایک جامع ویب ایپلیکیشن ہے جو روزمرہ کے دفتری امور جیسے کام، یاددہانی، ملاقاتیں، پیغامات، اور رابطوں کا انتظام کرتی ہے۔ پاکستان میں دفتری استعمال کے لیے ڈیزائن کیا گیا ہے۔"
+        name="description" />
+    <meta
+        content="دفتر منظم, دفتری انتظام, ٹاسک مینیجر, ریمائنڈر ایپ, ملاقاتیں, اطلاعات, رابطے, کارکردگی, شیڈول, پیغامات, خطوط, مطالبات, پاکستان, یسین اللہ"
+        name="keywords" />
+    <meta content="Yasin Ullah, Pakistan" name="author" />
+    <title>دفتر منظم</title>
+    <link
+        href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text y=%22.9em%22 font-size=%2290%22&gt;🏢&lt;/text&gt;&lt;/svg&gt;"
+        rel="icon" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400..700&display=swap');
 
         :root {
@@ -1079,842 +1086,843 @@
             }
         }
     </style>
-<link href="manifest.json" rel="manifest"/>
+    <link href="manifest.json" rel="manifest" />
 </head>
+
 <body>
-<div class="theme-switcher">
-<button id="themeToggle"><i class="fas fa-adjust"></i></button>
-<button id="requestNotificationPermission"><i class="fas fa-bell"></i></button>
-</div>
-<div class="notification" id="notification"></div>
-<div class="container">
-<aside class="sidebar">
-<nav>
-<ul>
-<li><button data-module="tasks"><i class="fas fa-tasks"></i> کام</button></li>
-<li><button data-module="reminders"><i class="fas fa-bell"></i> مختلف امور کی یاد دہانیاں</button>
-</li>
-<li><button data-module="urgentTasks"><i class="fas fa-exclamation-triangle"></i> فوری کرنے کے
+    <div class="theme-switcher">
+        <button id="themeToggle"><i class="fas fa-adjust"></i></button>
+        <button id="requestNotificationPermission"><i class="fas fa-bell"></i></button>
+    </div>
+    <div class="notification" id="notification"></div>
+    <div class="container">
+        <aside class="sidebar">
+            <nav>
+                <ul>
+                    <li><button data-module="tasks"><i class="fas fa-tasks"></i> کام</button></li>
+                    <li><button data-module="reminders"><i class="fas fa-bell"></i> مختلف امور کی یاد دہانیاں</button>
+                    </li>
+                    <li><button data-module="urgentTasks"><i class="fas fa-exclamation-triangle"></i> فوری کرنے کے
                             کام</button></li>
-<li><button data-module="meetings"><i class="fas fa-handshake"></i> ملاقاتیں</button></li>
-<li><button data-module="notifications"><i class="fas fa-info-circle"></i> اطلاعات</button></li>
-<li><button data-module="contacts"><i class="fas fa-address-book"></i> رابطے</button></li>
-<li><button data-module="performance"><i class="fas fa-chart-line"></i> کارگزاریاں</button></li>
-<li><button data-module="schedules"><i class="fas fa-calendar-alt"></i> پروگراموں کا شیڈول</button>
-</li>
-<li><button data-module="messages"><i class="fas fa-envelope"></i> پیغامات</button></li>
-<li><button data-module="letters"><i class="fas fa-file-alt"></i> خطوط</button></li>
-<li><button data-module="demands"><i class="fas fa-money-bill-wave"></i> مطالبات</button></li>
-<li><button data-module="backupRestore"><i class="fas fa-cloud-download-alt"></i> بیک اپ / ری
+                    <li><button data-module="meetings"><i class="fas fa-handshake"></i> ملاقاتیں</button></li>
+                    <li><button data-module="notifications"><i class="fas fa-info-circle"></i> اطلاعات</button></li>
+                    <li><button data-module="contacts"><i class="fas fa-address-book"></i> رابطے</button></li>
+                    <li><button data-module="performance"><i class="fas fa-chart-line"></i> کارگزاریاں</button></li>
+                    <li><button data-module="schedules"><i class="fas fa-calendar-alt"></i> پروگراموں کا شیڈول</button>
+                    </li>
+                    <li><button data-module="messages"><i class="fas fa-envelope"></i> پیغامات</button></li>
+                    <li><button data-module="letters"><i class="fas fa-file-alt"></i> خطوط</button></li>
+                    <li><button data-module="demands"><i class="fas fa-money-bill-wave"></i> مطالبات</button></li>
+                    <li><button data-module="backupRestore"><i class="fas fa-cloud-download-alt"></i> بیک اپ / ری
                             سٹور</button></li>
-</ul>
-</nav>
-</aside>
-<main class="main-content">
-<section class="module-section active" id="tasks">
-<h2><i class="fas fa-tasks"></i> کام – روزمرہ یا خاص نوعیت کے کام</h2>
-<form id="taskForm">
-<input id="taskId" type="hidden"/>
-<div class="form-group">
-<label for="taskName">کام کا عنوان:</label>
-<input id="taskName" required="" type="text"/>
-</div>
-<div class="form-group">
-<label for="taskDescription">تفصیل:</label>
-<textarea id="taskDescription" rows="3"></textarea>
-</div>
-<div class="form-group">
-<label for="taskDueDate">آخری تاریخ:</label>
-<input id="taskDueDate" type="date"/>
-</div>
-<div class="form-group">
-<label for="taskPriority">اہمیت:</label>
-<select id="taskPriority">
-<option value="معمولی">معمولی</option>
-<option value="اوسط">اوسط</option>
-<option value="اہم">اہم</option>
-<option value="انتہائی اہم">انتہائی اہم</option>
-</select>
-</div>
-<div class="form-group">
-<label for="taskStatus">حالت:</label>
-<select id="taskStatus">
-<option value="زیر التوا">زیر التوا</option>
-<option value="مکمل">مکمل</option>
-</select>
-</div>
-<div class="form-group">
-<label for="taskFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
-<input accept=".pdf,image/*" id="taskFiles" multiple="" type="file"/>
-<div class="file-upload-preview" id="taskFilesPreview"></div>
-</div>
-<div class="action-buttons">
-<button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
-<button id="clearTaskForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
-</div>
-</form>
-<h3><i class="fas fa-list"></i> کاموں کی فہرست</h3>
-<div class="controls">
-<input id="taskSearch" placeholder="تلاش کریں..." type="text"/>
-<input id="taskFilterDate" type="date"/>
-<select id="taskSortBy">
-<option value="dueDate">تاریخ وار (قدیم ترین)</option>
-<option value="dueDateDesc">تاریخ وار (جدید ترین)</option>
-<option value="priority">اہمیت</option>
-<option value="status">حالت</option>
-</select>
-<button onclick="filterAndSort('tasks')"><i class="fas fa-filter"></i> فلٹر / ترتیب دیں</button>
-</div>
-<div class="export-options">
-<button class="print-btn" onclick="printTable('tasksTable')"><i class="fas fa-print"></i> پرنٹ
+                </ul>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <section class="module-section active" id="tasks">
+                <h2><i class="fas fa-tasks"></i> کام – روزمرہ یا خاص نوعیت کے کام</h2>
+                <form id="taskForm">
+                    <input id="taskId" type="hidden" />
+                    <div class="form-group">
+                        <label for="taskName">کام کا عنوان:</label>
+                        <input id="taskName" required="" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label for="taskDescription">تفصیل:</label>
+                        <textarea id="taskDescription" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskDueDate">آخری تاریخ:</label>
+                        <input id="taskDueDate" type="date" />
+                    </div>
+                    <div class="form-group">
+                        <label for="taskPriority">اہمیت:</label>
+                        <select id="taskPriority">
+                            <option value="معمولی">معمولی</option>
+                            <option value="اوسط">اوسط</option>
+                            <option value="اہم">اہم</option>
+                            <option value="انتہائی اہم">انتہائی اہم</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskStatus">حالت:</label>
+                        <select id="taskStatus">
+                            <option value="زیر التوا">زیر التوا</option>
+                            <option value="مکمل">مکمل</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
+                        <input accept=".pdf,image/*" id="taskFiles" multiple="" type="file" />
+                        <div class="file-upload-preview" id="taskFilesPreview"></div>
+                    </div>
+                    <div class="action-buttons">
+                        <button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
+                        <button id="clearTaskForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
+                    </div>
+                </form>
+                <h3><i class="fas fa-list"></i> کاموں کی فہرست</h3>
+                <div class="controls">
+                    <input id="taskSearch" placeholder="تلاش کریں..." type="text" />
+                    <input id="taskFilterDate" type="date" />
+                    <select id="taskSortBy">
+                        <option value="dueDate">تاریخ وار (قدیم ترین)</option>
+                        <option value="dueDateDesc">تاریخ وار (جدید ترین)</option>
+                        <option value="priority">اہمیت</option>
+                        <option value="status">حالت</option>
+                    </select>
+                    <button onclick="filterAndSort('tasks')"><i class="fas fa-filter"></i> فلٹر / ترتیب دیں</button>
+                </div>
+                <div class="export-options">
+                    <button class="print-btn" onclick="printTable('tasksTable')"><i class="fas fa-print"></i> پرنٹ
                         کریں</button>
-<button onclick="exportTable('tasksTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
+                    <button onclick="exportTable('tasksTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
                         ایکسپورٹ
                         کریں</button>
-<button onclick="exportTable('tasksTable', 'image')"><i class="fas fa-image"></i> تصویر ایکسپورٹ
+                    <button onclick="exportTable('tasksTable', 'image')"><i class="fas fa-image"></i> تصویر ایکسپورٹ
                         کریں</button>
-</div>
-<div style="overflow-x: auto;">
-<table id="tasksTable">
-<thead>
-<tr>
-<th>تاریخ</th>
-<th>کام کا عنوان</th>
-<th>تفصیل</th>
-<th>اہمیت</th>
-<th>حالت</th>
-<th>فائلیں</th>
-<th>آپشنز</th>
-</tr>
-</thead>
-<tbody>
-</tbody>
-</table>
-</div>
-</section>
-<section class="module-section" id="reminders">
-<h2><i class="fas fa-bell"></i> مختلف امور کی یاد دہانیاں – نوٹس، الارم، یا تاریخ وار یاددہانی</h2>
-<form id="reminderForm">
-<input id="reminderId" type="hidden"/>
-<div class="form-group">
-<label for="reminderTitle">یاد دہانی کا عنوان:</label>
-<input id="reminderTitle" required="" type="text"/>
-</div>
-<div class="form-group">
-<label for="reminderDetails">تفصیل:</label>
-<textarea id="reminderDetails" rows="3"></textarea>
-</div>
-<div class="form-group">
-<label for="reminderDate">تاریخ:</label>
-<input id="reminderDate" required="" type="date"/>
-</div>
-<div class="form-group">
-<label for="reminderTime">وقت:</label>
-<input id="reminderTime" type="time"/>
-</div>
-<div class="form-group">
-<label for="reminderType">نوعیت:</label>
-<select id="reminderType">
-<option value="نوٹس">نوٹس</option>
-<option value="الارم">الارم</option>
-<option value="تاریخ وار">تاریخ وار</option>
-</select>
-</div>
-<div class="action-buttons">
-<button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
-<button id="clearReminderForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
-</div>
-</form>
-<h3><i class="fas fa-list-alt"></i> یاد دہانیوں کی فہرست</h3>
-<div class="controls">
-<input id="reminderSearch" placeholder="تلاش کریں..." type="text"/>
-<input id="reminderFilterDate" type="date"/>
-<select id="reminderSortBy">
-<option value="dateTime">تاریخ و وقت (قدیم ترین)</option>
-<option value="dateTimeDesc">تاریخ و وقت (جدید ترین)</option>
-<option value="type">نوعیت</option>
-</select>
-<button onclick="filterAndSort('reminders')"><i class="fas fa-filter"></i> فلٹر / ترتیب دیں</button>
-</div>
-<div class="export-options">
-<button class="print-btn" onclick="printTable('remindersTable')"><i class="fas fa-print"></i> پرنٹ
+                </div>
+                <div style="overflow-x: auto;">
+                    <table id="tasksTable">
+                        <thead>
+                            <tr>
+                                <th>تاریخ</th>
+                                <th>کام کا عنوان</th>
+                                <th>تفصیل</th>
+                                <th>اہمیت</th>
+                                <th>حالت</th>
+                                <th>فائلیں</th>
+                                <th>آپشنز</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section class="module-section" id="reminders">
+                <h2><i class="fas fa-bell"></i> مختلف امور کی یاد دہانیاں – نوٹس، الارم، یا تاریخ وار یاددہانی</h2>
+                <form id="reminderForm">
+                    <input id="reminderId" type="hidden" />
+                    <div class="form-group">
+                        <label for="reminderTitle">یاد دہانی کا عنوان:</label>
+                        <input id="reminderTitle" required="" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label for="reminderDetails">تفصیل:</label>
+                        <textarea id="reminderDetails" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="reminderDate">تاریخ:</label>
+                        <input id="reminderDate" required="" type="date" />
+                    </div>
+                    <div class="form-group">
+                        <label for="reminderTime">وقت:</label>
+                        <input id="reminderTime" type="time" />
+                    </div>
+                    <div class="form-group">
+                        <label for="reminderType">نوعیت:</label>
+                        <select id="reminderType">
+                            <option value="نوٹس">نوٹس</option>
+                            <option value="الارم">الارم</option>
+                            <option value="تاریخ وار">تاریخ وار</option>
+                        </select>
+                    </div>
+                    <div class="action-buttons">
+                        <button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
+                        <button id="clearReminderForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
+                    </div>
+                </form>
+                <h3><i class="fas fa-list-alt"></i> یاد دہانیوں کی فہرست</h3>
+                <div class="controls">
+                    <input id="reminderSearch" placeholder="تلاش کریں..." type="text" />
+                    <input id="reminderFilterDate" type="date" />
+                    <select id="reminderSortBy">
+                        <option value="dateTime">تاریخ و وقت (قدیم ترین)</option>
+                        <option value="dateTimeDesc">تاریخ و وقت (جدید ترین)</option>
+                        <option value="type">نوعیت</option>
+                    </select>
+                    <button onclick="filterAndSort('reminders')"><i class="fas fa-filter"></i> فلٹر / ترتیب دیں</button>
+                </div>
+                <div class="export-options">
+                    <button class="print-btn" onclick="printTable('remindersTable')"><i class="fas fa-print"></i> پرنٹ
                         کریں</button>
-<button onclick="exportTable('remindersTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
+                    <button onclick="exportTable('remindersTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
                         ایکسپورٹ
                         کریں</button>
-<button onclick="exportTable('remindersTable', 'image')"><i class="fas fa-image"></i> تصویر ایکسپورٹ
+                    <button onclick="exportTable('remindersTable', 'image')"><i class="fas fa-image"></i> تصویر ایکسپورٹ
                         کریں</button>
-</div>
-<div style="overflow-x: auto;">
-<table id="remindersTable">
-<thead>
-<tr>
-<th>عنوان</th>
-<th>تفصیل</th>
-<th>تاریخ</th>
-<th>وقت</th>
-<th>نوعیت</th>
-<th>آپشنز</th>
-</tr>
-</thead>
-<tbody>
-</tbody>
-</table>
-</div>
-</section>
-<section class="module-section" id="urgentTasks">
-<h2><i class="fas fa-exclamation-triangle"></i> فوری کرنے کے کام – اہم، فوری نوعیت کے امور</h2>
-<form id="urgentTaskForm">
-<input id="urgentTaskId" type="hidden"/>
-<div class="form-group">
-<label for="urgentTaskName">فوری کام کا عنوان:</label>
-<input id="urgentTaskName" required="" type="text"/>
-</div>
-<div class="form-group">
-<label for="urgentTaskDescription">تفصیل:</label>
-<textarea id="urgentTaskDescription" rows="3"></textarea>
-</div>
-<div class="form-group">
-<label for="urgentTaskDueDate">آخری تاریخ:</label>
-<input id="urgentTaskDueDate" required="" type="date"/>
-</div>
-<div class="form-group">
-<label for="urgentTaskDueTime">آخری وقت:</label>
-<input id="urgentTaskDueTime" type="time"/>
-</div>
-<div class="action-buttons">
-<button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
-<button id="clearUrgentTaskForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
-</div>
-</form>
-<h3><i class="fas fa-clipboard-list"></i> فوری کاموں کی فہرست</h3>
-<div class="controls">
-<input id="urgentTaskSearch" placeholder="تلاش کریں..." type="text"/>
-<input id="urgentTaskFilterDate" type="date"/>
-<select id="urgentTaskSortBy">
-<option value="dueDate">تاریخ وار (قدیم ترین)</option>
-<option value="dueDateDesc">تاریخ وار (جدید ترین)</option>
-</select>
-<button onclick="filterAndSort('urgentTasks')"><i class="fas fa-filter"></i> فلٹر / ترتیب
+                </div>
+                <div style="overflow-x: auto;">
+                    <table id="remindersTable">
+                        <thead>
+                            <tr>
+                                <th>عنوان</th>
+                                <th>تفصیل</th>
+                                <th>تاریخ</th>
+                                <th>وقت</th>
+                                <th>نوعیت</th>
+                                <th>آپشنز</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section class="module-section" id="urgentTasks">
+                <h2><i class="fas fa-exclamation-triangle"></i> فوری کرنے کے کام – اہم، فوری نوعیت کے امور</h2>
+                <form id="urgentTaskForm">
+                    <input id="urgentTaskId" type="hidden" />
+                    <div class="form-group">
+                        <label for="urgentTaskName">فوری کام کا عنوان:</label>
+                        <input id="urgentTaskName" required="" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label for="urgentTaskDescription">تفصیل:</label>
+                        <textarea id="urgentTaskDescription" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="urgentTaskDueDate">آخری تاریخ:</label>
+                        <input id="urgentTaskDueDate" required="" type="date" />
+                    </div>
+                    <div class="form-group">
+                        <label for="urgentTaskDueTime">آخری وقت:</label>
+                        <input id="urgentTaskDueTime" type="time" />
+                    </div>
+                    <div class="action-buttons">
+                        <button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
+                        <button id="clearUrgentTaskForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
+                    </div>
+                </form>
+                <h3><i class="fas fa-clipboard-list"></i> فوری کاموں کی فہرست</h3>
+                <div class="controls">
+                    <input id="urgentTaskSearch" placeholder="تلاش کریں..." type="text" />
+                    <input id="urgentTaskFilterDate" type="date" />
+                    <select id="urgentTaskSortBy">
+                        <option value="dueDate">تاریخ وار (قدیم ترین)</option>
+                        <option value="dueDateDesc">تاریخ وار (جدید ترین)</option>
+                    </select>
+                    <button onclick="filterAndSort('urgentTasks')"><i class="fas fa-filter"></i> فلٹر / ترتیب
                         دیں</button>
-</div>
-<div class="export-options">
-<button class="print-btn" onclick="printTable('urgentTasksTable')"><i class="fas fa-print"></i> پرنٹ
+                </div>
+                <div class="export-options">
+                    <button class="print-btn" onclick="printTable('urgentTasksTable')"><i class="fas fa-print"></i> پرنٹ
                         کریں</button>
-<button onclick="exportTable('urgentTasksTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
+                    <button onclick="exportTable('urgentTasksTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
                         ایکسپورٹ
                         کریں</button>
-<button onclick="exportTable('urgentTasksTable', 'image')"><i class="fas fa-image"></i> تصویر
+                    <button onclick="exportTable('urgentTasksTable', 'image')"><i class="fas fa-image"></i> تصویر
                         ایکسپورٹ
                         کریں</button>
-</div>
-<div style="overflow-x: auto;">
-<table id="urgentTasksTable">
-<thead>
-<tr>
-<th>عنوان</th>
-<th>تفصیل</th>
-<th>آخری تاریخ</th>
-<th>آخری وقت</th>
-<th>آپشنز</th>
-</tr>
-</thead>
-<tbody>
-</tbody>
-</table>
-</div>
-</section>
-<section class="module-section" id="meetings">
-<h2><i class="fas fa-handshake"></i> ملاقاتیں – شخصیات، وقت، جگہ، تفصیل</h2>
-<form id="meetingForm">
-<input id="meetingId" type="hidden"/>
-<div class="form-group">
-<label for="meetingPerson">شخصیات:</label>
-<input id="meetingPerson" required="" type="text"/>
-</div>
-<div class="form-group">
-<label for="meetingDate">تاریخ:</label>
-<input id="meetingDate" required="" type="date"/>
-</div>
-<div class="form-group">
-<label for="meetingTime">وقت:</label>
-<input id="meetingTime" required="" type="time"/>
-</div>
-<div class="form-group">
-<label for="meetingLocation">جگہ:</label>
-<input id="meetingLocation" type="text"/>
-</div>
-<div class="form-group">
-<label for="meetingDetails">تفصیل:</label>
-<textarea id="meetingDetails" rows="3"></textarea>
-</div>
-<div class="action-buttons">
-<button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
-<button id="clearMeetingForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
-</div>
-</form>
-<h3><i class="fas fa-calendar-check"></i> ملاقاتوں کی فہرست</h3>
-<div class="controls">
-<input id="meetingSearch" placeholder="تلاش کریں..." type="text"/>
-<input id="meetingFilterDate" type="date"/>
-<select id="meetingSortBy">
-<option value="dateTime">تاریخ و وقت (قدیم ترین)</option>
-<option value="dateTimeDesc">تاریخ و وقت (جدید ترین)</option>
-</select>
-<button onclick="filterAndSort('meetings')"><i class="fas fa-filter"></i> فلٹر / ترتیب دیں</button>
-</div>
-<div class="export-options">
-<button class="print-btn" onclick="printTable('meetingsTable')"><i class="fas fa-print"></i> پرنٹ
+                </div>
+                <div style="overflow-x: auto;">
+                    <table id="urgentTasksTable">
+                        <thead>
+                            <tr>
+                                <th>عنوان</th>
+                                <th>تفصیل</th>
+                                <th>آخری تاریخ</th>
+                                <th>آخری وقت</th>
+                                <th>آپشنز</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section class="module-section" id="meetings">
+                <h2><i class="fas fa-handshake"></i> ملاقاتیں – شخصیات، وقت، جگہ، تفصیل</h2>
+                <form id="meetingForm">
+                    <input id="meetingId" type="hidden" />
+                    <div class="form-group">
+                        <label for="meetingPerson">شخصیات:</label>
+                        <input id="meetingPerson" required="" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label for="meetingDate">تاریخ:</label>
+                        <input id="meetingDate" required="" type="date" />
+                    </div>
+                    <div class="form-group">
+                        <label for="meetingTime">وقت:</label>
+                        <input id="meetingTime" required="" type="time" />
+                    </div>
+                    <div class="form-group">
+                        <label for="meetingLocation">جگہ:</label>
+                        <input id="meetingLocation" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label for="meetingDetails">تفصیل:</label>
+                        <textarea id="meetingDetails" rows="3"></textarea>
+                    </div>
+                    <div class="action-buttons">
+                        <button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
+                        <button id="clearMeetingForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
+                    </div>
+                </form>
+                <h3><i class="fas fa-calendar-check"></i> ملاقاتوں کی فہرست</h3>
+                <div class="controls">
+                    <input id="meetingSearch" placeholder="تلاش کریں..." type="text" />
+                    <input id="meetingFilterDate" type="date" />
+                    <select id="meetingSortBy">
+                        <option value="dateTime">تاریخ و وقت (قدیم ترین)</option>
+                        <option value="dateTimeDesc">تاریخ و وقت (جدید ترین)</option>
+                    </select>
+                    <button onclick="filterAndSort('meetings')"><i class="fas fa-filter"></i> فلٹر / ترتیب دیں</button>
+                </div>
+                <div class="export-options">
+                    <button class="print-btn" onclick="printTable('meetingsTable')"><i class="fas fa-print"></i> پرنٹ
                         کریں</button>
-<button onclick="exportTable('meetingsTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
+                    <button onclick="exportTable('meetingsTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
                         ایکسپورٹ
                         کریں</button>
-<button onclick="exportTable('meetingsTable', 'image')"><i class="fas fa-image"></i> تصویر ایکسپورٹ
+                    <button onclick="exportTable('meetingsTable', 'image')"><i class="fas fa-image"></i> تصویر ایکسپورٹ
                         کریں</button>
-</div>
-<div style="overflow-x: auto;">
-<table id="meetingsTable">
-<thead>
-<tr>
-<th>تاریخ</th>
-<th>وقت</th>
-<th>شخصیات</th>
-<th>جگہ</th>
-<th>تفصیل</th>
-<th>آپشنز</th>
-</tr>
-</thead>
-<tbody>
-</tbody>
-</table>
-</div>
-</section>
-<section class="module-section" id="notifications">
-<h2><i class="fas fa-info-circle"></i> اطلاعات – داخلی و خارجی اطلاع نامے</h2>
-<form id="notificationForm">
-<input id="notificationId" type="hidden"/>
-<div class="form-group">
-<label for="notificationTitle">اطلاع کا عنوان:</label>
-<input id="notificationTitle" required="" type="text"/>
-</div>
-<div class="form-group">
-<label for="notificationType">نوعیت:</label>
-<select id="notificationType">
-<option value="داخلی">داخلی</option>
-<option value="خارجی">خارجی</option>
-</select>
-</div>
-<div class="form-group">
-<label for="notificationDetails">تفصیل:</label>
-<textarea id="notificationDetails" rows="3"></textarea>
-</div>
-<div class="form-group">
-<label for="notificationDate">تاریخ:</label>
-<input id="notificationDate" required="" type="date"/>
-</div>
-<div class="form-group">
-<label for="notificationFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
-<input accept=".pdf,image/*" id="notificationFiles" multiple="" type="file"/>
-<div class="file-upload-preview" id="notificationFilesPreview"></div>
-</div>
-<div class="action-buttons">
-<button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
-<button id="clearNotificationForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
-</div>
-</form>
-<h3><i class="fas fa-bullhorn"></i> اطلاعات کی فہرست</h3>
-<div class="controls">
-<input id="notificationSearch" placeholder="تلاش کریں..." type="text"/>
-<input id="notificationFilterDate" type="date"/>
-<select id="notificationSortBy">
-<option value="date">تاریخ وار (قدیم ترین)</option>
-<option value="dateDesc">تاریخ وار (جدید ترین)</option>
-<option value="type">نوعیت</option>
-</select>
-<button onclick="filterAndSort('notifications')"><i class="fas fa-filter"></i> فلٹر / ترتیب
+                </div>
+                <div style="overflow-x: auto;">
+                    <table id="meetingsTable">
+                        <thead>
+                            <tr>
+                                <th>تاریخ</th>
+                                <th>وقت</th>
+                                <th>شخصیات</th>
+                                <th>جگہ</th>
+                                <th>تفصیل</th>
+                                <th>آپشنز</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section class="module-section" id="notifications">
+                <h2><i class="fas fa-info-circle"></i> اطلاعات – داخلی و خارجی اطلاع نامے</h2>
+                <form id="notificationForm">
+                    <input id="notificationId" type="hidden" />
+                    <div class="form-group">
+                        <label for="notificationTitle">اطلاع کا عنوان:</label>
+                        <input id="notificationTitle" required="" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label for="notificationType">نوعیت:</label>
+                        <select id="notificationType">
+                            <option value="داخلی">داخلی</option>
+                            <option value="خارجی">خارجی</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="notificationDetails">تفصیل:</label>
+                        <textarea id="notificationDetails" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="notificationDate">تاریخ:</label>
+                        <input id="notificationDate" required="" type="date" />
+                    </div>
+                    <div class="form-group">
+                        <label for="notificationFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
+                        <input accept=".pdf,image/*" id="notificationFiles" multiple="" type="file" />
+                        <div class="file-upload-preview" id="notificationFilesPreview"></div>
+                    </div>
+                    <div class="action-buttons">
+                        <button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
+                        <button id="clearNotificationForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
+                    </div>
+                </form>
+                <h3><i class="fas fa-bullhorn"></i> اطلاعات کی فہرست</h3>
+                <div class="controls">
+                    <input id="notificationSearch" placeholder="تلاش کریں..." type="text" />
+                    <input id="notificationFilterDate" type="date" />
+                    <select id="notificationSortBy">
+                        <option value="date">تاریخ وار (قدیم ترین)</option>
+                        <option value="dateDesc">تاریخ وار (جدید ترین)</option>
+                        <option value="type">نوعیت</option>
+                    </select>
+                    <button onclick="filterAndSort('notifications')"><i class="fas fa-filter"></i> فلٹر / ترتیب
                         دیں</button>
-</div>
-<div class="export-options">
-<button class="print-btn" onclick="printTable('notificationsTable')"><i class="fas fa-print"></i>
+                </div>
+                <div class="export-options">
+                    <button class="print-btn" onclick="printTable('notificationsTable')"><i class="fas fa-print"></i>
                         پرنٹ کریں</button>
-<button onclick="exportTable('notificationsTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
+                    <button onclick="exportTable('notificationsTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
                         ایکسپورٹ
                         کریں</button>
-<button onclick="exportTable('notificationsTable', 'image')"><i class="fas fa-image"></i> تصویر
+                    <button onclick="exportTable('notificationsTable', 'image')"><i class="fas fa-image"></i> تصویر
                         ایکسپورٹ
                         کریں</button>
-</div>
-<div style="overflow-x: auto;">
-<table id="notificationsTable">
-<thead>
-<tr>
-<th>تاریخ</th>
-<th>عنوان</th>
-<th>نوعیت</th>
-<th>تفصیل</th>
-<th>فائلیں</th>
-<th>آپشنز</th>
-</tr>
-</thead>
-<tbody>
-</tbody>
-</table>
-</div>
-</section>
-<section class="module-section" id="contacts">
-<h2><i class="fas fa-address-book"></i> رابطے – افراد، تنظیمیں، فون، ای میل، رشتہ</h2>
-<form id="contactForm">
-<input id="contactId" type="hidden"/>
-<div class="form-group">
-<label for="contactName">نام/تنظیم:</label>
-<input id="contactName" required="" type="text"/>
-</div>
-<div class="form-group">
-<label for="contactPhone">فون:</label>
-<input id="contactPhone" type="tel"/>
-</div>
-<div class="form-group">
-<label for="contactEmail">ای میل:</label>
-<input id="contactEmail" type="email"/>
-</div>
-<div class="form-group">
-<label for="contactRelationship">رشتہ/معمول:</label>
-<input id="contactRelationship" type="text"/>
-</div>
-<div class="form-group">
-<label for="contactAddress">پتہ:</label>
-<textarea id="contactAddress" rows="2"></textarea>
-</div>
-<div class="form-group">
-<label for="contactMessage">پیغام:</label>
-<textarea id="contactMessage" rows="2"></textarea>
-</div>
-<div class="action-buttons">
-<button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
-<button id="clearContactForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
-</div>
-</form>
-<h3><i class="fas fa-users"></i> رابطوں کی فہرست</h3>
-<div class="controls">
-<input id="contactSearch" placeholder="تلاش کریں..." type="text"/>
-<select id="contactSortBy">
-<option value="name">نام (الف تا ی)</option>
-<option value="nameDesc">نام (ی تا الف)</option>
-</select>
-<button onclick="filterAndSort('contacts')"><i class="fas fa-filter"></i> فلٹر / ترتیب دیں</button>
-</div>
-<div class="export-options">
-<button class="print-btn" onclick="printTable('contactsTable')"><i class="fas fa-print"></i> پرنٹ
+                </div>
+                <div style="overflow-x: auto;">
+                    <table id="notificationsTable">
+                        <thead>
+                            <tr>
+                                <th>تاریخ</th>
+                                <th>عنوان</th>
+                                <th>نوعیت</th>
+                                <th>تفصیل</th>
+                                <th>فائلیں</th>
+                                <th>آپشنز</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section class="module-section" id="contacts">
+                <h2><i class="fas fa-address-book"></i> رابطے – افراد، تنظیمیں، فون، ای میل، رشتہ</h2>
+                <form id="contactForm">
+                    <input id="contactId" type="hidden" />
+                    <div class="form-group">
+                        <label for="contactName">نام/تنظیم:</label>
+                        <input id="contactName" required="" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label for="contactPhone">فون:</label>
+                        <input id="contactPhone" type="tel" />
+                    </div>
+                    <div class="form-group">
+                        <label for="contactEmail">ای میل:</label>
+                        <input id="contactEmail" type="email" />
+                    </div>
+                    <div class="form-group">
+                        <label for="contactRelationship">رشتہ/معمول:</label>
+                        <input id="contactRelationship" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label for="contactAddress">پتہ:</label>
+                        <textarea id="contactAddress" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactMessage">پیغام:</label>
+                        <textarea id="contactMessage" rows="2"></textarea>
+                    </div>
+                    <div class="action-buttons">
+                        <button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
+                        <button id="clearContactForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
+                    </div>
+                </form>
+                <h3><i class="fas fa-users"></i> رابطوں کی فہرست</h3>
+                <div class="controls">
+                    <input id="contactSearch" placeholder="تلاش کریں..." type="text" />
+                    <select id="contactSortBy">
+                        <option value="name">نام (الف تا ی)</option>
+                        <option value="nameDesc">نام (ی تا الف)</option>
+                    </select>
+                    <button onclick="filterAndSort('contacts')"><i class="fas fa-filter"></i> فلٹر / ترتیب دیں</button>
+                </div>
+                <div class="export-options">
+                    <button class="print-btn" onclick="printTable('contactsTable')"><i class="fas fa-print"></i> پرنٹ
                         کریں</button>
-<button onclick="exportTable('contactsTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
+                    <button onclick="exportTable('contactsTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
                         ایکسپورٹ
                         کریں</button>
-<button onclick="exportTable('contactsTable', 'image')"><i class="fas fa-image"></i> تصویر ایکسپورٹ
+                    <button onclick="exportTable('contactsTable', 'image')"><i class="fas fa-image"></i> تصویر ایکسپورٹ
                         کریں</button>
-</div>
-<div style="overflow-x: auto;">
-<table id="contactsTable">
-<thead>
-<tr>
-<th>نام/تنظیم</th>
-<th>فون</th>
-<th>ای میل</th>
-<th>رشتہ/معمول</th>
-<th>پیغام</th>
-<th>پتہ</th>
-<th>آپشنز</th>
-</tr>
-</thead>
-<tbody>
-</tbody>
-</table>
-</div>
-</section>
-<section class="module-section" id="performance">
-<h2><i class="fas fa-chart-line"></i> کارگزاریاں – ماہانہ، سہ ماہی، سالانہ کارکردگی</h2>
-<form id="performanceForm">
-<input id="performanceId" type="hidden"/>
-<div class="form-group">
-<label for="performanceTitle">کارگزاری کا عنوان:</label>
-<input id="performanceTitle" required="" type="text"/>
-</div>
-<div class="form-group">
-<label for="performancePeriod">مدت:</label>
-<select id="performancePeriod">
-<option value="ماہانہ">ماہانہ</option>
-<option value="سہ ماہی">سہ ماہی</option>
-<option value="سالانہ">سالانہ</option>
-<option value="دیگر">دیگر</option>
-</select>
-</div>
-<div class="form-group">
-<label for="performanceDate">تاریخ:</label>
-<input id="performanceDate" required="" type="date"/>
-</div>
-<div class="form-group">
-<label for="performanceDetails">تفصیل:</label>
-<textarea id="performanceDetails" rows="3"></textarea>
-</div>
-<div class="form-group">
-<label for="performanceFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
-<input accept=".pdf,image/*" id="performanceFiles" multiple="" type="file"/>
-<div class="file-upload-preview" id="performanceFilesPreview"></div>
-</div>
-<div class="action-buttons">
-<button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
-<button id="clearPerformanceForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
-</div>
-</form>
-<h3><i class="fas fa-file-invoice"></i> کارگزاریوں کی فہرست</h3>
-<div class="controls">
-<input id="performanceSearch" placeholder="تلاش کریں..." type="text"/>
-<input id="performanceFilterDate" type="date"/>
-<select id="performanceSortBy">
-<option value="date">تاریخ وار (قدیم ترین)</option>
-<option value="dateDesc">تاریخ وار (جدید ترین)</option>
-<option value="period">مدت</option>
-</select>
-<button onclick="filterAndSort('performance')"><i class="fas fa-filter"></i> فلٹر / ترتیب
+                </div>
+                <div style="overflow-x: auto;">
+                    <table id="contactsTable">
+                        <thead>
+                            <tr>
+                                <th>نام/تنظیم</th>
+                                <th>فون</th>
+                                <th>ای میل</th>
+                                <th>رشتہ/معمول</th>
+                                <th>پیغام</th>
+                                <th>پتہ</th>
+                                <th>آپشنز</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section class="module-section" id="performance">
+                <h2><i class="fas fa-chart-line"></i> کارگزاریاں – ماہانہ، سہ ماہی، سالانہ کارکردگی</h2>
+                <form id="performanceForm">
+                    <input id="performanceId" type="hidden" />
+                    <div class="form-group">
+                        <label for="performanceTitle">کارگزاری کا عنوان:</label>
+                        <input id="performanceTitle" required="" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label for="performancePeriod">مدت:</label>
+                        <select id="performancePeriod">
+                            <option value="ماہانہ">ماہانہ</option>
+                            <option value="سہ ماہی">سہ ماہی</option>
+                            <option value="سالانہ">سالانہ</option>
+                            <option value="دیگر">دیگر</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="performanceDate">تاریخ:</label>
+                        <input id="performanceDate" required="" type="date" />
+                    </div>
+                    <div class="form-group">
+                        <label for="performanceDetails">تفصیل:</label>
+                        <textarea id="performanceDetails" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="performanceFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
+                        <input accept=".pdf,image/*" id="performanceFiles" multiple="" type="file" />
+                        <div class="file-upload-preview" id="performanceFilesPreview"></div>
+                    </div>
+                    <div class="action-buttons">
+                        <button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
+                        <button id="clearPerformanceForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
+                    </div>
+                </form>
+                <h3><i class="fas fa-file-invoice"></i> کارگزاریوں کی فہرست</h3>
+                <div class="controls">
+                    <input id="performanceSearch" placeholder="تلاش کریں..." type="text" />
+                    <input id="performanceFilterDate" type="date" />
+                    <select id="performanceSortBy">
+                        <option value="date">تاریخ وار (قدیم ترین)</option>
+                        <option value="dateDesc">تاریخ وار (جدید ترین)</option>
+                        <option value="period">مدت</option>
+                    </select>
+                    <button onclick="filterAndSort('performance')"><i class="fas fa-filter"></i> فلٹر / ترتیب
                         دیں</button>
-</div>
-<div class="export-options">
-<button class="print-btn" onclick="printTable('performanceTable')"><i class="fas fa-print"></i> پرنٹ
+                </div>
+                <div class="export-options">
+                    <button class="print-btn" onclick="printTable('performanceTable')"><i class="fas fa-print"></i> پرنٹ
                         کریں</button>
-<button onclick="exportTable('performanceTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
+                    <button onclick="exportTable('performanceTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
                         ایکسپورٹ
                         کریں</button>
-<button onclick="exportTable('performanceTable', 'image')"><i class="fas fa-image"></i> تصویر
+                    <button onclick="exportTable('performanceTable', 'image')"><i class="fas fa-image"></i> تصویر
                         ایکسپورٹ
                         کریں</button>
-</div>
-<div style="overflow-x: auto;">
-<table id="performanceTable">
-<thead>
-<tr>
-<th>تاریخ</th>
-<th>عنوان</th>
-<th>مدت</th>
-<th>تفصیل</th>
-<th>فائلیں</th>
-<th>آپشنز</th>
-</tr>
-</thead>
-<tbody>
-</tbody>
-</table>
-</div>
-</section>
-<section class="module-section" id="schedules">
-<h2><i class="fas fa-calendar-alt"></i> پروگراموں کا شیڈول – اجتماعات، مجلس، ختم بخاری، دیگر</h2>
-<form id="scheduleForm">
-<input id="scheduleId" type="hidden"/>
-<div class="form-group">
-<label for="scheduleName">پروگرام کا نام:</label>
-<input id="scheduleName" required="" type="text"/>
-</div>
-<div class="form-group">
-<label for="scheduleType">نوعیت:</label>
-<input id="scheduleType" placeholder="اجتماعات، مجلس، ختم بخاری، دیگر" type="text"/>
-</div>
-<div class="form-group">
-<label for="scheduleDate">تاریخ:</label>
-<input id="scheduleDate" required="" type="date"/>
-</div>
-<div class="form-group">
-<label for="scheduleTime">وقت:</label>
-<input id="scheduleTime" required="" type="time"/>
-</div>
-<div class="form-group">
-<label for="scheduleLocation">جگہ:</label>
-<input id="scheduleLocation" type="text"/>
-</div>
-<div class="form-group">
-<label for="scheduleDetails">تفصیل:</label>
-<textarea id="scheduleDetails" rows="3"></textarea>
-</div>
-<div class="action-buttons">
-<button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
-<button id="clearScheduleForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
-</div>
-</form>
-<h3><i class="fas fa-list-ul"></i> پروگراموں کے شیڈول کی فہرست</h3>
-<div class="controls">
-<input id="scheduleSearch" placeholder="تلاش کریں..." type="text"/>
-<input id="scheduleFilterDate" type="date"/>
-<select id="scheduleSortBy">
-<option value="dateTime">تاریخ و وقت (قدیم ترین)</option>
-<option value="dateTimeDesc">تاریخ و وقت (جدید ترین)</option>
-<option value="type">نوعیت</option>
-</select>
-<button onclick="filterAndSort('schedules')"><i class="fas fa-filter"></i> فلٹر / ترتیب دیں</button>
-</div>
-<div class="export-options">
-<button class="print-btn" onclick="printTable('schedulesTable')"><i class="fas fa-print"></i> پرنٹ
+                </div>
+                <div style="overflow-x: auto;">
+                    <table id="performanceTable">
+                        <thead>
+                            <tr>
+                                <th>تاریخ</th>
+                                <th>عنوان</th>
+                                <th>مدت</th>
+                                <th>تفصیل</th>
+                                <th>فائلیں</th>
+                                <th>آپشنز</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section class="module-section" id="schedules">
+                <h2><i class="fas fa-calendar-alt"></i> پروگراموں کا شیڈول – اجتماعات، مجلس، ختم بخاری، دیگر</h2>
+                <form id="scheduleForm">
+                    <input id="scheduleId" type="hidden" />
+                    <div class="form-group">
+                        <label for="scheduleName">پروگرام کا نام:</label>
+                        <input id="scheduleName" required="" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label for="scheduleType">نوعیت:</label>
+                        <input id="scheduleType" placeholder="اجتماعات، مجلس، ختم بخاری، دیگر" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label for="scheduleDate">تاریخ:</label>
+                        <input id="scheduleDate" required="" type="date" />
+                    </div>
+                    <div class="form-group">
+                        <label for="scheduleTime">وقت:</label>
+                        <input id="scheduleTime" required="" type="time" />
+                    </div>
+                    <div class="form-group">
+                        <label for="scheduleLocation">جگہ:</label>
+                        <input id="scheduleLocation" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label for="scheduleDetails">تفصیل:</label>
+                        <textarea id="scheduleDetails" rows="3"></textarea>
+                    </div>
+                    <div class="action-buttons">
+                        <button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
+                        <button id="clearScheduleForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
+                    </div>
+                </form>
+                <h3><i class="fas fa-list-ul"></i> پروگراموں کے شیڈول کی فہرست</h3>
+                <div class="controls">
+                    <input id="scheduleSearch" placeholder="تلاش کریں..." type="text" />
+                    <input id="scheduleFilterDate" type="date" />
+                    <select id="scheduleSortBy">
+                        <option value="dateTime">تاریخ و وقت (قدیم ترین)</option>
+                        <option value="dateTimeDesc">تاریخ و وقت (جدید ترین)</option>
+                        <option value="type">نوعیت</option>
+                    </select>
+                    <button onclick="filterAndSort('schedules')"><i class="fas fa-filter"></i> فلٹر / ترتیب دیں</button>
+                </div>
+                <div class="export-options">
+                    <button class="print-btn" onclick="printTable('schedulesTable')"><i class="fas fa-print"></i> پرنٹ
                         کریں</button>
-<button onclick="exportTable('schedulesTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
+                    <button onclick="exportTable('schedulesTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
                         ایکسپورٹ
                         کریں</button>
-<button onclick="exportTable('schedulesTable', 'image')"><i class="fas fa-image"></i> تصویر ایکسپورٹ
+                    <button onclick="exportTable('schedulesTable', 'image')"><i class="fas fa-image"></i> تصویر ایکسپورٹ
                         کریں</button>
-</div>
-<div style="overflow-x: auto;">
-<table id="schedulesTable">
-<thead>
-<tr>
-<th>تاریخ</th>
-<th>وقت</th>
-<th>پروگرام کا نام</th>
-<th>نوعیت</th>
-<th>جگہ</th>
-<th>تفصیل</th>
-<th>آپشنز</th>
-</tr>
-</thead>
-<tbody>
-</tbody>
-</table>
-</div>
-</section>
-<section class="module-section" id="messages">
-<h2><i class="fas fa-envelope"></i> پیغامات – دفتر کو موصول یا دفتر کی جانب سے ارسال</h2>
-<form id="messageForm">
-<input id="messageId" type="hidden"/>
-<div class="form-group">
-<label for="messageType">نوعیت:</label>
-<select id="messageType">
-<option value="موصول شدہ">موصول شدہ</option>
-<option value="ارسال کردہ">ارسال کردہ</option>
-</select>
-</div>
-<div class="form-group">
-<label for="messageSenderReceiver">بھیجنے والا/وصول کنندہ:</label>
-<input id="messageSenderReceiver" required="" type="text"/>
-</div>
-<div class="form-group">
-<label for="messageSubject">مضمون:</label>
-<input id="messageSubject" type="text"/>
-</div>
-<div class="form-group">
-<label for="messageDetails">تفصیل:</label>
-<textarea id="messageDetails" rows="3"></textarea>
-</div>
-<div class="form-group">
-<label for="messageDate">تاریخ:</label>
-<input id="messageDate" required="" type="date"/>
-</div>
-<div class="form-group">
-<label for="messageFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
-<input accept=".pdf,image/*" id="messageFiles" multiple="" type="file"/>
-<div class="file-upload-preview" id="messageFilesPreview"></div>
-</div>
-<div class="action-buttons">
-<button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
-<button id="clearMessageForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
-</div>
-</form>
-<h3><i class="fas fa-inbox"></i> پیغامات کی فہرست</h3>
-<div class="controls">
-<input id="messageSearch" placeholder="تلاش کریں..." type="text"/>
-<input id="messageFilterDate" type="date"/>
-<select id="messageSortBy">
-<option value="date">تاریخ وار (قدیم ترین)</option>
-<option value="dateDesc">تاریخ وار (جدید ترین)</option>
-<option value="type">نوعیت</option>
-</select>
-<button onclick="filterAndSort('messages')"><i class="fas fa-filter"></i> فلٹر / ترتیب دیں</button>
-</div>
-<div class="export-options">
-<button class="print-btn" onclick="printTable('messagesTable')"><i class="fas fa-print"></i> پرنٹ
+                </div>
+                <div style="overflow-x: auto;">
+                    <table id="schedulesTable">
+                        <thead>
+                            <tr>
+                                <th>تاریخ</th>
+                                <th>وقت</th>
+                                <th>پروگرام کا نام</th>
+                                <th>نوعیت</th>
+                                <th>جگہ</th>
+                                <th>تفصیل</th>
+                                <th>آپشنز</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section class="module-section" id="messages">
+                <h2><i class="fas fa-envelope"></i> پیغامات – دفتر کو موصول یا دفتر کی جانب سے ارسال</h2>
+                <form id="messageForm">
+                    <input id="messageId" type="hidden" />
+                    <div class="form-group">
+                        <label for="messageType">نوعیت:</label>
+                        <select id="messageType">
+                            <option value="موصول شدہ">موصول شدہ</option>
+                            <option value="ارسال کردہ">ارسال کردہ</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="messageSenderReceiver">بھیجنے والا/وصول کنندہ:</label>
+                        <input id="messageSenderReceiver" required="" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label for="messageSubject">مضمون:</label>
+                        <input id="messageSubject" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label for="messageDetails">تفصیل:</label>
+                        <textarea id="messageDetails" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="messageDate">تاریخ:</label>
+                        <input id="messageDate" required="" type="date" />
+                    </div>
+                    <div class="form-group">
+                        <label for="messageFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
+                        <input accept=".pdf,image/*" id="messageFiles" multiple="" type="file" />
+                        <div class="file-upload-preview" id="messageFilesPreview"></div>
+                    </div>
+                    <div class="action-buttons">
+                        <button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
+                        <button id="clearMessageForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
+                    </div>
+                </form>
+                <h3><i class="fas fa-inbox"></i> پیغامات کی فہرست</h3>
+                <div class="controls">
+                    <input id="messageSearch" placeholder="تلاش کریں..." type="text" />
+                    <input id="messageFilterDate" type="date" />
+                    <select id="messageSortBy">
+                        <option value="date">تاریخ وار (قدیم ترین)</option>
+                        <option value="dateDesc">تاریخ وار (جدید ترین)</option>
+                        <option value="type">نوعیت</option>
+                    </select>
+                    <button onclick="filterAndSort('messages')"><i class="fas fa-filter"></i> فلٹر / ترتیب دیں</button>
+                </div>
+                <div class="export-options">
+                    <button class="print-btn" onclick="printTable('messagesTable')"><i class="fas fa-print"></i> پرنٹ
                         کریں</button>
-<button onclick="exportTable('messagesTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
+                    <button onclick="exportTable('messagesTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
                         ایکسپورٹ
                         کریں</button>
-<button onclick="exportTable('messagesTable', 'image')"><i class="fas fa-image"></i> تصویر ایکسپورٹ
+                    <button onclick="exportTable('messagesTable', 'image')"><i class="fas fa-image"></i> تصویر ایکسپورٹ
                         کریں</button>
-</div>
-<div style="overflow-x: auto;">
-<table id="messagesTable">
-<thead>
-<tr>
-<th>تاریخ</th>
-<th>نوعیت</th>
-<th>بھیجنے والا/وصول کنندہ</th>
-<th>مضمون</th>
-<th>تفصیل</th>
-<th>فائلیں</th>
-<th>آپشنز</th>
-</tr>
-</thead>
-<tbody>
-</tbody>
-</table>
-</div>
-</section>
-<section class="module-section" id="letters">
-<h2><i class="fas fa-file-alt"></i> خطوط – مختلف افراد/شعبہ جات کو جاری کردہ خطوط</h2>
-<form id="letterForm">
-<input id="letterId" type="hidden"/>
-<div class="form-group">
-<label for="letterRecipient">وصول کنندہ (فرد/شعبہ):</label>
-<input id="letterRecipient" required="" type="text"/>
-</div>
-<div class="form-group">
-<label for="letterSubject">مضمون:</label>
-<input id="letterSubject" type="text"/>
-</div>
-<div class="form-group">
-<label for="letterDate">تاریخ اجرا:</label>
-<input id="letterDate" required="" type="date"/>
-</div>
-<div class="form-group">
-<label for="letterDetails">تفصیل:</label>
-<textarea id="letterDetails" rows="3"></textarea>
-</div>
-<div class="form-group">
-<label for="letterFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
-<input accept=".pdf,image/*" id="letterFiles" multiple="" type="file"/>
-<div class="file-upload-preview" id="letterFilesPreview"></div>
-</div>
-<div class="action-buttons">
-<button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
-<button id="clearLetterForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
-</div>
-</form>
-<h3><i class="fas fa-folder-open"></i> خطوط کی فہرست</h3>
-<div class="controls">
-<input id="letterSearch" placeholder="تلاش کریں..." type="text"/>
-<input id="letterFilterDate" type="date"/>
-<select id="letterSortBy">
-<option value="date">تاریخ وار (قدیم ترین)</option>
-<option value="dateDesc">تاریخ وار (جدید ترین)</option>
-</select>
-<button onclick="filterAndSort('letters')"><i class="fas fa-filter"></i> فلٹر / ترتیب دیں</button>
-</div>
-<div class="export-options">
-<button class="print-btn" onclick="printTable('lettersTable')"><i class="fas fa-print"></i> پرنٹ
+                </div>
+                <div style="overflow-x: auto;">
+                    <table id="messagesTable">
+                        <thead>
+                            <tr>
+                                <th>تاریخ</th>
+                                <th>نوعیت</th>
+                                <th>بھیجنے والا/وصول کنندہ</th>
+                                <th>مضمون</th>
+                                <th>تفصیل</th>
+                                <th>فائلیں</th>
+                                <th>آپشنز</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section class="module-section" id="letters">
+                <h2><i class="fas fa-file-alt"></i> خطوط – مختلف افراد/شعبہ جات کو جاری کردہ خطوط</h2>
+                <form id="letterForm">
+                    <input id="letterId" type="hidden" />
+                    <div class="form-group">
+                        <label for="letterRecipient">وصول کنندہ (فرد/شعبہ):</label>
+                        <input id="letterRecipient" required="" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label for="letterSubject">مضمون:</label>
+                        <input id="letterSubject" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label for="letterDate">تاریخ اجرا:</label>
+                        <input id="letterDate" required="" type="date" />
+                    </div>
+                    <div class="form-group">
+                        <label for="letterDetails">تفصیل:</label>
+                        <textarea id="letterDetails" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="letterFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
+                        <input accept=".pdf,image/*" id="letterFiles" multiple="" type="file" />
+                        <div class="file-upload-preview" id="letterFilesPreview"></div>
+                    </div>
+                    <div class="action-buttons">
+                        <button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
+                        <button id="clearLetterForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
+                    </div>
+                </form>
+                <h3><i class="fas fa-folder-open"></i> خطوط کی فہرست</h3>
+                <div class="controls">
+                    <input id="letterSearch" placeholder="تلاش کریں..." type="text" />
+                    <input id="letterFilterDate" type="date" />
+                    <select id="letterSortBy">
+                        <option value="date">تاریخ وار (قدیم ترین)</option>
+                        <option value="dateDesc">تاریخ وار (جدید ترین)</option>
+                    </select>
+                    <button onclick="filterAndSort('letters')"><i class="fas fa-filter"></i> فلٹر / ترتیب دیں</button>
+                </div>
+                <div class="export-options">
+                    <button class="print-btn" onclick="printTable('lettersTable')"><i class="fas fa-print"></i> پرنٹ
                         کریں</button>
-<button onclick="exportTable('lettersTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
+                    <button onclick="exportTable('lettersTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
                         ایکسپورٹ
                         کریں</button>
-<button onclick="exportTable('lettersTable', 'image')"><i class="fas fa-image"></i> تصویر ایکسپورٹ
+                    <button onclick="exportTable('lettersTable', 'image')"><i class="fas fa-image"></i> تصویر ایکسپورٹ
                         کریں</button>
-</div>
-<div style="overflow-x: auto;">
-<table id="lettersTable">
-<thead>
-<tr>
-<th>تاریخ اجرا</th>
-<th>وصول کنندہ</th>
-<th>مضمون</th>
-<th>تفصیل</th>
-<th>فائلیں</th>
-<th>آپشنز</th>
-</tr>
-</thead>
-<tbody>
-</tbody>
-</table>
-</div>
-</section>
-<section class="module-section" id="demands">
-<h2><i class="fas fa-money-bill-wave"></i> مطالبات – وسائل یا دیگر امور کے مطالبات</h2>
-<form id="demandForm">
-<input id="demandId" type="hidden"/>
-<div class="form-group">
-<label for="demandSubject">مطالبے کا عنوان:</label>
-<input id="demandSubject" required="" type="text"/>
-</div>
-<div class="form-group">
-<label for="demandRequester">مطالبہ کرنے والا:</label>
-<input id="demandRequester" required="" type="text"/>
-</div>
-<div class="form-group">
-<label for="demandDate">تاریخ مطالبہ:</label>
-<input id="demandDate" required="" type="date"/>
-</div>
-<div class="form-group">
-<label for="demandDetails">تفصیل:</label>
-<textarea id="demandDetails" rows="3"></textarea>
-</div>
-<div class="form-group">
-<label for="demandStatus">حالت:</label>
-<select id="demandStatus">
-<option value="زیر التوا">زیر التوا</option>
-<option value="مکمل">مکمل</option>
-<option value="منظور شدہ">منظور شدہ</option>
-<option value="مسترد شدہ">مسترد شدہ</option>
-</select>
-</div>
-<div class="form-group">
-<label for="demandFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
-<input accept=".pdf,image/*" id="demandFiles" multiple="" type="file"/>
-<div class="file-upload-preview" id="demandFilesPreview"></div>
-</div>
-<div class="action-buttons">
-<button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
-<button id="clearDemandForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
-</div>
-</form>
-<h3><i class="fas fa-list-alt"></i> مطالبات کی فہرست</h3>
-<div class="controls">
-<input id="demandSearch" placeholder="تلاش کریں..." type="text"/>
-<input id="demandFilterDate" type="date"/>
-<select id="demandSortBy">
-<option value="date">تاریخ وار (قدیم ترین)</option>
-<option value="dateDesc">تاریخ وار (جدید ترین)</option>
-<option value="status">حالت</option>
-</select>
-<button onclick="filterAndSort('demands')"><i class="fas fa-filter"></i> فلٹر / ترتیب دیں</button>
-</div>
-<div class="export-options">
-<button class="print-btn" onclick="printTable('demandsTable')"><i class="fas fa-print"></i> پرنٹ
+                </div>
+                <div style="overflow-x: auto;">
+                    <table id="lettersTable">
+                        <thead>
+                            <tr>
+                                <th>تاریخ اجرا</th>
+                                <th>وصول کنندہ</th>
+                                <th>مضمون</th>
+                                <th>تفصیل</th>
+                                <th>فائلیں</th>
+                                <th>آپشنز</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section class="module-section" id="demands">
+                <h2><i class="fas fa-money-bill-wave"></i> مطالبات – وسائل یا دیگر امور کے مطالبات</h2>
+                <form id="demandForm">
+                    <input id="demandId" type="hidden" />
+                    <div class="form-group">
+                        <label for="demandSubject">مطالبے کا عنوان:</label>
+                        <input id="demandSubject" required="" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label for="demandRequester">مطالبہ کرنے والا:</label>
+                        <input id="demandRequester" required="" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label for="demandDate">تاریخ مطالبہ:</label>
+                        <input id="demandDate" required="" type="date" />
+                    </div>
+                    <div class="form-group">
+                        <label for="demandDetails">تفصیل:</label>
+                        <textarea id="demandDetails" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="demandStatus">حالت:</label>
+                        <select id="demandStatus">
+                            <option value="زیر التوا">زیر التوا</option>
+                            <option value="مکمل">مکمل</option>
+                            <option value="منظور شدہ">منظور شدہ</option>
+                            <option value="مسترد شدہ">مسترد شدہ</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="demandFiles">فائلیں (پی ڈی ایف، تصاویر):</label>
+                        <input accept=".pdf,image/*" id="demandFiles" multiple="" type="file" />
+                        <div class="file-upload-preview" id="demandFilesPreview"></div>
+                    </div>
+                    <div class="action-buttons">
+                        <button type="submit"><i class="fas fa-save"></i> محفوظ کریں</button>
+                        <button id="clearDemandForm" type="button"><i class="fas fa-eraser"></i> صاف کریں</button>
+                    </div>
+                </form>
+                <h3><i class="fas fa-list-alt"></i> مطالبات کی فہرست</h3>
+                <div class="controls">
+                    <input id="demandSearch" placeholder="تلاش کریں..." type="text" />
+                    <input id="demandFilterDate" type="date" />
+                    <select id="demandSortBy">
+                        <option value="date">تاریخ وار (قدیم ترین)</option>
+                        <option value="dateDesc">تاریخ وار (جدید ترین)</option>
+                        <option value="status">حالت</option>
+                    </select>
+                    <button onclick="filterAndSort('demands')"><i class="fas fa-filter"></i> فلٹر / ترتیب دیں</button>
+                </div>
+                <div class="export-options">
+                    <button class="print-btn" onclick="printTable('demandsTable')"><i class="fas fa-print"></i> پرنٹ
                         کریں</button>
-<button onclick="exportTable('demandsTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
+                    <button onclick="exportTable('demandsTable', 'excel')"><i class="fas fa-file-excel"></i> ایکسل
                         ایکسپورٹ
                         کریں</button>
-<button onclick="exportTable('demandsTable', 'image')"><i class="fas fa-image"></i> تصویر ایکسپورٹ
+                    <button onclick="exportTable('demandsTable', 'image')"><i class="fas fa-image"></i> تصویر ایکسپورٹ
                         کریں</button>
-</div>
-<div style="overflow-x: auto;">
-<table id="demandsTable">
-<thead>
-<tr>
-<th>تاریخ</th>
-<th>عنوان</th>
-<th>مطالبہ کرنے والا</th>
-<th>تفصیل</th>
-<th>حالت</th>
-<th>فائلیں</th>
-<th>آپشنز</th>
-</tr>
-</thead>
-<tbody>
-</tbody>
-</table>
-</div>
-</section>
-<section class="module-section" id="backupRestore">
-<h2><i class="fas fa-cloud-download-alt"></i> ڈیٹا بیک اپ و ری سٹور (JSON)</h2>
-<h3><i class="fas fa-download"></i> ڈیٹا بیک اپ</h3>
-<p>اپنی تمام ڈیٹا کو JSON فائل میں ڈاؤن لوڈ کریں۔</p>
-<div class="action-buttons">
-<button onclick="backupData()"><i class="fas fa-download"></i> بیک اپ ڈاؤن لوڈ کریں</button>
-</div>
-<h3><i class="fas fa-upload"></i> ڈیٹا ری سٹور</h3>
-<p>JSON فائل سے ڈیٹا اپ لوڈ کر کے اپنے ڈیٹا کو بحال کریں۔</p>
-<div class="form-group">
-<label for="restoreFile">JSON فائل منتخب کریں:</label>
-<input accept=".json" id="restoreFile" type="file"/>
-</div>
-<div class="action-buttons">
-<button onclick="restoreData()"><i class="fas fa-upload"></i> ڈیٹا بحال کریں</button>
-</div>
-<p style="color: var(--delete-color); font-size: var(--font-size-sm);"><strong>وارننگ:</strong> ڈیٹا
+                </div>
+                <div style="overflow-x: auto;">
+                    <table id="demandsTable">
+                        <thead>
+                            <tr>
+                                <th>تاریخ</th>
+                                <th>عنوان</th>
+                                <th>مطالبہ کرنے والا</th>
+                                <th>تفصیل</th>
+                                <th>حالت</th>
+                                <th>فائلیں</th>
+                                <th>آپشنز</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section class="module-section" id="backupRestore">
+                <h2><i class="fas fa-cloud-download-alt"></i> ڈیٹا بیک اپ و ری سٹور (JSON)</h2>
+                <h3><i class="fas fa-download"></i> ڈیٹا بیک اپ</h3>
+                <p>اپنی تمام ڈیٹا کو JSON فائل میں ڈاؤن لوڈ کریں۔</p>
+                <div class="action-buttons">
+                    <button onclick="backupData()"><i class="fas fa-download"></i> بیک اپ ڈاؤن لوڈ کریں</button>
+                </div>
+                <h3><i class="fas fa-upload"></i> ڈیٹا ری سٹور</h3>
+                <p>JSON فائل سے ڈیٹا اپ لوڈ کر کے اپنے ڈیٹا کو بحال کریں۔</p>
+                <div class="form-group">
+                    <label for="restoreFile">JSON فائل منتخب کریں:</label>
+                    <input accept=".json" id="restoreFile" type="file" />
+                </div>
+                <div class="action-buttons">
+                    <button onclick="restoreData()"><i class="fas fa-upload"></i> ڈیٹا بحال کریں</button>
+                </div>
+                <p style="color: var(--delete-color); font-size: var(--font-size-sm);"><strong>وارننگ:</strong> ڈیٹا
                     بحال کرنے سے موجودہ ڈیٹا تبدیل ہو سکتا ہے۔</p>
-</section>
-</main>
-</div>
-<script>
+            </section>
+        </main>
+    </div>
+    <script>
         const NOTIFIED_ITEMS_KEY = 'notifiedItems';
 
         function hasBeenNotified(itemKey, interval) {
@@ -3192,33 +3200,35 @@
         window.removeFileFromFormPreview = removeFileFromFormPreview;
         window.showNotification = showNotification;
     </script>
-<script>
+    <script>
         document.querySelectorAll('*').forEach(element => {
             const currentSize = window.getComputedStyle(element).fontSize;
             const currentSizeNum = parseFloat(currentSize);
             element.style.fontSize = `${currentSizeNum + 1}px`;
         });
     </script>
-<script type="module">
-  import { Workbox } from 'https://storage.googleapis.com/workbox-cdn/releases/7.0.0/workbox-window.prod.mjs';
+    <script type="module">
+        import { Workbox } from 'https://storage.googleapis.com/workbox-cdn/releases/7.0.0/workbox-window.prod.mjs';
 
-  const swUrl = './sw.js';
-  const wb = new Workbox(swUrl);
+        const swUrl = './sw.js';
+        const wb = new Workbox(swUrl);
 
-  // This event fires when a new service worker has installed but is waiting to activate.
-  wb.addEventListener('waiting', (event) => {
-    console.log('A new service worker is waiting to activate.');
-    // This sends a message to the waiting service worker, telling it to activate.
-    wb.messageSW({ type: 'SKIP_WAITING' });
-  });
+        // This event fires when a new service worker has installed but is waiting to activate.
+        wb.addEventListener('waiting', (event) => {
+            console.log('A new service worker is waiting to activate.');
+            // This sends a message to the waiting service worker, telling it to activate.
+            wb.messageSW({ type: 'SKIP_WAITING' });
+        });
 
-  // This event fires when the new service worker has taken control.
-  wb.addEventListener('controlling', (event) => {
-    console.log('The new service worker is now in control. Reloading page for updates...');
-    window.location.reload();
-  });
+        // This event fires when the new service worker has taken control.
+        wb.addEventListener('controlling', (event) => {
+            console.log('The new service worker is now in control. Reloading page for updates...');
+            window.location.reload();
+        });
 
-  // Register the service worker.
-  wb.register();
-</script></body>
+        // Register the service worker.
+        wb.register();
+    </script>
+</body>
+
 </html>
